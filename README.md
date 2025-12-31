@@ -4,11 +4,12 @@ A modern, responsive website for the 80points card game, featuring rule download
 
 ## Features
 
-- 🎨 **Modern Design** - Clean, responsive layout using Tailwind CSS.
+- 🎨 **Modern UI/UX** - Glassmorphism design with 3D tilt interactions and smooth transitions.
 - 🌓 **Dark/Light Mode** - Seamless theme switching with system preference detection and persistence.
+- 🎭 **Dynamic Background** - Animated floating card suits and ambient gradient effects.
 - 📄 **Download Section** - Easy access to the 80points game rules (PDF).
 - 📱 **Mobile First** - Fully responsive design that works great on all devices.
-- ⚡ **Lightweight** - Static HTML5 site with no build process required.
+- ⚡ **Lightweight** - Single-file HTML structure using Tailwind CSS via CDN.
 
 ## Project Structure
 
@@ -17,7 +18,6 @@ A modern, responsive website for the 80points card game, featuring rule download
 ├── public/              # Static assets
 │   ├── 80logo_blue.svg  # Project logo
 │   └── 80P_SCN_V2.pdf   # Game rules PDF
-├── play80points/        # Original site content archive
 └── vercel.json          # Deployment configuration
 ```
 
