@@ -1,108 +1,59 @@
-# 80p - Document Download Site
+# 80points - Play for fun
 
-A minimalist, production-ready static HTML5 single-page site for downloading PDF documents.
+A modern, responsive website for the 80points card game, featuring rule downloads and contact information. This project is a revitalization of the original 80points content, updated with a fresh design and dark mode support.
 
 ## Features
 
-- 🎨 **Dark/Light Mode Toggle** - Seamless theme switching with Sun/Moon icons
-- 💾 **localStorage Persistence** - Theme preference saved across sessions
-- 🌓 **System Preference Detection** - Automatically detects user's OS theme preference
-- 📱 **Fully Responsive** - Mobile-first design using TailwindCSS
-- ⚡ **Zero Dependencies** - Uses TailwindCSS CDN (no build process required)
-- 🚀 **Vercel Ready** - Production-ready for instant deployment
-
-## Live Demo
-
-Deploy to Vercel with one click:
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/flpvvvv/80p)
+- 🎨 **Modern Design** - Clean, responsive layout using Tailwind CSS.
+- 🌓 **Dark/Light Mode** - Seamless theme switching with system preference detection and persistence.
+- 📄 **Download Section** - Easy access to the 80points game rules (PDF).
+- 📱 **Mobile First** - Fully responsive design that works great on all devices.
+- ⚡ **Lightweight** - Static HTML5 site with no build process required.
 
 ## Project Structure
 
 ```
-├── index.html           # Main HTML file with inline CSS/JS
-├── public/
-│   └── doc.pdf         # PDF document for download
-└── vercel.json         # Vercel deployment configuration
+├── index.html           # Main entry point
+├── public/              # Static assets
+│   ├── 80logo_blue.svg  # Project logo
+│   └── 80P_SCN_V2.pdf   # Game rules PDF
+├── play80points/        # Original site content archive
+└── vercel.json          # Deployment configuration
 ```
 
 ## Local Development
 
 1. Clone the repository:
-```bash
-git clone https://github.com/flpvvvv/80p.git
-cd 80p
-```
 
-2. Serve locally (any static server works):
-```bash
-# Using Python 3
-python3 -m http.server 8080
+   ```bash
+   git clone <repository-url>
+   cd 80p
+   ```
 
-# Using Node.js
-npx serve
+2. Serve locally using any static file server. For example:
 
-# Using PHP
-php -S localhost:8080
-```
+   **Using Python:**
 
-3. Open http://localhost:8080 in your browser
+   ```bash
+   python3 -m http.server 3000
+   ```
+
+   **Using Node.js (npx):**
+
+   ```bash
+   npx serve
+   ```
+
+3. Open your browser and navigate to `http://localhost:3000`.
 
 ## Deployment
 
-### Vercel (Recommended)
+This project is ready to be deployed on Vercel or any other static hosting provider.
 
-1. Install Vercel CLI:
-```bash
-npm i -g vercel
-```
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/flpvvvv/80p)
 
-2. Deploy:
-```bash
-vercel
-```
+## Credits
 
-### Other Platforms
-
-This is a static site and can be deployed to any static hosting service:
-- GitHub Pages
-- Netlify
-- Cloudflare Pages
-- AWS S3 + CloudFront
-- Any web server (Apache, Nginx, etc.)
-
-## Customization
-
-### Change the PDF
-
-Replace `public/doc.pdf` with your own PDF document.
-
-### Customize Colors
-
-Edit the Tailwind classes in `index.html` to match your brand:
-- Primary color: `bg-blue-600` → `bg-[your-color]-600`
-- Dark mode: Modify `dark:` prefixed classes
-
-### Update Content
-
-Edit the text in `index.html`:
-- Title: `<h1>` tag
-- Description: `<p>` tag
-- Footer: `<footer>` section
-
-## Browser Support
-
-- Chrome/Edge 90+
-- Firefox 88+
-- Safari 14+
-- Mobile browsers (iOS Safari, Chrome Android)
-
-## Tech Stack
-
-- **HTML5** - Semantic markup
-- **TailwindCSS** (via CDN) - Utility-first CSS framework
-- **Vanilla JavaScript** - No frameworks, lightweight and fast
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+- Original content by FLP.
+- Icons by [Heroicons](https://heroicons.com/).
+- Fonts: Aclonica, Audiowide, Averia Libre via Google Fonts.

@@ -3,11 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Download our document">
-    <title>Download Document</title>
+    <meta name="description" content="80points - Play for fun. Download rules and contact us.">
+    <title>80points - Play for fun</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        // Theme initialization - must run before page renders to prevent flash
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    <script>
+        // Theme initialization
         (function() {
             const theme = localStorage.getItem('theme') || 
                          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
@@ -16,70 +21,102 @@
             }
         })();
     </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Aclonica&family=Audiowide&family=Averia+Libre&display=swap');
+        
+        .font-aclonica { font-family: 'Aclonica', sans-serif; }
+        .font-audiowide { font-family: 'Audiowide', cursive; }
+        .font-averia { font-family: 'Averia Libre', cursive; }
+    </style>
 </head>
-<body class="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+<body class="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200 flex flex-col">
     <!-- Theme Toggle Button -->
     <div class="fixed top-4 right-4 z-10">
         <button id="themeToggle" 
                 class="p-3 rounded-lg bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 aria-label="Toggle theme">
-            <!-- Sun Icon (shown in dark mode) -->
             <svg id="sunIcon" class="w-6 h-6 text-yellow-500 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
             </svg>
-            <!-- Moon Icon (shown in light mode) -->
             <svg id="moonIcon" class="w-6 h-6 text-gray-700 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
             </svg>
         </button>
     </div>
 
-    <!-- Main Content - Vertically Centered Hero -->
-    <main class="min-h-screen flex items-center justify-center px-4 py-12">
-        <div class="w-full max-w-md">
-            <!-- Download Card -->
-            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 transition-colors duration-200">
-                <!-- Icon -->
-                <div class="flex justify-center mb-6">
-                    <div class="p-4 bg-blue-100 dark:bg-blue-900 rounded-full">
-                        <svg class="w-12 h-12 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                        </svg>
-                    </div>
-                </div>
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-4 py-12 max-w-3xl">
+        
+        <!-- Header / Welcome Section -->
+        <div class="text-center mb-12">
+            <div class="flex justify-center mb-6">
+                <img src="public/80logo_blue.svg" alt="80points Logo" class="w-48 h-48 brightness-0 dark:invert">
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4 font-aclonica text-[#12ae50]">
+                80points - Play for fun
+            </h1>
+            <h2 class="text-2xl text-gray-700 dark:text-gray-300 font-audiowide text-[#280d4e]">
+                Welcome to 80points' world
+            </h2>
+        </div>
 
-                <!-- Title -->
-                <h1 class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-3">
-                    Download Document
-                </h1>
+        <!-- Download Section -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 mb-8 transition-colors duration-200">
+            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4 flex items-center">
+                <svg class="w-6 h-6 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                </svg>
+                Download Rules
+            </h3>
+            
+            <p class="text-gray-600 dark:text-gray-300 mb-6 font-averia text-lg">
+                You can download the 80points rules here.
+                <br>
+                <span class="text-sm italic mt-2 block">
+                    Note: For the moment, only the Chinese versions are available for download. English and French versions will be available later.
+                </span>
+            </p>
 
-                <!-- Description -->
-                <p class="text-center text-gray-600 dark:text-gray-400 mb-8">
-                    Get instant access to our document
-                </p>
+            <a href="public/80P_SCN_V2.pdf" 
+               download="80points_rules.pdf"
+               class="block w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-semibold py-4 px-6 rounded-lg transition-colors duration-200 text-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                Download PDF
+            </a>
+        </div>
 
-                <!-- Download Button -->
-                <a href="public/doc.pdf" 
-                   download="document.pdf"
-                   class="block w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-semibold py-4 px-6 rounded-lg transition-colors duration-200 text-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
-                    <span class="flex items-center justify-center">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-                        </svg>
-                        Download PDF
-                    </span>
+        <!-- Contact Section -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 mb-8 transition-colors duration-200">
+            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4 flex items-center">
+                <svg class="w-6 h-6 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                </svg>
+                Contact
+            </h3>
+            <p class="text-gray-600 dark:text-gray-300 font-averia text-lg">
+                If you have any questions or recommendations, please feel free to send me an email:
+                <br>
+                <a href="mailto:FiveLayerPork@gmail.com" class="text-green-600 dark:text-green-400 font-bold hover:underline mt-2 inline-block">
+                    FiveLayerPork@gmail.com
                 </a>
+            </p>
+        </div>
 
-                <!-- File Info -->
-                <div class="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
-                    <p>PDF Document</p>
-                </div>
+        <!-- Fun Footer Section -->
+        <div class="text-center text-gray-600 dark:text-gray-400">
+            <p class="text-xl mb-2 font-averia">Have fun ☺</p>
+            <p class="mb-4 font-averia">From FLP</p>
+            <div class="text-2xl space-x-2">
+                <span class="text-black dark:text-gray-200">♠</span>
+                <span class="text-red-600">♥</span>
+                <span class="text-black dark:text-gray-200">♣</span>
+                <span class="text-red-600">♦</span>
             </div>
         </div>
+
     </main>
 
     <!-- Footer -->
-    <footer class="fixed bottom-0 w-full py-4 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-t border-gray-200 dark:border-gray-700 transition-colors duration-200">
+    <footer class="py-6 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-t border-gray-200 dark:border-gray-700 transition-colors duration-200 mt-auto">
         <div class="container mx-auto px-4 text-center text-sm text-gray-600 dark:text-gray-400">
             <p>&copy; 2025 80p. All rights reserved.</p>
         </div>
@@ -90,10 +127,8 @@
         const themeToggle = document.getElementById('themeToggle');
         const html = document.documentElement;
 
-        // Toggle theme function
         function toggleTheme() {
             const isDark = html.classList.contains('dark');
-            
             if (isDark) {
                 html.classList.remove('dark');
                 localStorage.setItem('theme', 'light');
@@ -103,12 +138,9 @@
             }
         }
 
-        // Add click event listener
         themeToggle.addEventListener('click', toggleTheme);
 
-        // Listen for system theme changes
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-            // Only update if user hasn't set a preference
             if (!localStorage.getItem('theme')) {
                 if (e.matches) {
                     html.classList.add('dark');
