@@ -7,47 +7,7 @@
     <title>80points - Play for fun</title>
     <link rel="icon" type="image/svg+xml" href="public/favicon.svg">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        display: ['Outfit', 'sans-serif'],
-                    },
-                    animation: {
-                        'float-slow': 'float 8s ease-in-out infinite',
-                        'float-medium': 'float 6s ease-in-out infinite',
-                        'float-fast': 'float 4s ease-in-out infinite',
-                        'spin-slow': 'spin 12s linear infinite',
-                        'deal': 'deal 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
-                        'gradient-x': 'gradientX 3s ease infinite',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
-                            '50%': { transform: 'translateY(-20px) rotate(5deg)' },
-                        },
-                        deal: {
-                            '0%': { opacity: '0', transform: 'translateY(100px) scale(0.9) rotateX(-20deg)' },
-                            '100%': { opacity: '1', transform: 'translateY(0) scale(1) rotateX(0)' },
-                        },
-                        gradientX: {
-                            '0%, 100%': {
-                                'background-size': '200% 200%',
-                                'background-position': 'left center'
-                            },
-                            '50%': {
-                                'background-size': '200% 200%',
-                                'background-position': 'right center'
-                            },
-                        },
-                    }
-                }
-            }
-        }
-    </script>
+    <script src="public/js/theme.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@500;700;800;900&display=swap');
         
@@ -191,15 +151,25 @@
                             </span>
                         </p>
 
-                        <a href="public/80P_SCN_V2.pdf" 
-                           download="80points_rules.pdf"
-                           class="relative w-full group/btn overflow-hidden rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold text-lg py-4 px-8 flex items-center justify-center gap-3 shadow-lg hover:shadow-indigo-500/25 transition-all duration-300">
-                            <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-500 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300"></div>
-                            <span class="relative z-10" data-i18n="downloadBtn">Download PDF</span>
-                            <svg class="w-5 h-5 relative z-10 group-hover/btn:translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-                            </svg>
-                        </a>
+                        <div class="flex flex-col gap-3">
+                            <a href="rules.html" 
+                               class="relative w-full group/btn overflow-hidden rounded-xl bg-indigo-600 dark:bg-indigo-500 text-white font-bold text-lg py-4 px-8 flex items-center justify-center gap-3 shadow-lg hover:shadow-indigo-500/25 transition-all duration-300">
+                                <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-500 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300"></div>
+                                <span class="relative z-10" data-i18n="readOnlineBtn">Read Online</span>
+                                <svg class="w-5 h-5 relative z-10 group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                                </svg>
+                            </a>
+
+                            <a href="public/80P_SCN_V2.pdf" 
+                               download="80points_rules.pdf"
+                               class="relative w-full group/btn overflow-hidden rounded-xl bg-white dark:bg-slate-700 text-slate-900 dark:text-white font-bold text-lg py-4 px-8 flex items-center justify-center gap-3 shadow-md hover:shadow-lg transition-all duration-300 border border-slate-200 dark:border-slate-600">
+                                <span class="relative z-10" data-i18n="downloadBtn">Download PDF</span>
+                                <svg class="w-5 h-5 relative z-10 group-hover/btn:translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                </svg>
+                            </a>
+                        </div>
 
                         <div class="mt-6 text-center">
                             <a href="mailto:FiveLayerPork@gmail.com" class="text-sm text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-i18n="contact">
@@ -220,20 +190,6 @@
     </main>
 
     <script>
-        // Theme Logic
-        const themeToggle = document.getElementById('themeToggle');
-        const html = document.documentElement;
-
-        // Initialize theme
-        const savedTheme = localStorage.getItem('theme') || 
-                          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        if (savedTheme === 'dark') html.classList.add('dark');
-
-        themeToggle.addEventListener('click', () => {
-            html.classList.toggle('dark');
-            localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
-        });
-
         // 3D Tilt Effect
         const card = document.getElementById('mainCard');
         const container = document.querySelector('main');
@@ -296,6 +252,7 @@
                 rulesTitle: "Game Rules",
                 rulesDesc: "Master the strategy. Download the official guide and start playing today.",
                 versionNote: "V2.0 • Chinese Only",
+                readOnlineBtn: "Read Online",
                 downloadBtn: "Download PDF",
                 contact: "Need help? Contact us",
                 crafted: "© 2026 80p. Crafted by FLP.",
@@ -313,6 +270,7 @@
                 rulesTitle: "游戏规则",
                 rulesDesc: "掌握策略。下载官方指南，即刻开始游戏。",
                 versionNote: "V2.0 • 仅中文版",
+                readOnlineBtn: "在线阅读",
                 downloadBtn: "下载 PDF",
                 contact: "需要帮助？联系我们",
                 crafted: "© 2026 80p. FLP 制作。",

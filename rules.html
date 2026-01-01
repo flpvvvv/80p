@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>80分 - 游戏规则</title>
+    <link rel="icon" type="image/svg+xml" href="public/favicon.svg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="public/js/theme.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            mermaid.initialize({ 
+                startOnLoad: true,
+                theme: document.documentElement.classList.contains('dark') ? 'dark' : 'default',
+                securityLevel: 'loose',
+                themeVariables: {
+                    fontSize: '18px',
+                    fontFamily: 'Inter, sans-serif'
+                }
+            });
+
+            // Track current theme state
+            let currentIsDark = document.documentElement.classList.contains('dark');
+
+            // Update mermaid theme when dark mode toggles
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.attributeName === "class") {
+                        const newIsDark = document.documentElement.classList.contains('dark');
+                        // Only reload if the theme actually changed
+                        if (newIsDark !== currentIsDark) {
+                            location.reload(); 
+                        }
+                    }
+                });
+            });
+            
+            observer.observe(document.documentElement, {
+                attributes: true
+            });
+
+            // Mobile Menu Logic
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const mobileMenuBackdrop = document.getElementById('mobileMenuBackdrop');
+            const mobileMenuDrawer = document.getElementById('mobileMenuDrawer');
+            const mobileLinks = document.querySelectorAll('.mobile-link');
+
+            function toggleMenu() {
+                const isHidden = mobileMenu.classList.contains('hidden');
+                if (isHidden) {
+                    mobileMenu.classList.remove('hidden');
+                    // Small delay to allow display:block to apply before transition
+                    setTimeout(() => {
+                        mobileMenuBackdrop.classList.remove('opacity-0');
+                        mobileMenuDrawer.classList.remove('-translate-x-full');
+                    }, 10);
+                } else {
+                    mobileMenuBackdrop.classList.add('opacity-0');
+                    mobileMenuDrawer.classList.add('-translate-x-full');
+                    setTimeout(() => {
+                        mobileMenu.classList.add('hidden');
+                    }, 300);
+                }
+            }
+
+            if (mobileMenuBtn) {
+                mobileMenuBtn.addEventListener('click', toggleMenu);
+                mobileMenuBackdrop.addEventListener('click', toggleMenu);
+                
+                // Close menu when clicking a link
+                mobileLinks.forEach(link => {
+                    link.addEventListener('click', toggleMenu);
+                });
+            }
+        });
+    </script>
+    <style type="text/tailwindcss">
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@500;700;800;900&display=swap');
+        
+        .glass-morphism {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        }
+        
+        .dark .glass-morphism {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        /* Typography for Markdown Content */
+        .prose h1 {
+            @apply text-4xl md:text-5xl font-display font-black mb-12 text-slate-900 dark:text-white tracking-tight;
+        }
+        .prose h2 {
+            @apply text-3xl font-display font-bold mt-16 mb-8 text-slate-800 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700 pb-4;
+        }
+        .prose h3 {
+            @apply text-2xl font-bold mt-10 mb-5 text-indigo-600 dark:text-indigo-400;
+        }
+        .prose h4 {
+            @apply text-xl font-bold mt-8 mb-4 text-slate-700 dark:text-slate-200;
+        }
+        .prose p {
+            @apply mb-4 leading-relaxed text-slate-600 dark:text-slate-300;
+        }
+        .prose ul {
+            @apply list-disc list-inside mb-4 space-y-2 text-slate-600 dark:text-slate-300 ml-4;
+        }
+        .prose ol {
+            @apply list-decimal list-inside mb-4 space-y-2 text-slate-600 dark:text-slate-300 ml-4;
+        }
+        .prose table {
+            @apply w-full mb-8 border-collapse text-sm overflow-hidden rounded-lg shadow-sm;
+        }
+        .prose th {
+            @apply border border-slate-200 dark:border-slate-700 p-3 bg-slate-100 dark:bg-slate-800 font-semibold text-left text-slate-700 dark:text-slate-200;
+        }
+        .prose td {
+            @apply border border-slate-200 dark:border-slate-700 p-3 text-slate-600 dark:text-slate-300;
+        }
+        .prose strong {
+            @apply font-bold text-slate-800 dark:text-slate-100;
+        }
+        .prose blockquote {
+            @apply border-l-4 border-indigo-500 pl-4 italic my-6 bg-slate-50 dark:bg-slate-800/50 p-4 rounded-r text-slate-600 dark:text-slate-400;
+        }
+        .prose img {
+            @apply rounded-xl shadow-lg my-8 max-w-full h-auto border border-slate-200 dark:border-slate-700;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #334155;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-slate-100 dark:bg-[#0B1120] text-slate-900 dark:text-slate-100 transition-colors duration-500">
+    
+    <!-- Fixed Background -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none -z-10">
+        <div class="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-indigo-400/20 dark:bg-indigo-600/10 blur-[120px] animate-float-slow"></div>
+        <div class="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] rounded-full bg-fuchsia-400/20 dark:bg-fuchsia-600/10 blur-[120px] animate-float-medium"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass-morphism border-b border-white/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-4">
+                    <!-- Mobile Menu Button -->
+                    <button id="mobileMenuBtn" class="lg:hidden p-2 rounded-md text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+
+                    <a href="index.html" class="flex items-center gap-3 group">
+                        <img src="public/favicon.svg" class="w-8 h-8 brightness-0 dark:invert group-hover:rotate-12 transition-transform duration-300">
+                        <span class="font-display font-bold text-xl tracking-tight">80分</span>
+                    </a>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <a href="index.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                        <span class="hidden sm:inline">返回首页</span>
+                    </a>
+                    
+                    <!-- Theme Toggle -->
+                    <button id="themeToggle" 
+                            class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors group"
+                            aria-label="Toggle theme">
+                        <svg id="sunIcon" class="w-5 h-5 text-amber-500 hidden dark:block group-hover:rotate-90 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                        <svg id="moonIcon" class="w-5 h-5 text-slate-700 block dark:hidden group-hover:-rotate-12 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobileMenu" class="fixed inset-0 z-40 hidden lg:hidden" aria-hidden="true">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/20 backdrop-blur-sm opacity-0 transition-opacity duration-300" id="mobileMenuBackdrop"></div>
+        
+        <!-- Drawer -->
+        <div class="absolute left-0 top-16 bottom-0 w-64 glass-morphism border-r border-white/20 overflow-y-auto transform transition-transform duration-300 -translate-x-full" id="mobileMenuDrawer">
+            <div class="p-6">
+                <h3 class="font-display font-bold mb-4 text-lg text-slate-900 dark:text-white">目录</h3>
+                <nav class="space-y-1 text-sm">
+                    <a href="#intro" class="mobile-link block py-2 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">80分简介</a>
+                    <a href="#zhuang" class="mobile-link block py-2 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">坐庄</a>
+                    <a href="#upgrade" class="mobile-link block py-2 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">升级</a>
+                    <a href="#pre-game" class="mobile-link block py-2 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">出牌前</a>
+                    <a href="#flowcharts" class="mobile-link block py-2 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">流程图</a>
+                    <a href="#gameplay" class="mobile-link block py-2 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">出牌阶段</a>
+                    <a href="#scoring" class="mobile-link block py-2 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">结算与抠底</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12 flex flex-col lg:flex-row gap-8">
+        
+        <!-- Sidebar (Table of Contents) -->
+        <aside class="hidden lg:block lg:w-64 flex-shrink-0">
+            <div class="sticky top-24 glass-morphism rounded-2xl p-6 max-h-[calc(100vh-8rem)] overflow-y-auto">
+                <h3 class="font-display font-bold mb-4 text-lg text-slate-900 dark:text-white">目录</h3>
+                <nav class="space-y-1 text-sm">
+                    <a href="#intro" class="block py-1.5 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">80分简介</a>
+                    <a href="#zhuang" class="block py-1.5 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">坐庄</a>
+                    <a href="#upgrade" class="block py-1.5 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">升级</a>
+                    <a href="#pre-game" class="block py-1.5 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">出牌前</a>
+                    <a href="#flowcharts" class="block py-1.5 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">流程图</a>
+                    <a href="#gameplay" class="block py-1.5 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">出牌阶段</a>
+                    <a href="#scoring" class="block py-1.5 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">结算与抠底</a>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 min-w-0 space-y-8">
+            
+            <!-- Header -->
+            <div class="glass-morphism rounded-3xl p-8 md:p-12 prose">
+                <h1 class="!mb-4">80分 - 中文版 V2.0</h1>
+                <div class="flex flex-wrap gap-4 text-sm text-slate-500 dark:text-slate-400">
+                    <span><strong>作者:</strong> FLP</span>
+                    <span><strong>日期:</strong> 2013年1月</span>
+                </div>
+            </div>
+
+            <div id="intro" class="glass-morphism rounded-3xl p-8 md:p-12 prose">
+                <h2 class="!mt-0">简介</h2>
+                <p>4人扑克牌游戏，两副牌（2x54张，有大小王之分）。两人一队，交错坐，以抢分升级为目的。 其中分数牌为：5、10 和 K，它们分别代表的分数为 5分、10分、10分，所以两副牌一共 200分。80分又称升级、双升、拖拉机、炒地皮等。</p>
+            </div>
+
+            <div id="zhuang" class="glass-morphism rounded-3xl p-8 md:p-12 prose">
+                <h2 class="!mt-0">坐庄</h2>
+                <p>每局都有一队在“台上”坐庄，坐庄这一队中的一人为庄家；另外一队则是在“台下”。</p>
+                <ul>
+                    <li><strong>上台条件</strong>: 台下的玩家为了“上台”坐庄，必须在一局中“抓到”80分或者80分以上，这样下一局就可以“上台”。</li>
+                    <li><strong>保庄条件</strong>: 在台上的玩家为了保持坐庄和升级，必须使台下玩家抓分少于 80分。</li>
+                    <li><strong>轮换规则</strong>:
+                        <ul>
+                            <li><strong>台下抓分 < 80分</strong>: 台上继续坐庄，但庄家轮换为同队的另一人。</li>
+                            <li><strong>台下抓分 ≥ 80分</strong>: 台下成功上台，下一局庄家由此局庄家的“下家”（右手边玩家）担任。</li>
+                        </ul>
+                    </li>
+                    <li><strong>抢庄</strong>: 第一局开始时两家平等，通过“亮牌”来争抢当庄家。</li>
+                </ul>
+            </div>
+
+            <div id="upgrade" class="glass-morphism rounded-3xl p-8 md:p-12 prose">
+                <h2 class="!mt-0">升级</h2>
+                <p>目的是增进友谊，其次是升级。第一局从 2 开始打。</p>
+                <ul>
+                    <li><strong>顺序</strong>: 2, 3, 4... 10, J, Q, K, A。先打过 A 的那队获胜。</li>
+                    <li><strong>跳级</strong>: 默认 40分跳一级。有时规定 20分或 10分跳级。</li>
+                    <li><strong>必打</strong>: 10 和 K“必打”，即跳级时不能跳过 10 和 K。</li>
+                </ul>
+
+                <h3>升级对照表 (标准40分跳级)</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>台下那队抓到的分数</th>
+                            <th>庄家那队可升的级数</th>
+                            <th>台下那队可升的级数</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>0</td>
+                            <td>3</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>5~35</td>
+                            <td>2</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>40~75</td>
+                            <td>1</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>80~115</td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>>=120*</td>
+                            <td>0</td>
+                            <td>1+</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="text-sm text-slate-500">* <strong>规则</strong>: 在 80分基础上，台下那队每多拿 40分，多升一级。<br>
+                * <strong>80~115分</strong>: 台下虽不能升级，但下局可上台。</p>
+            </div>
+
+            <div id="pre-game" class="glass-morphism rounded-3xl p-8 md:p-12 prose">
+                <h2 class="!mt-0">出牌前</h2>
+                
+                <h3>拿牌</h3>
+                <ul>
+                    <li><strong>第一局</strong>: 最年轻者翻看一张牌决定谁先拿。按“黑红草方”逆时针规则决定（如翻到黑桃则翻牌者先拿，红桃则下家，依次类推）。</li>
+                    <li><strong>流程</strong>: 逆时针依次拿牌，每人每次一张，直到剩下 8 张“底牌”结束，每人手上有 25 张牌。</li>
+                    <li><strong>后续局</strong>: 由当局庄家开始拿牌。</li>
+                </ul>
+
+                <h3>亮牌 (抢亮)</h3>
+                <ul>
+                    <li><strong>定义</strong>: 亮出庄家当前打的数字的牌。</li>
+                    <li><strong>加固</strong>: 亮牌后，若又拿到一张相同的牌，可再次亮出，称为“加固”。加固影响“反”的规则。</li>
+                    <li><strong>抢庄 (第一局)</strong>: 亮出 2 的玩家及其对家暂时上台。若无人“反”，亮牌者成为庄家。</li>
+                    <li><strong>定主</strong>: 亮牌花色即为“主花色”。</li>
+                    <li><strong>无人亮牌</strong>: 若四人拿完牌均不亮牌，则进行“翻底”。</li>
+                </ul>
+
+                <h3>翻底</h3>
+                <ul>
+                    <li><strong>规则</strong>: 一张张翻底牌，直到翻到庄家打的数字。若 8 张都不是，则以第一张翻出的花色为主花色。若翻到大小王则打“无主”。</li>
+                    <li><strong>第一局翻底</strong>: 用第一张非大小王的牌决定庄家（按黑红草方规则）。</li>
+                    <li><strong>注意</strong>: 一旦翻底，玩家不能再“反”。</li>
+                </ul>
+
+                <h3>反</h3>
+                <ul>
+                    <li><strong>定义</strong>: 亮出两张相同花色的级牌（庄家打的数字）、或两张小王、或两张大王，以改变主花色、打无主或“抄底”。</li>
+                    <li><strong>顺序</strong>: 方 < 草 < 红 < 黑 < 小王 < 大王。若有人已反，需用更大的牌反。
+                        <ul>
+                            <li>若亮牌已“加固”，则不能被同花色级牌反，只能被小王或大王反。</li>
+                        </ul>
+                    </li>
+                    <li><strong>时机</strong>:
+                        <ol>
+                            <li><strong>拿底前</strong>: 第一局可抢庄；非第一局仅换主花色。</li>
+                            <li><strong>埋底后</strong>: 既换主花色，又可“抄底”（拿走底牌重新埋底）。</li>
+                        </ol>
+                    </li>
+                    <li><strong>反的权力顺序</strong>: 庄家 -> 下家 -> 对家 -> 上家（逆时针）。</li>
+                </ul>
+
+                <h3>造反</h3>
+                <ul>
+                    <li><strong>条件</strong>: 台下玩家手上分数 ≤ 15分，或有主花色情况下主牌 ≤ 3张。</li>
+                    <li><strong>结果</strong>: 当局抓牌无效，重新抓牌，庄家换成台上的另一人。</li>
+                    <li><strong>限制</strong>: 只有台下玩家可造反，且不能连着两局造反。</li>
+                </ul>
+            </div>
+
+            <div id="flowcharts" class="glass-morphism rounded-3xl p-8 md:p-12 prose">
+                <h2 class="!mt-0">流程图</h2>
+                
+                <h3>1. 第一局流程</h3>
+                <div class="space-y-8 not-prose my-8">
+                    <!-- Step 1 -->
+                    <div class="relative pl-8 border-l-2 border-indigo-200 dark:border-indigo-800">
+                        <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-indigo-500 ring-4 ring-white dark:ring-slate-900"></div>
+                        <h4 class="!mt-0 text-lg font-bold text-slate-900 dark:text-white">1. 决定拿牌顺序</h4>
+                        <p class="text-slate-600 dark:text-slate-300 mt-1">最年轻的人翻牌，按花色决定谁先拿牌。</p>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="relative pl-8 border-l-2 border-indigo-200 dark:border-indigo-800">
+                        <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-indigo-500 ring-4 ring-white dark:ring-slate-900"></div>
+                        <h4 class="!mt-0 text-lg font-bold text-slate-900 dark:text-white">2. 拿牌与定庄</h4>
+                        
+                        <div class="grid gap-4 md:grid-cols-2 mt-4">
+                            <!-- Path A -->
+                            <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                                <span class="text-xs font-bold uppercase tracking-wider text-indigo-500">情况 A: 有人亮牌</span>
+                                <ul class="mt-2 text-sm space-y-2 text-slate-600 dark:text-slate-300 list-disc list-inside">
+                                    <li>大家拿满25张牌。</li>
+                                    <li>亮牌者暂时成为庄家。</li>
+                                    <li><strong>若有人反:</strong> 最后反的人成为庄家。</li>
+                                </ul>
+                            </div>
+                            
+                            <!-- Path B -->
+                            <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                                <span class="text-xs font-bold uppercase tracking-wider text-pink-500">情况 B: 无人亮牌</span>
+                                <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">翻底牌来决定庄家和主花色。</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="relative pl-8 border-l-2 border-indigo-200 dark:border-indigo-800">
+                        <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-indigo-500 ring-4 ring-white dark:ring-slate-900"></div>
+                        <h4 class="!mt-0 text-lg font-bold text-slate-900 dark:text-white">3. 庄家埋底</h4>
+                        <p class="text-slate-600 dark:text-slate-300 mt-1">庄家拿走8张底牌，整理手牌后，重新埋下8张底牌。</p>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="relative pl-8 border-l-2 border-indigo-200 dark:border-indigo-800">
+                        <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-indigo-500 ring-4 ring-white dark:ring-slate-900"></div>
+                        <h4 class="!mt-0 text-lg font-bold text-slate-900 dark:text-white">4. 抄底 (可选)</h4>
+                        <p class="text-slate-600 dark:text-slate-300 mt-1">此时若有人“反”，可以拿走底牌重新埋底（可重复）。</p>
+                    </div>
+
+                    <!-- Step 5 -->
+                    <div class="relative pl-8 border-l-2 border-transparent">
+                        <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-green-500 ring-4 ring-white dark:ring-slate-900"></div>
+                        <h4 class="!mt-0 text-lg font-bold text-green-600 dark:text-green-400">5. 游戏开始</h4>
+                        <p class="text-slate-600 dark:text-slate-300 mt-1">庄家出第一张牌。</p>
+                    </div>
+                </div>
+
+                <h3>2. 非第一局流程</h3>
+                <div class="space-y-8 not-prose my-8">
+                    <!-- Step 1 -->
+                    <div class="relative pl-8 border-l-2 border-indigo-200 dark:border-indigo-800">
+                        <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-indigo-500 ring-4 ring-white dark:ring-slate-900"></div>
+                        <h4 class="!mt-0 text-lg font-bold text-slate-900 dark:text-white">1. 开始拿牌</h4>
+                        <p class="text-slate-600 dark:text-slate-300 mt-1">庄家开始拿牌。</p>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="relative pl-8 border-l-2 border-indigo-200 dark:border-indigo-800">
+                        <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-indigo-500 ring-4 ring-white dark:ring-slate-900"></div>
+                        <h4 class="!mt-0 text-lg font-bold text-slate-900 dark:text-white">2. 定主阶段</h4>
+                        
+                        <div class="grid gap-4 md:grid-cols-2 mt-4">
+                            <!-- Path A -->
+                            <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                                <span class="text-xs font-bold uppercase tracking-wider text-indigo-500">情况 A: 有人亮牌</span>
+                                <ul class="mt-2 text-sm space-y-2 text-slate-600 dark:text-slate-300 list-disc list-inside">
+                                    <li>大家拿满25张牌。</li>
+                                    <li><strong>若有人反:</strong> 改变主花色。</li>
+                                </ul>
+                            </div>
+                            
+                            <!-- Path B -->
+                            <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                                <span class="text-xs font-bold uppercase tracking-wider text-pink-500">情况 B: 无人亮牌</span>
+                                <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">翻底牌来决定主花色。</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="relative pl-8 border-l-2 border-indigo-200 dark:border-indigo-800">
+                        <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-indigo-500 ring-4 ring-white dark:ring-slate-900"></div>
+                        <h4 class="!mt-0 text-lg font-bold text-slate-900 dark:text-white">3. 庄家埋底</h4>
+                        <p class="text-slate-600 dark:text-slate-300 mt-1">庄家拿走8张底牌，整理手牌后，重新埋下8张底牌。</p>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="relative pl-8 border-l-2 border-indigo-200 dark:border-indigo-800">
+                        <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-indigo-500 ring-4 ring-white dark:ring-slate-900"></div>
+                        <h4 class="!mt-0 text-lg font-bold text-slate-900 dark:text-white">4. 抄底 (可选)</h4>
+                        <p class="text-slate-600 dark:text-slate-300 mt-1">此时若有人“反”，可以拿走底牌重新埋底（可重复）。</p>
+                    </div>
+
+                    <!-- Step 5 -->
+                    <div class="relative pl-8 border-l-2 border-transparent">
+                        <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-green-500 ring-4 ring-white dark:ring-slate-900"></div>
+                        <h4 class="!mt-0 text-lg font-bold text-green-600 dark:text-green-400">5. 游戏开始</h4>
+                        <p class="text-slate-600 dark:text-slate-300 mt-1">庄家出第一张牌。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="gameplay" class="glass-morphism rounded-3xl p-8 md:p-12 prose">
+                <h2 class="!mt-0">出牌阶段</h2>
+
+                <h3>牌的类别</h3>
+                <ol>
+                    <li><strong>不打无主</strong>:
+                        <ul>
+                            <li><strong>主牌 (36张)</strong>: 大小王 (4张) + 主级牌 (8张) + 主花色其余牌 (24张)。</li>
+                            <li><strong>副牌</strong>: 3个非主花色，每类 24 张。</li>
+                        </ul>
+                    </li>
+                    <li><strong>打无主</strong>:
+                        <ul>
+                            <li><strong>主牌 (12张)</strong>: 大小王 + 所有级牌。</li>
+                            <li><strong>副牌</strong>: 4个花色均为副牌。</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h3>出牌规则</h3>
+                <ul>
+                    <li><strong>流程</strong>: 逆时针出牌。首家出牌后，其他三家必须出 <strong>相同数量、相同牌型</strong> 的同类别牌。</li>
+                    <li><strong>跟牌优先级</strong>: 有同类牌必须跟同类；有同牌型（如对子）必须跟牌型。
+                        <ul>
+                            <li>例：首家出副牌对子，下家若有该副牌对子必须出对子；若无对子则出2张该副牌；若无该副牌则可垫其他牌。</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h3>牌的大小</h3>
+                <ul>
+                    <li><strong>阶位</strong>: 单张 < 对子 < 拖拉机。</li>
+                    <li><strong>比较</strong>: 只比首家出的牌的最高阶位。若后面玩家出的牌阶位更低，则不可能胜出。</li>
+                    <li><strong>单张大小 (有主)</strong>: 大王 > 小王 > 主级牌 > 副级牌 > A > K ... > 2。</li>
+                    <li><strong>单张大小 (无主)</strong>: 大王/小王 > 级牌。</li>
+                    <li><strong>毙牌 (杀)</strong>: 只有主牌可以毙副牌。若首家出副牌，其他家缺门时可用主牌毙，主牌大过任何副牌。</li>
+                </ul>
+
+                <h4>胜过第一位玩家</h4>
+                <p>一位玩家如果手上有<span class="text-red-500">♥</span>牌的对子，必须出对，如果所出的对比8对大，则自然胜过第一位玩家；还有一种胜过第一位玩家的方法是出一对主牌，无论主对的大小，都比第一位玩家出的 <span class="text-red-500">♥</span> 8对大，但前提是这位玩家手上已经没有 <span class="text-red-500">♥</span> 牌了（ <span class="text-red-500">♥</span> 7不算）。要大过第一位玩家出的 <span class="text-red-500">♥</span> 8对，有且仅有这两种方法。</p>
+
+                <h4>“拖拉机”的定义</h4>
+                <p>同一类别的牌中，大小相邻的对子。</p>
+                <ul>
+                    <li><strong>拖拉机</strong>: 两个对子。</li>
+                    <li><strong>泰坦尼克</strong>: 三个对子。</li>
+                    <li><strong>航母</strong>: 四个对子。</li>
+                </ul>
+                <p><strong>以打 ♠ 7为例：</strong></p>
+                <ul>
+                    <li><strong><span class="text-red-500">♥</span> 3 <span class="text-red-500">♥</span> 3 <span class="text-red-500">♥</span> 4 <span class="text-red-500">♥</span> 4</strong> 是拖拉机。</li>
+                    <li><strong><span class="text-red-500">♦</span> 6 <span class="text-red-500">♦</span> 6 <span class="text-red-500">♦</span> 8 <span class="text-red-500">♦</span> 8</strong> 也是拖拉机，因为 <span class="text-red-500">♦</span> 7成为主牌后， <span class="text-red-500">♦</span> 6和 <span class="text-red-500">♦</span> 8大小就相邻了。</li>
+                    <li><strong>♠ A ♠ A <span class="text-red-500">♥</span> 7 <span class="text-red-500">♥</span> 7</strong> 也是拖拉机，它俩大小相邻（注：主7紧贴A）。</li>
+                    <li><strong><span class="text-red-500">♥</span> 7 <span class="text-red-500">♥</span> 7 ♠ 7 ♠ 7</strong> 也是拖拉机。
+                    <li><strong>♠ 7 ♠ 7 小王 小王</strong> 也是拖拉机。</li>
+                    <li><strong>四张王</strong> 也是拖拉机。</li>
+                </ul>
+                <p><strong>反例：</strong></p>
+                <ul>
+                    <li><strong>♠ 6 ♠ 6 ♠ 7 ♠ 7</strong> 不是拖拉机，因为它们大小不相邻（7是主牌，6是副牌，中间隔了好多牌）。</li>
+                    <li><strong>♣ 7 ♣ 7 <span class="text-red-500">♦</span> 7 <span class="text-red-500">♦</span> 7</strong> 也不是拖拉机，因为它们大小相同（都是副7）。</li>
+                </ul>
+
+                <h4>“甩牌”的定义</h4>
+                <p>在同一类别中，可以把单牌，对子和“拖拉机”混合着当成一手牌出出来，但是前提是所出的最小单牌，最小对子和最小拖拉机都比场上其他3位玩家手上拥有的此类别的牌来的大（即便其他3位玩家中有一张相同的单牌亦可甩牌，因为甩牌的玩家是首先出牌的）。</p>
+                <ul>
+                    <li><strong>甩牌失败</strong>: 罚分（每张 10分），并“强制出小”（出甩错牌中阶位最小的牌）。</li>
+                </ul>
+            </div>
+
+            <div id="scoring" class="glass-morphism rounded-3xl p-8 md:p-12 prose">
+                <h2 class="!mt-0">结算与抠底</h2>
+
+                <h3>抠底</h3>
+                <ul>
+                    <li><strong>定义</strong>: 最后一回合若台下玩家获胜，底牌分数翻倍归台下。</li>
+                    <li><strong>倍数</strong>: 根据最后一回合首家出牌的牌型决定：
+                        <ul>
+                            <li>单张: x2</li>
+                            <li>对子: x4</li>
+                            <li>拖拉机 (2对): x8</li>
+                            <li>每多一对翻一倍。</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h3>一钩勾到底</h3>
+                <ul>
+                    <li><strong>规则</strong>: 在打 <strong>J</strong> 时，若台下用 <strong>主J</strong> 抠底成功，且总分满 80分，庄家队直接降回从 2 开始打。</li>
+                    <li><strong>限制</strong>: 每次游戏每队至多被勾到底一次。</li>
+                </ul>
+            </div>
+
+        </main>
+    </div>
+</body>
+</html>
