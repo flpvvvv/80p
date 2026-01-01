@@ -93,6 +93,22 @@
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
         }
 
+        .suit-bg {
+            position: absolute;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.6;
+        }
+        
+        .dark .suit-bg {
+            opacity: 0.4;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
         /* Typography for Markdown Content */
         .prose h1 {
             @apply text-4xl md:text-5xl font-display font-black mb-12 text-slate-900 dark:text-white tracking-tight;
@@ -148,15 +164,161 @@
         .dark ::-webkit-scrollbar-thumb {
             background: #334155;
         }
+
+        /* Interactive Playing Cards */
+        .hand-showcase {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin: 2rem 0;
+            justify-content: flex-start;
+        }
+        
+        .hand-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            width: 200px; /* Fixed width to prevent layout shift on hover expansion */
+        }
+
+        .hand-cards {
+            display: flex;
+            perspective: 1000px;
+            padding: 10px;
+            height: 100px;
+            align-items: center;
+        }
+
+        .playing-card {
+            width: 50px;
+            height: 75px;
+            background: white;
+            border-radius: 6px;
+            box-shadow: -2px 2px 6px rgba(0,0,0,0.15);
+            border: 1px solid #e2e8f0;
+            position: relative;
+            margin-right: -25px;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            cursor: default;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 4px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            user-select: none;
+            transform-origin: bottom center;
+        }
+        
+        .dark .playing-card {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+        }
+
+        .playing-card:last-child {
+            margin-right: 0;
+        }
+
+        .playing-card:hover {
+            transform: translateY(-15px) rotate(2deg) scale(1.1);
+            z-index: 20;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            margin-right: -5px;
+        }
+        
+        .hand-cards:hover .playing-card {
+            margin-right: -15px;
+        }
+        .hand-cards:hover .playing-card:hover {
+            margin-right: 0;
+            z-index: 30;
+        }
+
+        .playing-card.red { color: #ef4444; }
+        .playing-card.black { color: #334155; }
+
+        .card-top { font-size: 12px; line-height: 1; }
+        .card-center { font-size: 20px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        .card-bottom { font-size: 12px; line-height: 1; transform: rotate(180deg); align-self: flex-end; }
+        
+        .hand-desc {
+            font-size: 0.75rem;
+            color: #64748b;
+            font-weight: 600;
+            text-align: center;
+        }
+        .dark .hand-desc {
+            color: #94a3b8;
+        }
+
+        /* Upgrade Calculator */
+        .calc-container {
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .dark .calc-container {
+            background: rgba(15, 23, 42, 0.5);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .range-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: #cbd5e1;
+            outline: none;
+            margin: 1.5rem 0;
+        }
+        .dark .range-slider {
+            background: #334155;
+        }
+        
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #6366f1;
+            cursor: pointer;
+            transition: transform 0.1s;
+            box-shadow: 0 2px 6px rgba(99, 102, 241, 0.4);
+        }
+        
+        .range-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .calc-result {
+            font-size: 1.25rem;
+            font-weight: 700;
+            text-align: center;
+            min-height: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.75rem;
+            transition: all 0.3s;
+        }
     </style>
 </head>
 <body class="min-h-screen bg-slate-100 dark:bg-[#0B1120] text-slate-900 dark:text-slate-100 transition-colors duration-500">
     
-    <!-- Fixed Background -->
-    <div class="fixed inset-0 overflow-hidden pointer-events-none -z-10">
-        <div class="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-indigo-400/20 dark:bg-indigo-600/10 blur-[120px] animate-float-slow"></div>
-        <div class="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] rounded-full bg-fuchsia-400/20 dark:bg-fuchsia-600/10 blur-[120px] animate-float-medium"></div>
+    <!-- Dynamic Background Container -->
+    <div id="background-container" class="fixed inset-0 overflow-hidden pointer-events-none">
+        <!-- Gradients -->
+        <div class="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-indigo-400/30 dark:bg-indigo-600/20 blur-[120px] animate-float-slow"></div>
+        <div class="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] rounded-full bg-fuchsia-400/30 dark:bg-fuchsia-600/20 blur-[120px] animate-float-medium" style="animation-delay: -2s;"></div>
+        <!-- Suits will be injected here by JS -->
     </div>
+
+    <!-- Fixed Background (Legacy - Removed) -->
+    <!-- <div class="fixed inset-0 overflow-hidden pointer-events-none -z-10">...</div> -->
 
     <!-- Navigation -->
     <nav class="fixed top-0 w-full z-50 glass-morphism border-b border-white/20">
@@ -279,6 +441,21 @@
                     <li><strong>跳级</strong>: 默认 40分跳一级。有时规定 20分或 10分跳级。</li>
                     <li><strong>必打</strong>: 10 和 K“必打”，即跳级时不能跳过 10 和 K。</li>
                 </ul>
+
+                <h3>升级计算器</h3>
+                <div class="calc-container">
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="font-bold text-slate-700 dark:text-slate-200">台下抓分:</label>
+                        <span id="scoreDisplay" class="text-2xl font-black text-indigo-600 dark:text-indigo-400 font-mono">0</span>
+                    </div>
+                    
+                    <input type="range" min="0" max="300" value="0" step="5" class="range-slider" id="scoreInput">
+                    
+                    <div id="resultDisplay" class="calc-result bg-indigo-100 text-indigo-800 dark:bg-indigo-900/50 dark:text-indigo-200">
+                        庄家升 3 级 (大光)
+                    </div>
+                    <p class="text-xs text-center mt-2 text-slate-500">拖动滑块查看结果</p>
+                </div>
 
                 <h3>升级对照表 (标准40分跳级)</h3>
                 <table>
@@ -534,19 +711,59 @@
                     <li><strong>航母</strong>: 四个对子。</li>
                 </ul>
                 <p><strong>以打 ♠ 7为例：</strong></p>
-                <ul>
-                    <li><strong><span class="text-red-500">♥</span> 3 <span class="text-red-500">♥</span> 3 <span class="text-red-500">♥</span> 4 <span class="text-red-500">♥</span> 4</strong> 是拖拉机。</li>
-                    <li><strong><span class="text-red-500">♦</span> 6 <span class="text-red-500">♦</span> 6 <span class="text-red-500">♦</span> 8 <span class="text-red-500">♦</span> 8</strong> 也是拖拉机，因为 <span class="text-red-500">♦</span> 7成为主牌后， <span class="text-red-500">♦</span> 6和 <span class="text-red-500">♦</span> 8大小就相邻了。</li>
-                    <li><strong>♠ A ♠ A <span class="text-red-500">♥</span> 7 <span class="text-red-500">♥</span> 7</strong> 也是拖拉机，它俩大小相邻（注：主7紧贴A）。</li>
-                    <li><strong><span class="text-red-500">♥</span> 7 <span class="text-red-500">♥</span> 7 ♠ 7 ♠ 7</strong> 也是拖拉机。
-                    <li><strong>♠ 7 ♠ 7 小王 小王</strong> 也是拖拉机。</li>
-                    <li><strong>四张王</strong> 也是拖拉机。</li>
-                </ul>
+                
+                <div class="hand-showcase">
+                    <!-- Heart 3344 -->
+                    <div class="hand-item">
+                        <div class="hand-cards hand-container" data-cards='[{"s":"♥","v":"3"},{"s":"♥","v":"3"},{"s":"♥","v":"4"},{"s":"♥","v":"4"}]'></div>
+                        <span class="hand-desc">普通拖拉机</span>
+                    </div>
+
+                    <!-- Diamond 6688 (7 is main) -->
+                    <div class="hand-item">
+                        <div class="hand-cards hand-container" data-cards='[{"s":"♦","v":"6"},{"s":"♦","v":"6"},{"s":"♦","v":"8"},{"s":"♦","v":"8"}]'></div>
+                        <span class="hand-desc">跳过主牌 (7为主)</span>
+                    </div>
+
+                    <!-- Spade A A Heart 7 7 (Vice 7 + Main A) -->
+                    <div class="hand-item">
+                        <div class="hand-cards hand-container" data-cards='[{"s":"♠","v":"A"},{"s":"♠","v":"A"},{"s":"♥","v":"7"},{"s":"♥","v":"7"}]'></div>
+                        <span class="hand-desc">主A + 副7</span>
+                    </div>
+
+                    <!-- Heart 7 7 Spade 7 7 (Vice 7 + Main 7) -->
+                    <div class="hand-item">
+                        <div class="hand-cards hand-container" data-cards='[{"s":"♥","v":"7"},{"s":"♥","v":"7"},{"s":"♠","v":"7"},{"s":"♠","v":"7"}]'></div>
+                        <span class="hand-desc">副7 + 主7</span>
+                    </div>
+                    
+                    <!-- Spade 7 7 Small Joker Small Joker -->
+                    <div class="hand-item">
+                        <div class="hand-cards hand-container" data-cards='[{"s":"♠","v":"7"},{"s":"♠","v":"7"},{"s":"","v":"S","t":"joker-sm"},{"s":"","v":"S","t":"joker-sm"}]'></div>
+                        <span class="hand-desc">主7 + 小王</span>
+                    </div>
+
+                    <!-- Four Jokers -->
+                    <div class="hand-item">
+                        <div class="hand-cards hand-container" data-cards='[{"s":"","v":"S","t":"joker-sm"},{"s":"","v":"S","t":"joker-sm"},{"s":"","v":"B","t":"joker-bg"},{"s":"","v":"B","t":"joker-bg"}]'></div>
+                        <span class="hand-desc">四张王</span>
+                    </div>
+                </div>
+
                 <p><strong>反例：</strong></p>
-                <ul>
-                    <li><strong>♠ 6 ♠ 6 ♠ 7 ♠ 7</strong> 不是拖拉机，因为它们大小不相邻（7是主牌，6是副牌，中间隔了好多牌）。</li>
-                    <li><strong>♣ 7 ♣ 7 <span class="text-red-500">♦</span> 7 <span class="text-red-500">♦</span> 7</strong> 也不是拖拉机，因为它们大小相同（都是副7）。</li>
-                </ul>
+                <div class="hand-showcase">
+                     <!-- Spade 6677 (Not tractor because 7 is main) -->
+                    <div class="hand-item">
+                        <div class="hand-cards hand-container" data-cards='[{"s":"♠","v":"6"},{"s":"♠","v":"6"},{"s":"♠","v":"7"},{"s":"♠","v":"7"}]'></div>
+                        <span class="hand-desc text-red-500">❌ 不是拖拉机 (7是主)</span>
+                    </div>
+                    
+                    <!-- Club 77 Diamond 77 (Same rank) -->
+                    <div class="hand-item">
+                        <div class="hand-cards hand-container" data-cards='[{"s":"♣","v":"7"},{"s":"♣","v":"7"},{"s":"♦","v":"7"},{"s":"♦","v":"7"}]'></div>
+                        <span class="hand-desc text-red-500">❌ 不是拖拉机 (同级)</span>
+                    </div>
+                </div>
 
                 <h4>“甩牌”的定义</h4>
                 <p>在同一类别中，可以把单牌，对子和“拖拉机”混合着当成一手牌出出来，但是前提是所出的最小单牌，最小对子和最小拖拉机都比场上其他3位玩家手上拥有的此类别的牌来的大（即便其他3位玩家中有一张相同的单牌亦可甩牌，因为甩牌的玩家是首先出牌的）。</p>
@@ -580,5 +797,165 @@
 
         </main>
     </div>
+
+    <script>
+        // Floating Suits Background Generator
+        const suits = ['♠', '♥', '♣', '♦'];
+        const bgContainer = document.getElementById('background-container');
+        const suitCount = 20;
+
+        if (bgContainer) {
+            for (let i = 0; i < suitCount; i++) {
+                const el = document.createElement('div');
+                el.innerText = suits[Math.floor(Math.random() * suits.length)];
+                el.className = 'suit-bg text-slate-400 dark:text-slate-600 font-serif select-none';
+                
+                // Random properties
+                const size = Math.random() * 100 + 20; // 20px to 120px
+                const left = Math.random() * 100;
+                const top = Math.random() * 100;
+                const duration = Math.random() * 10 + 10; // 10s to 20s
+                const delay = Math.random() * -20;
+                
+                el.style.fontSize = `${size}px`;
+                el.style.left = `${left}%`;
+                el.style.top = `${top}%`;
+                el.style.animation = `float ${duration}s ease-in-out infinite`;
+                el.style.animationDelay = `${delay}s`;
+                
+                if (['♥', '♦'].includes(el.innerText)) {
+                    el.classList.add('text-red-400', 'dark:text-red-800');
+                    el.classList.remove('text-slate-400', 'dark:text-slate-600');
+                }
+
+                bgContainer.appendChild(el);
+            }
+        }
+
+        // Card Rendering Logic
+        function renderCard(suit, value, type) {
+            const isRed = suit === '♥' || suit === '♦' || type === 'joker-bg';
+            const colorClass = isRed ? 'red' : 'black';
+            
+            let centerContent = suit;
+            let displayValue = value;
+            
+            if (type === 'joker-sm') {
+                centerContent = '🤡';
+                displayValue = 'jr';
+            } else if (type === 'joker-bg') {
+                centerContent = '👑';
+                displayValue = 'JR';
+            }
+
+            return `
+                <div class="playing-card ${colorClass}">
+                    <div class="card-top">${displayValue}</div>
+                    <div class="card-center">${centerContent}</div>
+                    <div class="card-bottom">${displayValue}</div>
+                </div>
+            `;
+        }
+
+        function initHands() {
+            document.querySelectorAll('.hand-container').forEach(container => {
+                if (container.dataset.rendered) return;
+                
+                const cardsData = JSON.parse(container.dataset.cards);
+                let html = '';
+                cardsData.forEach(card => {
+                    html += renderCard(card.s, card.v, card.t);
+                });
+                container.innerHTML = html;
+                container.dataset.rendered = 'true';
+            });
+        }
+        
+        document.addEventListener('DOMContentLoaded', initHands);
+
+        // Upgrade Calculator Logic
+        const scoreInput = document.getElementById('scoreInput');
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        const resultDisplay = document.getElementById('resultDisplay');
+
+        if (scoreInput) {
+            scoreInput.addEventListener('input', (e) => {
+                const score = parseInt(e.target.value);
+                scoreDisplay.textContent = score;
+                
+                let result = "";
+                let bgClass = "";
+                let textClass = "";
+
+                if (score === 0) {
+                    result = "庄家升 3 级 (大光)";
+                    bgClass = "bg-indigo-100 dark:bg-indigo-900/50";
+                    textClass = "text-indigo-800 dark:text-indigo-200";
+                } else if (score < 40) {
+                    result = "庄家升 2 级 (小光)";
+                    bgClass = "bg-blue-100 dark:bg-blue-900/50";
+                    textClass = "text-blue-800 dark:text-blue-200";
+                } else if (score < 80) {
+                    result = "庄家升 1 级";
+                    bgClass = "bg-sky-100 dark:bg-sky-900/50";
+                    textClass = "text-sky-800 dark:text-sky-200";
+                } else if (score < 120) {
+                    result = "台下上台 (换庄)";
+                    bgClass = "bg-slate-200 dark:bg-slate-700";
+                    textClass = "text-slate-800 dark:text-slate-200";
+                } else {
+                    // Defenders upgrade
+                    // 120 -> 1 level
+                    // 160 -> 2 levels
+                    // Formula: 1 + floor((score - 120) / 40)
+                    const levels = 1 + Math.floor((score - 120) / 40);
+                    result = `台下升 ${levels} 级`;
+                    bgClass = "bg-red-100 dark:bg-red-900/50";
+                    textClass = "text-red-800 dark:text-red-200";
+                }
+
+                resultDisplay.textContent = result;
+                resultDisplay.className = `calc-result ${bgClass} ${textClass}`;
+            });
+        }
+
+        // Scroll Spy Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '-20% 0px -60% 0px', // Activate when section is near top
+                threshold: 0
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        updateActiveLink(id);
+                    }
+                });
+            }, observerOptions);
+
+            // Track all sections that have an ID
+            document.querySelectorAll('div[id]').forEach((section) => {
+                observer.observe(section);
+            });
+
+            function updateActiveLink(id) {
+                // Remove active class from all links
+                document.querySelectorAll('aside nav a').forEach(link => {
+                    link.classList.remove('bg-indigo-100', 'dark:bg-indigo-900/50', 'text-indigo-700', 'dark:text-indigo-300', 'font-bold', 'scale-105', 'shadow-sm');
+                    link.classList.add('text-slate-600', 'dark:text-slate-300');
+                });
+
+                // Add active class to current link
+                const activeLink = document.querySelector(`aside nav a[href="#${id}"]`);
+                if (activeLink) {
+                    activeLink.classList.remove('text-slate-600', 'dark:text-slate-300');
+                    activeLink.classList.add('bg-indigo-100', 'dark:bg-indigo-900/50', 'text-indigo-700', 'dark:text-indigo-300', 'font-bold', 'scale-105', 'shadow-sm', 'transition-all', 'duration-300');
+                }
+            }
+        });
+    </script>
 </body>
 </html>
