@@ -163,10 +163,10 @@
 
         /* Typography for Markdown Content */
         .prose h1 {
-            @apply text-4xl md:text-5xl font-display font-black mb-12 text-slate-900 dark:text-white tracking-tight;
+            @apply text-3xl sm:text-4xl md:text-5xl font-display font-black mb-8 sm:mb-12 text-slate-900 dark:text-white tracking-tight;
         }
         .prose h2 {
-            @apply text-3xl font-display font-bold mt-16 mb-8 text-slate-800 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700 pb-4;
+            @apply text-2xl sm:text-3xl font-display font-bold mt-10 sm:mt-16 mb-6 sm:mb-8 text-slate-800 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700 pb-3 sm:pb-4;
         }
         .prose h3 {
             @apply text-2xl font-bold mt-10 mb-5 text-indigo-600 dark:text-indigo-400;
@@ -185,6 +185,22 @@
         }
         .prose table {
             @apply w-full mb-8 border-collapse text-sm overflow-hidden rounded-lg shadow-sm;
+        }
+        
+        /* Mobile table wrapper */
+        .table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 0 -1rem;
+            padding: 0 1rem;
+        }
+        
+        @media (min-width: 640px) {
+            .table-wrapper {
+                overflow-x: visible;
+                margin: 0;
+                padding: 0;
+            }
         }
         .prose th {
             @apply border border-slate-200 dark:border-slate-700 p-3 bg-slate-100 dark:bg-slate-800 font-semibold text-left text-slate-700 dark:text-slate-200;
@@ -235,9 +251,17 @@
         .hand-showcase {
             display: flex;
             flex-wrap: wrap;
-            gap: 1.5rem;
-            margin: 2rem 0;
-            justify-content: flex-start;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            justify-content: center;
+        }
+        
+        @media (min-width: 640px) {
+            .hand-showcase {
+                gap: 1.5rem;
+                margin: 2rem 0;
+                justify-content: flex-start;
+            }
         }
         
         .hand-item {
@@ -245,36 +269,60 @@
             flex-direction: column;
             align-items: center;
             gap: 0.5rem;
-            width: 200px; /* Fixed width to prevent layout shift on hover expansion */
+            width: 140px;
+            flex-shrink: 0;
+        }
+        
+        @media (min-width: 640px) {
+            .hand-item {
+                width: 200px;
+            }
         }
 
         .hand-cards {
             display: flex;
             perspective: 1000px;
-            padding: 10px;
-            height: 100px;
+            padding: 8px;
+            height: 80px;
             align-items: center;
+        }
+        
+        @media (min-width: 640px) {
+            .hand-cards {
+                padding: 10px;
+                height: 100px;
+            }
         }
 
         .playing-card {
-            width: 50px;
-            height: 75px;
+            width: 40px;
+            height: 60px;
             background: white;
-            border-radius: 6px;
+            border-radius: 5px;
             box-shadow: -2px 2px 6px rgba(0,0,0,0.15);
             border: 1px solid #e2e8f0;
             position: relative;
-            margin-right: -25px;
+            margin-right: -20px;
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             cursor: default;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 4px;
+            padding: 3px;
             font-family: 'Outfit', sans-serif;
             font-weight: 800;
             user-select: none;
             transform-origin: bottom center;
+        }
+        
+        @media (min-width: 640px) {
+            .playing-card {
+                width: 50px;
+                height: 75px;
+                border-radius: 6px;
+                margin-right: -25px;
+                padding: 4px;
+            }
         }
         
         .dark .playing-card {
@@ -287,14 +335,27 @@
         }
 
         .playing-card:hover {
-            transform: translateY(-15px) rotate(2deg) scale(1.1);
+            transform: translateY(-10px) rotate(2deg) scale(1.08);
             z-index: 20;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            margin-right: -5px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            margin-right: -8px;
+        }
+        
+        @media (min-width: 640px) {
+            .playing-card:hover {
+                transform: translateY(-15px) rotate(2deg) scale(1.1);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+                margin-right: -5px;
+            }
         }
         
         .hand-cards:hover .playing-card {
-            margin-right: -15px;
+            margin-right: -12px;
+        }
+        @media (min-width: 640px) {
+            .hand-cards:hover .playing-card {
+                margin-right: -15px;
+            }
         }
         .hand-cards:hover .playing-card:hover {
             margin-right: 0;
@@ -304,9 +365,15 @@
         .playing-card.red { color: #ef4444; }
         .playing-card.black { color: #334155; }
 
-        .card-top { font-size: 12px; line-height: 1; }
-        .card-center { font-size: 20px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
-        .card-bottom { font-size: 12px; line-height: 1; transform: rotate(180deg); align-self: flex-end; }
+        .card-top { font-size: 10px; line-height: 1; }
+        .card-center { font-size: 16px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        .card-bottom { font-size: 10px; line-height: 1; transform: rotate(180deg); align-self: flex-end; }
+        
+        @media (min-width: 640px) {
+            .card-top { font-size: 12px; }
+            .card-center { font-size: 20px; }
+            .card-bottom { font-size: 12px; }
+        }
         
         .hand-desc {
             font-size: 0.75rem;
@@ -375,14 +442,24 @@
         /* Trump Hierarchy */
         .trump-bar {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: center;
             background: rgba(255, 255, 255, 0.5);
             border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 1rem;
-            padding: 1rem;
+            padding: 0.75rem;
             margin: 1.5rem 0;
             position: relative;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            gap: 0.25rem;
+        }
+        @media (min-width: 640px) {
+            .trump-bar {
+                justify-content: space-between;
+                padding: 1rem;
+                overflow-x: visible;
+            }
         }
         .dark .trump-bar {
             background: rgba(15, 23, 42, 0.5);
@@ -395,9 +472,15 @@
             align-items: center;
             cursor: pointer;
             transition: all 0.3s ease;
-            padding: 0.5rem;
+            padding: 0.35rem;
             border-radius: 0.5rem;
             position: relative;
+            flex-shrink: 0;
+        }
+        @media (min-width: 640px) {
+            .trump-item {
+                padding: 0.5rem;
+            }
         }
 
         .trump-item:hover {
@@ -406,16 +489,28 @@
         }
 
         .trump-icon {
-            font-size: 2rem;
+            font-size: 1.5rem;
             line-height: 1;
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.15rem;
             transition: all 0.3s;
+        }
+        @media (min-width: 640px) {
+            .trump-icon {
+                font-size: 2rem;
+                margin-bottom: 0.25rem;
+            }
         }
 
         .trump-label {
-            font-size: 0.75rem;
+            font-size: 0.625rem;
             font-weight: 600;
             color: #64748b;
+            white-space: nowrap;
+        }
+        @media (min-width: 640px) {
+            .trump-label {
+                font-size: 0.75rem;
+            }
         }
         .dark .trump-label {
             color: #94a3b8;
@@ -482,14 +577,21 @@
         .progress-text {
             position: fixed;
             top: 68px;
-            right: 16px;
-            font-size: 10px;
+            right: 8px;
+            font-size: 9px;
             font-weight: 700;
             color: #6366f1;
             z-index: 41;
             background: rgba(255,255,255,0.9);
-            padding: 2px 8px;
+            padding: 2px 6px;
             border-radius: 9999px;
+        }
+        @media (min-width: 640px) {
+            .progress-text {
+                right: 16px;
+                font-size: 10px;
+                padding: 2px 8px;
+            }
         }
         .dark .progress-text {
             background: rgba(15, 23, 42, 0.9);
@@ -767,24 +869,24 @@
         </aside>
 
         <!-- Main Content -->
-        <main class="flex-1 min-w-0 space-y-8">
+        <main class="flex-1 min-w-0 space-y-6 sm:space-y-8">
             
             <!-- Header -->
-            <div class="glass-morphism rounded-3xl p-8 md:p-12 prose">
-                <h1 class="!mb-4">80分 - 中文版 V3.0</h1>
-                <div class="flex flex-wrap gap-4 text-sm text-slate-500 dark:text-slate-400">
+            <div class="glass-morphism rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-12 prose">
+                <h1 class="!mb-4 text-3xl sm:text-4xl md:text-5xl">80分 - 中文版 V3.0</h1>
+                <div class="flex flex-wrap gap-2 sm:gap-4 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
                     <span><strong>作者:</strong> FLP</span>
                     <span><strong>日期:</strong> 2026年1月</span>
                 </div>
             </div>
 
             <!-- Quick Start Section -->
-            <div id="quickstart" class="glass-morphism rounded-3xl p-8 md:p-12 bg-gradient-to-br from-indigo-500/10 via-transparent to-fuchsia-500/10 border-2 border-indigo-200 dark:border-indigo-800">
-                <div class="flex items-center gap-3 mb-6">
-                    <span class="text-4xl">🚀</span>
+            <div id="quickstart" class="glass-morphism rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-12 bg-gradient-to-br from-indigo-500/10 via-transparent to-fuchsia-500/10 border-2 border-indigo-200 dark:border-indigo-800">
+                <div class="flex items-center gap-3 mb-4 sm:mb-6">
+                    <span class="text-3xl sm:text-4xl">🚀</span>
                     <div>
-                        <h2 class="text-2xl md:text-3xl font-display font-black text-slate-900 dark:text-white !m-0">30秒快速入门</h2>
-                        <p class="text-sm text-slate-500 dark:text-slate-400 !m-0">TL;DR - 读完这里就能开始玩</p>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-display font-black text-slate-900 dark:text-white !m-0">30秒快速入门</h2>
+                        <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 !m-0">TL;DR - 读完这里就能开始玩</p>
                     </div>
                 </div>
                 
@@ -853,7 +955,7 @@
                 </div>
             </div>
 
-            <div id="intro" class="glass-morphism rounded-3xl p-8 md:p-12 prose">
+            <div id="intro" class="glass-morphism rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-12 prose">
                 <h2 class="!mt-0"><span class="text-indigo-400 dark:text-indigo-500 mr-2">1.</span>简介 <span class="badge badge-beginner">🔰 基础</span></h2>
                 <p><strong>80分</strong>（又称升级、双升、拖拉机）是一款4人扑克牌游戏，使用两副牌（共108张，含大小王）。</p>
                 
@@ -882,7 +984,7 @@
                 <p class="text-center text-sm text-slate-500">两副牌总分：<strong>200分</strong></p>
             </div>
 
-            <div id="zhuang" class="glass-morphism rounded-3xl p-8 md:p-12 prose">
+            <div id="zhuang" class="glass-morphism rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-12 prose">
                 <h2 class="!mt-0"><span class="text-indigo-400 dark:text-indigo-500 mr-2">2.</span>坐庄 <span class="badge badge-beginner">🔰 基础</span></h2>
                 
                 <h3>核心概念</h3>
@@ -978,29 +1080,29 @@
                 </div>
             </div>
 
-            <div id="upgrade" class="glass-morphism rounded-3xl p-8 md:p-12 prose">
+            <div id="upgrade" class="glass-morphism rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-12 prose">
                 <h2 class="!mt-0"><span class="text-indigo-400 dark:text-indigo-500 mr-2">3.</span>升级 <span class="badge badge-beginner">🔰 基础</span></h2>
                 <p>游戏目标是升级打过A。第一局从<strong>2</strong>开始打。</p>
                 
                 <h3>升级顺序</h3>
-                <div class="flex flex-wrap items-center gap-2 my-4 not-prose">
-                    <span class="px-3 py-1 bg-indigo-100 dark:bg-indigo-900/50 rounded-full text-sm font-bold">2</span>
-                    <span class="text-slate-400">→</span>
-                    <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full text-sm">3</span>
-                    <span class="text-slate-400">→</span>
-                    <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full text-sm">4</span>
-                    <span class="text-slate-400">→</span>
-                    <span class="text-slate-400">...</span>
-                    <span class="text-slate-400">→</span>
-                    <span class="px-3 py-1 bg-amber-100 dark:bg-amber-900/50 rounded-full text-sm font-bold">10*</span>
-                    <span class="text-slate-400">→</span>
-                    <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full text-sm">J</span>
-                    <span class="text-slate-400">→</span>
-                    <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full text-sm">Q</span>
-                    <span class="text-slate-400">→</span>
-                    <span class="px-3 py-1 bg-amber-100 dark:bg-amber-900/50 rounded-full text-sm font-bold">K*</span>
-                    <span class="text-slate-400">→</span>
-                    <span class="px-3 py-1 bg-green-100 dark:bg-green-900/50 rounded-full text-sm font-bold text-green-700 dark:text-green-300">A 🏆</span>
+                <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 my-4 not-prose">
+                    <span class="px-2 sm:px-3 py-0.5 sm:py-1 bg-indigo-100 dark:bg-indigo-900/50 rounded-full text-xs sm:text-sm font-bold">2</span>
+                    <span class="text-slate-400 text-xs sm:text-base">→</span>
+                    <span class="px-2 sm:px-3 py-0.5 sm:py-1 bg-slate-100 dark:bg-slate-800 rounded-full text-xs sm:text-sm">3</span>
+                    <span class="text-slate-400 text-xs sm:text-base">→</span>
+                    <span class="px-2 sm:px-3 py-0.5 sm:py-1 bg-slate-100 dark:bg-slate-800 rounded-full text-xs sm:text-sm">4</span>
+                    <span class="text-slate-400 text-xs sm:text-base">→</span>
+                    <span class="text-slate-400 text-xs sm:text-base">...</span>
+                    <span class="text-slate-400 text-xs sm:text-base">→</span>
+                    <span class="px-2 sm:px-3 py-0.5 sm:py-1 bg-amber-100 dark:bg-amber-900/50 rounded-full text-xs sm:text-sm font-bold">10*</span>
+                    <span class="text-slate-400 text-xs sm:text-base">→</span>
+                    <span class="px-2 sm:px-3 py-0.5 sm:py-1 bg-slate-100 dark:bg-slate-800 rounded-full text-xs sm:text-sm">J</span>
+                    <span class="text-slate-400 text-xs sm:text-base">→</span>
+                    <span class="px-2 sm:px-3 py-0.5 sm:py-1 bg-slate-100 dark:bg-slate-800 rounded-full text-xs sm:text-sm">Q</span>
+                    <span class="text-slate-400 text-xs sm:text-base">→</span>
+                    <span class="px-2 sm:px-3 py-0.5 sm:py-1 bg-amber-100 dark:bg-amber-900/50 rounded-full text-xs sm:text-sm font-bold">K*</span>
+                    <span class="text-slate-400 text-xs sm:text-base">→</span>
+                    <span class="px-2 sm:px-3 py-0.5 sm:py-1 bg-green-100 dark:bg-green-900/50 rounded-full text-xs sm:text-sm font-bold text-green-700 dark:text-green-300">A 🏆</span>
                 </div>
                 <p class="text-sm text-slate-500">* 可选规则：10和K为"必打"级，跳级时不能跳过。</p>
                 
@@ -1073,7 +1175,7 @@
                 </table>
             </div>
 
-            <div id="pre-game" class="glass-morphism rounded-3xl p-8 md:p-12 prose">
+            <div id="pre-game" class="glass-morphism rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-12 prose">
                 <h2 class="!mt-0"><span class="text-indigo-400 dark:text-indigo-500 mr-2">4.</span>出牌前 <span class="badge badge-intermediate">⚡ 进阶</span></h2>
                 
                 <h3>发牌流程</h3>
@@ -1201,7 +1303,7 @@
                 </div>
             </div><!-- end pre-game -->
 
-            <div id="flowcharts" class="glass-morphism rounded-3xl p-8 md:p-12 prose">
+            <div id="flowcharts" class="glass-morphism rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-12 prose">
                 <h2 class="!mt-0"><span class="text-indigo-400 dark:text-indigo-500 mr-2">5.</span>流程图 <span class="badge badge-beginner">🔰 基础</span></h2>
                 
                 <h3>1. 第一局流程</h3>
@@ -1314,7 +1416,7 @@
                 </div>
             </div>
 
-            <div id="gameplay" class="glass-morphism rounded-3xl p-8 md:p-12 prose">
+            <div id="gameplay" class="glass-morphism rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-12 prose">
                 <h2 class="!mt-0"><span class="text-indigo-400 dark:text-indigo-500 mr-2">6.</span>出牌阶段 <span class="badge badge-intermediate">⚡ 进阶</span></h2>
                 <p>永远都是庄家先出牌。此时每人手上有 25 张牌。</p>
 
@@ -1649,7 +1751,7 @@
                 <p>在上例中，要“杀” <span class="text-red-500">♥88 J Q K</span>，必须出一个<strong>主对</strong>加上 <strong>3 张其他主牌</strong>。</p>
             </div>
 
-            <div id="scoring" class="glass-morphism rounded-3xl p-8 md:p-12 prose">
+            <div id="scoring" class="glass-morphism rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-12 prose">
                 <h2 class="!mt-0"><span class="text-indigo-400 dark:text-indigo-500 mr-2">7.</span>结算与抠底 <span class="badge badge-intermediate">⚡ 进阶</span></h2>
 
                 <h3>分数计算</h3>
@@ -1740,7 +1842,7 @@
             </div><!-- end settlement -->
 
             <!-- Glossary Section -->
-            <div id="glossary" class="glass-morphism rounded-3xl p-8 md:p-12">
+            <div id="glossary" class="glass-morphism rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-12">
                 <div class="flex items-center gap-3 mb-8">
                     <span class="text-3xl">📖</span>
                     <h2 class="text-2xl md:text-3xl font-display font-bold text-slate-900 dark:text-white !m-0">术语表 (Glossary)</h2>
