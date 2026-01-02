@@ -158,7 +158,7 @@
             @apply px-3 py-1 rounded-full text-xs font-bold transition-all cursor-pointer;
         }
         .mode-toggle-option.active {
-            @apply bg-white dark:bg-slate-700 shadow-sm;
+            @apply bg-white dark:bg-slate-500 shadow-sm;
         }
 
         /* Typography for Markdown Content */
@@ -894,102 +894,52 @@
 
                 <!-- Interactive Seating Diagram -->
                 <h3>座位图</h3>
-                <div class="not-prose my-6">
-                    <div class="relative w-full max-w-md mx-auto aspect-square">
-                        <!-- Table background -->
-                        <div class="absolute inset-8 rounded-full bg-gradient-to-br from-green-600 to-green-700 dark:from-green-800 dark:to-green-900 shadow-xl border-4 border-green-800 dark:border-green-950"></div>
-                        <div class="absolute inset-12 rounded-full bg-green-500/30 dark:bg-green-600/20 border border-green-400/50 dark:border-green-500/30"></div>
+                <div class="not-prose my-8">
+                    <div class="relative w-full max-w-sm mx-auto aspect-square p-8">
+                        <!-- Table Surface -->
+                        <div class="absolute inset-12 rounded-full bg-slate-50 dark:bg-slate-800/50 border-2 border-slate-200 dark:border-slate-700"></div>
                         
-                        <!-- Counter-clockwise arrow in center -->
+                        <!-- Center Info -->
                         <div class="absolute inset-0 flex items-center justify-center">
-                            <div class="text-center">
-                                <svg class="w-16 h-16 mx-auto text-green-300/60 dark:text-green-400/40 animate-spin-slow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                    <!-- Arc going counterclockwise from top -->
-                                    <path d="M12 3a9 9 0 1 0 9 9" stroke-linecap="round"/>
-                                    <!-- Arrowhead pointing down-left (following the curve) -->
-                                    <path d="M12 3l-2.5-2M12 3l-2.5 2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <div class="text-center opacity-60">
+                                <svg class="w-10 h-10 mx-auto text-slate-400 dark:text-slate-500 mb-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M12 21A9 9 0 1 0 3 12" stroke-linecap="round"/>
+                                    <path d="M1 9l2 3l2-3" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
-                                <span class="text-xs text-green-200/70 dark:text-green-400/50 font-medium">逆时针</span>
+                                <span class="text-xs font-medium text-slate-500 dark:text-slate-400">逆时针出牌</span>
                             </div>
-                        </div>
-                        
-                        <!-- Top Player - 对家 (Partner) -->
-                        <div class="absolute top-0 left-1/2 -translate-x-1/2 text-center group cursor-pointer" id="seat-partner">
-                            <div class="w-16 h-16 rounded-full bg-indigo-500 dark:bg-indigo-600 flex items-center justify-center text-3xl shadow-lg border-4 border-white dark:border-slate-700 group-hover:scale-110 transition-transform">
-                                👤
-                            </div>
-                            <div class="mt-2 px-3 py-1 rounded-full bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 text-sm font-bold">
-                                对家
-                            </div>
-                            <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">队友 · Partner</div>
-                        </div>
-                        
-                        <!-- Right Player - 下家 -->
-                        <div class="absolute right-0 top-1/2 -translate-y-1/2 text-center group cursor-pointer" id="seat-next">
-                            <div class="w-16 h-16 rounded-full bg-red-500 dark:bg-red-600 flex items-center justify-center text-3xl shadow-lg border-4 border-white dark:border-slate-700 group-hover:scale-110 transition-transform">
-                                👤
-                            </div>
-                            <div class="mt-2 px-3 py-1 rounded-full bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-300 text-sm font-bold">
-                                下家
-                            </div>
-                            <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">对手 · Right</div>
-                        </div>
-                        
-                        <!-- Bottom Player - 庄家 (You/Dealer) -->
-                        <div class="absolute bottom-0 left-1/2 -translate-x-1/2 text-center group cursor-pointer" id="seat-dealer">
-                            <div class="w-20 h-20 rounded-full bg-amber-500 dark:bg-amber-600 flex items-center justify-center text-4xl shadow-lg border-4 border-white dark:border-slate-700 ring-4 ring-amber-300 dark:ring-amber-700 group-hover:scale-110 transition-transform">
-                                🎴
-                            </div>
-                            <div class="mt-2 px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-300 text-sm font-bold">
-                                庄家 (你)
-                            </div>
-                            <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">台上 · Dealer</div>
-                        </div>
-                        
-                        <!-- Left Player - 上家 -->
-                        <div class="absolute left-0 top-1/2 -translate-y-1/2 text-center group cursor-pointer" id="seat-prev">
-                            <div class="w-16 h-16 rounded-full bg-red-500 dark:bg-red-600 flex items-center justify-center text-3xl shadow-lg border-4 border-white dark:border-slate-700 group-hover:scale-110 transition-transform">
-                                👤
-                            </div>
-                            <div class="mt-2 px-3 py-1 rounded-full bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-300 text-sm font-bold">
-                                上家
-                            </div>
-                            <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">对手 · Left</div>
                         </div>
 
-                        <!-- Flow arrows -->
-                        <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 100">
-                            <!-- Arrow from dealer to right (下家) -->
-                            <path d="M 55 78 Q 72 72 78 55" fill="none" stroke="currentColor" stroke-width="0.8" class="text-slate-400 dark:text-slate-500" stroke-dasharray="2,2"/>
-                            <polygon points="78,55 76,59 80,58" fill="currentColor" class="text-slate-400 dark:text-slate-500"/>
-                            
-                            <!-- Arrow from right to top (对家) -->
-                            <path d="M 78 45 Q 72 28 55 22" fill="none" stroke="currentColor" stroke-width="0.8" class="text-slate-400 dark:text-slate-500" stroke-dasharray="2,2"/>
-                            <polygon points="55,22 59,24 58,20" fill="currentColor" class="text-slate-400 dark:text-slate-500"/>
-                            
-                            <!-- Arrow from top to left (上家) -->
-                            <path d="M 45 22 Q 28 28 22 45" fill="none" stroke="currentColor" stroke-width="0.8" class="text-slate-400 dark:text-slate-500" stroke-dasharray="2,2"/>
-                            <polygon points="22,45 24,41 20,42" fill="currentColor" class="text-slate-400 dark:text-slate-500"/>
-                            
-                            <!-- Arrow from left to dealer -->
-                            <path d="M 22 55 Q 28 72 45 78" fill="none" stroke="currentColor" stroke-width="0.8" class="text-slate-400 dark:text-slate-500" stroke-dasharray="2,2"/>
-                            <polygon points="45,78 41,76 42,80" fill="currentColor" class="text-slate-400 dark:text-slate-500"/>
-                        </svg>
-                    </div>
-                    
-                    <!-- Legend -->
-                    <div class="flex flex-wrap justify-center gap-4 mt-6 text-sm">
-                        <div class="flex items-center gap-2">
-                            <span class="w-4 h-4 rounded-full bg-amber-500"></span>
-                            <span class="text-slate-600 dark:text-slate-300"><strong>台上</strong> (庄家队)</span>
+                        <!-- Top Player (Partner) -->
+                        <div class="absolute top-0 left-1/2 -translate-x-1/2 flex flex-col items-center">
+                            <div class="w-14 h-14 rounded-full bg-indigo-50 dark:bg-indigo-900/20 border-2 border-indigo-500 dark:border-indigo-400 flex items-center justify-center text-xl shadow-sm">
+                                👤
+                            </div>
+                            <span class="mt-2 text-sm font-bold text-indigo-600 dark:text-indigo-400">对家</span>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <span class="w-4 h-4 rounded-full bg-indigo-500"></span>
-                            <span class="text-slate-600 dark:text-slate-300"><strong>台上</strong> (队友)</span>
+
+                        <!-- Right Player (Opponent) -->
+                        <div class="absolute right-0 top-1/2 -translate-y-1/2 flex flex-col items-center">
+                            <div class="w-14 h-14 rounded-full bg-red-50 dark:bg-red-900/10 border-2 border-red-400 dark:border-red-500/50 flex items-center justify-center text-xl shadow-sm">
+                                👤
+                            </div>
+                            <span class="mt-2 text-sm font-bold text-red-600 dark:text-red-400">下家</span>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <span class="w-4 h-4 rounded-full bg-red-500"></span>
-                            <span class="text-slate-600 dark:text-slate-300"><strong>台下</strong> (对手)</span>
+
+                        <!-- Bottom Player (You/Dealer) -->
+                        <div class="absolute bottom-0 left-1/2 -translate-x-1/2 flex flex-col items-center">
+                            <div class="w-16 h-16 rounded-full bg-amber-50 dark:bg-amber-900/20 border-2 border-amber-500 dark:border-amber-400 flex items-center justify-center text-2xl shadow-sm ring-4 ring-amber-50 dark:ring-amber-900/10">
+                                🎴
+                            </div>
+                            <span class="mt-2 text-sm font-bold text-amber-600 dark:text-amber-400">庄家 (你)</span>
+                        </div>
+
+                        <!-- Left Player (Opponent) -->
+                        <div class="absolute left-0 top-1/2 -translate-y-1/2 flex flex-col items-center">
+                            <div class="w-14 h-14 rounded-full bg-red-50 dark:bg-red-900/10 border-2 border-red-400 dark:border-red-500/50 flex items-center justify-center text-xl shadow-sm">
+                                👤
+                            </div>
+                            <span class="mt-2 text-sm font-bold text-red-600 dark:text-red-400">上家</span>
                         </div>
                     </div>
                     
