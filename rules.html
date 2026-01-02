@@ -537,8 +537,8 @@
                 <p>目的是增进友谊，其次是升级。第一局从 2 开始打。</p>
                 <ul>
                     <li><strong>顺序</strong>: 2, 3, 4... 10, J, Q, K, A。先打过 A 的那队获胜。</li>
-                    <li><strong>跳级</strong>: 默认 40分跳一级。有时规定 20分或 10分跳级。</li>
-                    <li><strong>必打</strong>: 10 和 K“必打”，即跳级时不能跳过 10 和 K。</li>
+                    <li><strong>跳级</strong>: 一般是依顺序升级，但在某些情况下可以“跳级”。“跳级”指的是连升两级或者两级以上。默认情况下是 40 分跳级，但有时为了加快游戏进度，可以规定 20 分跳级，甚至是 10 分就跳级。</li>
+                    <li><strong>必打</strong>: 为了限制某队升级过快，可以规定 10 和 K “必打”。“必打”指的是跳级的时候，不能将 10 和 K 跳过。比如：台下一队已经打到了 9，而此局他们抓到了 130 分，本来他们下一局应该可以打 J，但是因为 10 和 K 必打，所以下一局他们上台后打的是 10。</li>
                 </ul>
 
                 <h3>升级计算器</h3>
@@ -582,7 +582,7 @@
                             <td>0</td>
                         </tr>
                         <tr>
-                            <td>80~115</td>
+                            <td>80~115**</td>
                             <td>0</td>
                             <td>0</td>
                         </tr>
@@ -594,7 +594,7 @@
                     </tbody>
                 </table>
                 <p class="text-sm text-slate-500">* <strong>规则</strong>: 在 80分基础上，台下那队每多拿 40分，多升一级。<br>
-                * <strong>80~115分</strong>: 台下虽不能升级，但下局可上台。</p>
+                ** <strong>80~115分</strong>: 台下虽不能升级，但下局可上台。</p>
             </div>
 
             <div id="pre-game" class="glass-morphism rounded-3xl p-8 md:p-12 prose">
@@ -602,32 +602,30 @@
                 
                 <h3>拿牌</h3>
                 <ul>
-                    <li><strong>第一局</strong>: 最年轻者翻看一张牌决定谁先拿。按“黑红草方”逆时针规则决定（如翻到黑桃则翻牌者先拿，红桃则下家，依次类推）。</li>
+                    <li><strong>第一局</strong>: 四人坐定后，由最年轻者，随意翻看一张牌，记下花色后把牌放回，如果是大小王，则再翻看一张牌，直到不是大小王为止。按照“黑红草方”（黑：黑桃♠；红：红桃<span class="text-red-500">♥</span>；草：草花♣；方：方片<span class="text-red-500">♦</span>），逆时针规则：如果翻看的牌为♠，则翻牌者先拿牌；如果为<span class="text-red-500">♥</span>，则其右手边玩家先拿牌；如果为♣，则其对家先拿牌；如果是<span class="text-red-500">♦</span>，则其左手边玩家先拿牌。</li>
                     <li><strong>流程</strong>: 逆时针依次拿牌，每人每次一张，直到剩下 8 张“底牌”结束，每人手上有 25 张牌。</li>
-                    <li><strong>后续局</strong>: 由当局庄家开始拿牌。</li>
+                    <li><strong>拿底与埋底</strong>: 接着庄家就可以“拿底”。“拿底”指的是把剩底下的八张牌拿走。此时拿底的人手上就有 33 张牌，然后此玩家需要再“埋底”。“埋底”指的是从手上 33 张牌中选出 8 张牌，把这 8 张牌放在四位玩家中间，背面朝上。正式出牌前，每位玩家手上还是 25 张牌。</li>
+                    <li><strong>后续局</strong>: 第一局的庄家由“抢庄”产生，具体规则见“亮牌”一节。之后的庄家都是每局开始前就定下来的，取决于上一局的结果。从第二局开始，都是当局的庄家开始拿牌，拿牌顺序和张数与第一局时相同。</li>
                 </ul>
 
                 <h3>亮牌 (抢亮)</h3>
                 <ul>
-                    <li><strong>定义</strong>: 亮出庄家当前打的数字的牌。</li>
-                    <li><strong>加固</strong>: 亮牌后，若又拿到一张相同的牌，可再次亮出，称为“加固”。加固影响“反”的规则。</li>
-                    <li><strong>抢庄 (第一局)</strong>: 亮出 2 的玩家及其对家暂时上台。若无人“反”，亮牌者成为庄家。</li>
-                    <li><strong>定主</strong>: 亮牌花色即为“主花色”。</li>
-                    <li><strong>无人亮牌</strong>: 若四人拿完牌均不亮牌，则进行“翻底”。</li>
+                    <li><strong>定义</strong>: 在拿牌的过程中，每位玩家都可以亮牌，称为“抢亮”。亮牌指的是，把庄家当前在打的数字的牌亮出来。亮牌的时候只需要亮出一张此数字的牌，一旦有人亮牌，其余玩家则不能再亮牌。</li>
+                    <li><strong>加固</strong>: 如果亮牌的玩家拿到另外一张和亮出的是一样的牌的时候，可以选择把这张也亮出来，此举称为“加固”。加固将影响“反”的规则，后面详述之。当然玩家也可以选择把两张相同花色并且是庄家打的数字的牌同时亮出，此举相当于亮牌之后立马加固，并无特殊性。</li>
+                    <li><strong>抢庄 (第一局)</strong>: 第一局的亮牌还附带了“抢庄”的作用。第一局，两家都打 2，当有人拿到 2 的时候可以选择把它亮出来。注意：亮牌和加固都非强制，属于自愿行为。当有人亮了一张 2 的时候，此人及他的对家就暂时“上台”，而此人也暂时成为当局的庄家。之所以说是暂时上台，是因为另外两位暂时在台下的玩家可以通过“反”来上台。关于“反”的规则，后面详述之。但如果没有人反，首先亮牌的玩家就成了庄家。</li>
+                    <li><strong>定主</strong>: 当有人亮了牌之后，如果没有人“反”，则所亮牌的花色为此局的“主花色”。“反”的情况后面详述之。比如此局庄家打的是 7，有玩家亮了 <span class="text-red-500">♥</span> 7，之后又没人“反”，那么此局就打 <span class="text-red-500">♥</span> 7。</li>
+                    <li><strong>无人亮牌</strong>: 当每位玩家都拿了 25 张牌，但还是没有人亮牌的时候，就从第一个拿牌的人开始问，问此人是否要亮牌，如果回答为否，再问第二个拿牌的人，依次询问至最后一个拿牌的玩家。如果其中有人亮牌了，那么之后的规则不变。但如果问完四位玩家之后，还是没有人亮牌，则要开始“翻底”。</li>
                 </ul>
 
                 <h3>翻底</h3>
                 <ul>
                     <li><strong>规则</strong>: 一张张翻底牌，直到翻到庄家打的数字。若 8 张都不是，则以第一张翻出的花色为主花色。若翻到大小王则打“无主”。</li>
-                    <li><strong>第一局翻底</strong>: 用第一张非大小王的牌决定庄家（按黑红草方规则）。</li>
+                    <li><strong>第一局翻底</strong>: 如果第一局就“翻底”，因为此时还未确定庄家，需要通过翻底来确定庄家。翻底过程中，第一张翻出的非大小王的牌的花色来决定庄家。还是按照“黑红草方”，逆时针规则：如果翻出的牌为♠，则第一个拿牌的玩家有权拿底，此玩家及其对家上台，成为此局的庄家；如果为<span class="text-red-500">♥</span>，则第二个拿牌的玩家拿底，此玩家及其对家上台，成为此局的庄家；依次类推。</li>
                     <li><strong>注意</strong>: 一旦翻底，玩家不能再“反”。</li>
                 </ul>
 
                 <h3>反</h3>
-                <ul>
-                    <li><strong>定义</strong>: 亮出两张相同花色的级牌（庄家打的数字）、或两张小王、或两张大王，以改变主花色、打无主或“抄底”。</li>
-                    <li><strong>顺序</strong>: 方 < 草 < 红 < 黑 < 小王 < 大王。若有人已反，需用更大的牌反。</li>
-                </ul>
+                <p>前面的规则中多次提到过“反”，“反”指的是当有人亮牌之后，其他人亮出两张相同花色的庄家在打的数字的牌，或是两张小王，或是两张大王，来达到换“主花色”，或换成打“无主”，和“抄底”的目的。当有人用大王或者小王反了之后，就要打“无主”，此时就没有了主花色，打无主和不打无主的区别后面详述之。所谓“抄底”，指的是庄家埋完底之后再反，可以把庄家埋的底拿走，然后自己进行埋底，但这过程并不影响出牌顺序，仍然是庄家先出牌。</p>
 
                 <!-- Interactive Trump Hierarchy -->
                 <div class="trump-bar" id="trumpHierarchy">
@@ -664,21 +662,23 @@
                 <p class="text-xs text-center text-slate-500 mb-6">点击图标查看谁能“反”谁</p>
 
                 <ul>
-                    <li><strong>时机</strong>:
+                    <li><strong>两个时机</strong>: 有两个时机可以“反”，它们起到的效果不尽相同。
                         <ol>
-                            <li><strong>拿底前</strong>: 第一局可抢庄；非第一局仅换主花色。</li>
-                            <li><strong>埋底后</strong>: 既换主花色，又可“抄底”（拿走底牌重新埋底）。</li>
+                            <li><strong>大家都拿完 25 张牌，而且庄家还未拿底之前</strong>: 如果是第一局，反的玩家可以取代之前亮牌的玩家而成为庄家，而后可以拿底。除了第一局以外，此时反的作用就是换“主花色”，接下来仍然是原来的庄家拿底。</li>
+                            <li><strong>庄家埋完底牌之后</strong>: 此时的反不但有换主花色的作用，还有“抄底”的作用。注意，即使是第一局，此时的“反”并不影响庄家的人选，也就是说第一局想要成为庄家，必须在有人拿底之前反。</li>
                         </ol>
                     </li>
-                    <li><strong>反的权力顺序</strong>: 庄家 -> 下家 -> 对家 -> 上家（逆时针）。</li>
+                    <li><strong>反的次序与加固</strong>: “反”是可以多次进行的，但必须按照一定的次序。反的顺序为：<span class="text-red-500">♦</span> < ♣ < <span class="text-red-500">♥</span> < ♠ < 小王 < 大王。一旦有人反了之后，有人想要再反，需要拿更大的可以反的牌来反。
+                        <br>在亮牌没有被加固的情况下，可以被反成任意花色或无主。但是在有加固的情况下，相当于已经有人用这门亮的花色反过了一样，想要反的话必须拿更大的可以反的牌来反。
+                        <br>比如：亮牌阶段有人亮了♠，但是没有加固，在反的阶段可以被反成任意花色或是无主；接下来，第一个人反成了<span class="text-red-500">♥</span>，之后就只能被♠、小王或者大王反了；再比如，亮牌阶段有人亮了♠之后又加固了，此时就没法被反成<span class="text-red-500">♥</span>了，只能被小王和大王反了。
+                        <br>注意，在等庄家埋完底之后的反，每次反的人都可以抄底。
+                    </li>
+                    <li><strong>反的权力顺序</strong>: 反的权力也是按顺序进行的，具体如下：第一个反的时机，也就是在每人拿完 25 张牌而庄家拿底之前，庄家先有反的权力，然后是庄家的下家，再是庄家的对家，最后是庄家的上家，也就是按照逆时针的顺序。等庄家埋完底之后，第二个反的时机，也同样遵循从庄家开始逆时针的顺序。</li>
                 </ul>
 
                 <h3>造反</h3>
-                <ul>
-                    <li><strong>条件</strong>: 台下玩家手上分数 ≤ 15分，或有主花色情况下主牌 ≤ 3张。</li>
-                    <li><strong>结果</strong>: 当局抓牌无效，重新抓牌，庄家换成台上的另一人。</li>
-                    <li><strong>限制</strong>: 只有台下玩家可造反，且不能连着两局造反。</li>
-                </ul>
+                <p>为了平衡双方牌的实力，台下的玩家在两种情况下可以“造反”：手上的分数少于等于 15 分，或者在有主花色情况下主牌少于等于 3 张。只有台下的玩家才有权力造反，而且造反的玩家要没有埋过底牌。注意：主牌数量是在所有人都不反了以后来确定的，所以不要急着“造反”。此外，造反并非强制，属于自愿行为。</p>
+                <p>具备了“造反”的条件之后，玩家可以把自己手上的牌全都亮出来给其他 3 位玩家检验，如果确实满足“造反”的条件，则视为造反成功。造反成功之后，当局的抓牌视为无效，大家重新抓牌，但是换成台上另外一名玩家来做庄家。造反的玩家此局还是在“台下”。此外：为了游戏的流畅性，规定不能连着两局都“造反”。</p>
             </div>
 
             <div id="flowcharts" class="glass-morphism rounded-3xl p-8 md:p-12 prose">
@@ -796,52 +796,62 @@
 
             <div id="gameplay" class="glass-morphism rounded-3xl p-8 md:p-12 prose">
                 <h2 class="!mt-0">出牌阶段</h2>
+                <p>永远都是庄家先出牌。此时每人手上有 25 张牌。</p>
 
                 <h3>牌的类别</h3>
-                <ol>
-                    <li><strong>不打无主</strong>:
-                        <ul>
-                            <li><strong>主牌 (36张)</strong>: 大小王 (4张) + 主级牌 (8张) + 主花色其余牌 (24张)。</li>
-                            <li><strong>副牌</strong>: 3个非主花色，每类 24 张。</li>
-                        </ul>
-                    </li>
-                    <li><strong>打无主</strong>:
-                        <ul>
-                            <li><strong>主牌 (12张)</strong>: 大小王 + 所有级牌。</li>
-                            <li><strong>副牌</strong>: 4个花色均为副牌。</li>
-                        </ul>
-                    </li>
-                </ol>
+                <p>80 分中有个很重要的概念，就是牌的类别。出牌前的阶段确立了“主花色”，或是打“无主”。</p>
+                
+                <p>先介绍不打无主，有主花色的情况。此时可以把牌分成 4 个类别：主牌和 3 个非主花色牌类（统称为副牌）。主牌包括：2 张大王，2 张小王，8 张庄家在打的数字的牌，24 张主花色牌（其实每门花色有 26 张牌，但这里需要除去 2 张庄家在打的数字的牌），一共是 36 张。3 个非主花色牌类，也即副牌：每类是 24 张牌，因为每门非主花色中有 2 张是庄家在打的数字的牌，这 2 张被分到了主牌中。对于新手，这点经常容易搞错。</p>
 
-                <h3>出牌规则</h3>
+                <p>打无主的情况。打无主时就没有了主花色，此时就有 5 个类别的牌：主牌和 4 个非主花色牌类。主牌仅包括：2 张大王，2 张小王，8 张庄家在打的数字的牌，一共 12 张。4 个非主花色牌类，每类还是 24 张。</p>
+
+                <h3>牌的大小与顺序</h3>
                 <ul>
-                    <li><strong>流程</strong>: 逆时针出牌。首家出牌后，其他三家必须出 <strong>相同数量、相同牌型</strong> 的同类别牌。</li>
-                    <li><strong>跟牌优先级</strong>: 有同类牌必须跟同类；有同牌型（如对子）必须跟牌型。
-                        <ul>
-                            <li>例：首家出副牌对子，下家若有该副牌对子必须出对子；若无对子则出2张该副牌；若无该副牌则可垫其他牌。</li>
-                        </ul>
-                    </li>
+                    <li><strong>单张大小 (有主)</strong>: 大王 > 小王 > 主级牌 (主花色级牌) > 副级牌 (非主花色级牌) > A > K > Q > J > 10 > 9 > 8 > 7 > 6 > 5 > 4 > 3 > 2。</li>
+                    <li><strong>单张大小 (无主)</strong>: 大王 > 小王 > 级牌 > A > K ... > 2。</li>
+                    <li><strong>花色大小</strong>: 主牌 > 副牌。副牌之间大小相等，不能互吃。</li>
                 </ul>
 
-                <h3>牌的大小</h3>
+                <h3>出牌与跟牌规则</h3>
+                <p>80 分的出牌和比大小是回合制的。庄家先出，逆时针顺序跟牌。</p>
+                
+                <h4>1. 跟牌原则 (关键)</h4>
+                <p>跟牌必须“<strong>先跟同花色，再跟同牌型</strong>”。</p>
                 <ul>
-                    <li><strong>阶位</strong>: 单张 < 对子 < 拖拉机。</li>
-                    <li><strong>比较</strong>: 只比首家出的牌的最高阶位。若后面玩家出的牌阶位更低，则不可能胜出。</li>
-                    <li><strong>单张大小 (有主)</strong>: 大王 > 小王 > 主级牌 > 副级牌 > A > K ... > 2。</li>
-                    <li><strong>单张大小 (无主)</strong>: 大王/小王 > 级牌。</li>
-                    <li><strong>毙牌 (杀)</strong>: 只有主牌可以毙副牌。若首家出副牌，其他家缺门时可用主牌毙，主牌大过任何副牌。</li>
+                    <li><strong>有花色必跟</strong>: 首家出什么花色，下家必须跟什么花色。如果没有该花色，可以垫其他花色的牌（副牌），或者用主牌“毙”（杀）。</li>
+                    <li><strong>有对必跟对</strong>: 首家出对子，下家如果有该花色的对子，必须出对子。如果只有单张，则必须拆开对子来跟吗？不，是说如果你有对子，必须出对子；如果你没有对子，但有该花色的单张，则出两张单张。</li>
+                    <li><strong>有拖拉机必跟</strong>: 首家出拖拉机，下家如果有该花色的拖拉机，必须出拖拉机。如果没有拖拉机但有对子，必须出对子。</li>
+                </ul>
+                
+                <div class="bg-indigo-50 dark:bg-indigo-900/30 p-4 rounded-xl border-l-4 border-indigo-500 my-4 not-prose">
+                    <h4 class="text-indigo-700 dark:text-indigo-300 font-bold mb-2">跟牌示例 (假设首家出 ♠ 对子，且 ♠ 为副牌)</h4>
+                    <ul class="space-y-1 text-sm text-slate-600 dark:text-slate-300">
+                        <li><strong>情况 A</strong>: 你有 ♠ 对子 → <strong>必须出 ♠ 对子</strong>。</li>
+                        <li><strong>情况 B</strong>: 你没有 ♠ 对子，但有 ♠ 单张 → <strong>必须出 ♠ 单张</strong> (凑齐两张)。</li>
+                        <li><strong>情况 C</strong>: 你没有 ♠ 牌 → <strong>可以出任意牌</strong> (垫牌或用主牌对子毙)。</li>
+                    </ul>
+                </div>
+
+                <h4>2. 胜负判定</h4>
+                <ul>
+                    <li><strong>最大者胜</strong>: 一轮结束后，牌最大者获得该轮胜利，并获得下一轮的出牌权。</li>
+                    <li><strong>毙牌 (杀)</strong>: 
+                        <ul>
+                            <li>若首家出副牌，其他家缺门（没有该花色）时，可用主牌“毙”。</li>
+                            <li><strong>单张毙单张</strong>: 任意主牌单张 > 任意副牌单张。</li>
+                            <li><strong>对子毙对子</strong>: 必须用<strong>主牌对子</strong>才能毙副牌对子。用两张主牌单张不能毙副牌对子（算垫牌，小）。</li>
+                            <li><strong>拖拉机毙拖拉机</strong>: 必须用<strong>主牌拖拉机</strong>才能毙副牌拖拉机。</li>
+                        </ul>
+                    </li>
+                    <li><strong>超毙 (盖毙)</strong>: 如果多家都用主牌毙，则比较主牌的大小。</li>
                 </ul>
 
-                <h4>胜过第一位玩家</h4>
+                <h4>胜过第一位玩家 (特例)</h4>
                 <p>一位玩家如果手上有<span class="text-red-500">♥</span>牌的对子，必须出对，如果所出的对比8对大，则自然胜过第一位玩家；还有一种胜过第一位玩家的方法是出一对主牌，无论主对的大小，都比第一位玩家出的 <span class="text-red-500">♥</span> 8对大，但前提是这位玩家手上已经没有 <span class="text-red-500">♥</span> 牌了（ <span class="text-red-500">♥</span> 7不算）。要大过第一位玩家出的 <span class="text-red-500">♥</span> 8对，有且仅有这两种方法。</p>
 
-                <h4>“拖拉机”的定义</h4>
-                <p>同一类别的牌中，大小相邻的对子。</p>
-                <ul>
-                    <li><strong>拖拉机</strong>: 两个对子。</li>
-                    <li><strong>泰坦尼克</strong>: 三个对子。</li>
-                    <li><strong>航母</strong>: 四个对子。</li>
-                </ul>
+                <h3>“拖拉机”的定义</h3>
+                <p>同一类别的牌中，<strong>大小相邻</strong>的对子。两个对子称为“拖拉机”，三个对子称为“泰坦尼克”，四个对子有人建议叫“航母”。</p>
+                <p><strong>注意</strong>: 大小相邻是指在<strong>牌的大小顺序</strong>上相邻，且中间没有隔着其他牌。</p>
                 <p><strong>以打 ♠ 7为例：</strong></p>
                 
                 <div class="hand-showcase">
@@ -897,33 +907,123 @@
                     </div>
                 </div>
 
-                <h4>“甩牌”的定义</h4>
-                <p>在同一类别中，可以把单牌，对子和“拖拉机”混合着当成一手牌出出来，但是前提是所出的最小单牌，最小对子和最小拖拉机都比场上其他3位玩家手上拥有的此类别的牌来的大（即便其他3位玩家中有一张相同的单牌亦可甩牌，因为甩牌的玩家是首先出牌的）。</p>
+                <h3>“甩牌”的定义</h3>
+                <p>在同一类别中，可以把单牌，对子和“拖拉机”混合着当成一手牌出出来。</p>
+                
+                <h4>1. 甩牌条件</h4>
+                <p>前提是所出的<strong>最小单牌</strong>、<strong>最小对子</strong>和<strong>最小拖拉机</strong>都比场上其他 3 位玩家手上拥有的此类别的牌来的大。</p>
+                <p class="text-sm text-slate-500"><em>注意：即便其他 3 位玩家中有一张相同的单牌亦可甩牌，因为甩牌的玩家是首先出牌的，其他 3 位玩家即使出相同的牌，也视为比首先出牌的来得小。</em></p>
+
+                <h4>2. 甩牌失败与惩罚</h4>
+                <p>如果不符合上述条件，则视为甩牌失败。惩罚如下：</p>
                 <ul>
-                    <li><strong>甩牌失败</strong>: 罚分（每张 10分），并“强制出小”（出甩错牌中阶位最小的牌）。</li>
+                    <li><strong>罚分</strong>: 按照甩出的张数罚分，<strong>每张 10 分</strong>。
+                        <ul class="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                            <li>若是台上（庄家）甩错 n 张，台下视为抓到 n × 10 分。</li>
+                            <li>若是台下（闲家）甩错 n 张，视为台下少抓了 n × 10 分。若导致总分为负，结算时视为 0 分（庄家最多升 3 级）。</li>
+                        </ul>
+                    </li>
+                    <li><strong>强制出小</strong>: 必须出甩错牌中<strong>阶位最小</strong>的牌，把剩下的牌拿回去。
+                        <ul class="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                            <li>如果甩错的阶位不止一个（如单张和对子都甩错了），则出<strong>最小阶位中最小的牌</strong>。</li>
+                        </ul>
+                    </li>
                 </ul>
+
+                <h4>3. 甩牌示例</h4>
+                <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700 my-4">
+                    <p class="font-bold mb-2">假设：打 ♠7</p>
+                    <p>某回合首家甩 5 张牌：<span class="text-red-500">♥88 J Q K</span></p>
+                    <ul class="list-disc list-inside space-y-1 text-sm">
+                        <li><strong>成功</strong>: 其他 3 家没有大于 8 的 <span class="text-red-500">♥</span> 对子，且没有大于 J 的 <span class="text-red-500">♥</span> 单牌。</li>
+                        <li><strong>失败 (情况 A)</strong>: 别人有大于 8 的对子 → <strong>强制出 <span class="text-red-500">♥8</span> 对</strong>。</li>
+                        <li><strong>失败 (情况 B)</strong>: 别人有大于 J 的单牌 → <strong>强制出 <span class="text-red-500">♥J</span></strong>。</li>
+                        <li><strong>失败 (情况 C)</strong>: 别人既有大对子，又有大单牌 → <strong>强制出 <span class="text-red-500">♥J</span></strong> (单张阶位 < 对子阶位)。</li>
+                    </ul>
+                    <p class="mt-2 text-sm text-red-500 font-bold">罚分: 5张 x 10分 = 50分</p>
+                </div>
+
+                <h4>4. 毙甩牌 (杀)</h4>
+                <p>要在回合中胜过甩牌的玩家，必须出<strong>相同阶位、相同数量的主牌</strong>才可以。</p>
+                <p>在上例中，要“杀” <span class="text-red-500">♥88 J Q K</span>，必须出一个<strong>主对</strong>加上 <strong>3 张其他主牌</strong>。</p>
             </div>
 
             <div id="scoring" class="glass-morphism rounded-3xl p-8 md:p-12 prose">
                 <h2 class="!mt-0">结算与抠底</h2>
 
-                <h3>抠底</h3>
+                <h3>分数计算</h3>
+                <p>当所有 25 张牌出完后，游戏结束，进行分数结算。</p>
                 <ul>
-                    <li><strong>定义</strong>: 最后一回合若台下玩家获胜，底牌分数翻倍归台下。</li>
-                    <li><strong>倍数</strong>: 根据最后一回合首家出牌的牌型决定：
-                        <ul>
-                            <li>单张: x2</li>
-                            <li>对子: x4</li>
-                            <li>拖拉机 (2对): x8</li>
-                            <li>每多一对翻一倍。</li>
-                        </ul>
-                    </li>
+                    <li><strong>台下得分</strong>: 统计台下玩家（闲家）在游戏中抓到的所有分数牌（5、10、K）。</li>
+                    <li><strong>底牌分数</strong>: 如果最后一回合是台下玩家获胜（抠底），则底牌中的分数翻倍计入台下总分。否则，底牌分数作废（归庄家，但不计分）。</li>
+                    <li><strong>总分判定</strong>: 将“台下抓分” + “抠底得分”相加，对照<a href="#upgrade">升级表</a>判定胜负和升级情况。</li>
                 </ul>
 
-                <h3>一钩勾到底</h3>
+                <h3>抠底规则</h3>
+                <p>每局的最后一回合特别关键。不管是台上还是台下一方最后埋的底，只要是<strong>台下一方（闲家）</strong>赢得最后回合，视为成功抠底。</p>
                 <ul>
-                    <li><strong>规则</strong>: 在打 <strong>J</strong> 时，若台下用 <strong>主J</strong> 抠底成功，且总分满 80分，庄家队直接降回从 2 开始打。</li>
-                    <li><strong>限制</strong>: 每次游戏每队至多被勾到底一次。</li>
+                    <li><strong>成功抠底</strong>: 台下玩家可以<strong>加倍获得</strong> 8 张底牌中的所有分数。</li>
+                    <li><strong>底分逃走</strong>: 如果是<strong>台上一方（庄家）</strong>赢得最后回合，底里的分数则视为“逃走”了（归庄家所有，但不计入台下得分）。</li>
+                </ul>
+
+                <h4>倍数计算</h4>
+                <p>台下一方可以获得底里的分数的倍数，是按照<strong>最后回合首位出牌的玩家</strong>所出的牌的<strong>最大阶位</strong>来决定的。</p>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left mt-2">
+                        <thead class="bg-slate-100 dark:bg-slate-800">
+                            <tr>
+                                <th class="p-2 rounded-l">牌型</th>
+                                <th class="p-2">倍数</th>
+                                <th class="p-2 rounded-r">示例</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+                            <tr>
+                                <td class="p-2">单张</td>
+                                <td class="p-2 font-bold text-indigo-600">x 2</td>
+                                <td class="p-2 text-slate-500">出 A，底分 x2</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">对子</td>
+                                <td class="p-2 font-bold text-indigo-600">x 4</td>
+                                <td class="p-2 text-slate-500">出 AA，底分 x4</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">拖拉机 (2对)</td>
+                                <td class="p-2 font-bold text-indigo-600">x 8</td>
+                                <td class="p-2 text-slate-500">出 KKAA，底分 x8</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">泰坦尼克 (3对)</td>
+                                <td class="p-2 font-bold text-indigo-600">x 16</td>
+                                <td class="p-2 text-slate-500">出 QQKKAA，底分 x16</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">航母 (4对)</td>
+                                <td class="p-2 font-bold text-indigo-600">x 32</td>
+                                <td class="p-2 text-slate-500">出 JJQQKKAA，底分 x32</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">...</td>
+                                <td class="p-2 font-bold text-indigo-600">x 2^(n+1)</td>
+                                <td class="p-2 text-slate-500">每多一对，翻一倍</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="mt-2 text-sm"><strong>最终得分</strong> = 回合中抓到的分数 + (底牌分数 × 倍数)</p>
+
+                <h3>一钩勾到底 (特殊规则)</h3>
+                <p>这是一个有趣的惩罚规则。在打 <strong>J</strong> 的时候，如果台下一方（闲家）满足以下所有条件，庄家队将被“勾到底”，直接降回从 <strong>2</strong> 开始打。</p>
+                <ul>
+                    <li><strong>条件 1</strong>: 台下用 <strong>主J</strong> 抠底成功。
+                        <ul class="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                            <li><strong>判定细节</strong>: 最后一手牌必须是 <strong>主J</strong> 最大并获胜。只要包含主 J 即可（单张、对子、拖拉机均可）。</li>
+                            <li><strong>反例</strong>: 如果一方出了主 J，但是对家出了更大的牌（如小王或大王）获胜，虽然抠底成功，但这算是小王或大王抠的底，<strong>不触发</strong>“勾到底”。</li>
+                        </ul>
+                    </li>
+                    <li><strong>条件 2</strong>: 台下此局拿到的总分（抓分+抠底分）达到 <strong>80 分</strong>或以上。</li>
+                    <li><strong>限制</strong>: 为了不造成太大的挫败感，规定每次游戏每队至多被“勾到底”一次 ☺。</li>
                 </ul>
             </div>
 
