@@ -109,6 +109,58 @@
             50% { transform: translateY(-20px) rotate(5deg); }
         }
 
+        /* Difficulty Badges */
+        .badge {
+            @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold;
+        }
+        .badge-beginner {
+            @apply bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300;
+        }
+        .badge-intermediate {
+            @apply bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300;
+        }
+        .badge-advanced {
+            @apply bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300;
+        }
+
+        /* Collapsible Advanced Sections */
+        .advanced-section {
+            transition: all 0.3s ease-out;
+            overflow: hidden;
+        }
+        .beginner-mode .advanced-section {
+            max-height: 0;
+            opacity: 0;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        .beginner-mode .advanced-section.force-show {
+            max-height: none;
+            opacity: 1;
+        }
+        
+        /* Collapsed indicator */
+        .advanced-collapsed-notice {
+            display: none;
+        }
+        .beginner-mode .advanced-collapsed-notice {
+            display: flex;
+        }
+        .beginner-mode .advanced-section + .advanced-collapsed-notice {
+            display: flex;
+        }
+
+        /* Mode toggle button styles */
+        .mode-toggle {
+            @apply relative flex items-center p-1 rounded-full transition-colors;
+        }
+        .mode-toggle-option {
+            @apply px-3 py-1 rounded-full text-xs font-bold transition-all cursor-pointer;
+        }
+        .mode-toggle-option.active {
+            @apply bg-white dark:bg-slate-700 shadow-sm;
+        }
+
         /* Typography for Markdown Content */
         .prose h1 {
             @apply text-4xl md:text-5xl font-display font-black mb-12 text-slate-900 dark:text-white tracking-tight;
@@ -391,6 +443,15 @@
             100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
         }
 
+        /* Slow spin animation for seating diagram */
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(-360deg); }
+        }
+        .animate-spin-slow {
+            animation: spin-slow 8s linear infinite;
+        }
+
         .trump-arrow {
             color: #cbd5e1;
             font-size: 1.25rem;
@@ -398,6 +459,190 @@
         .dark .trump-arrow {
             color: #475569;
         }
+
+        /* Progress Bar */
+        .progress-bar-container {
+            position: fixed;
+            top: 64px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #e2e8f0;
+            z-index: 40;
+        }
+        .dark .progress-bar-container {
+            background: #1e293b;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #6366f1, #a855f7, #ec4899);
+            width: 0%;
+            transition: width 0.1s ease-out;
+        }
+        .progress-text {
+            position: fixed;
+            top: 68px;
+            right: 16px;
+            font-size: 10px;
+            font-weight: 700;
+            color: #6366f1;
+            z-index: 41;
+            background: rgba(255,255,255,0.9);
+            padding: 2px 8px;
+            border-radius: 9999px;
+        }
+        .dark .progress-text {
+            background: rgba(15, 23, 42, 0.9);
+            color: #a5b4fc;
+        }
+
+        /* Glossary Tooltips */
+        .jargon {
+            font-weight: 600;
+            text-decoration: underline;
+            text-decoration-style: dotted;
+            text-underline-offset: 3px;
+            cursor: help;
+            position: relative;
+        }
+        .jargon:hover {
+            text-decoration-color: #6366f1;
+        }
+        .jargon-tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e293b;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 400;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s;
+            z-index: 100;
+            pointer-events: none;
+            margin-bottom: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .jargon-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: #1e293b;
+        }
+        .jargon:hover .jargon-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Gradient Slider */
+        .range-slider-gradient {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 12px;
+            border-radius: 6px;
+            background: linear-gradient(90deg, 
+                #22c55e 0%, 
+                #22c55e 13%, 
+                #84cc16 26%, 
+                #eab308 40%, 
+                #f97316 53%, 
+                #ef4444 66%, 
+                #ef4444 100%);
+            outline: none;
+            margin: 1.5rem 0;
+        }
+        .range-slider-gradient::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+            transition: transform 0.1s, box-shadow 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3), inset 0 0 0 3px #6366f1;
+        }
+        .range-slider-gradient::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4), inset 0 0 0 3px #6366f1;
+        }
+
+        /* Card Hand Display */
+        .mini-card-hand {
+            display: flex;
+            justify-content: center;
+            gap: 2px;
+            margin-top: 1rem;
+        }
+        .mini-card {
+            width: 24px;
+            height: 36px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+            transition: all 0.2s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .mini-card.highlight {
+            background: #fef3c7;
+            border-color: #f59e0b;
+            transform: translateY(-4px);
+        }
+        .mini-card.red { color: #ef4444; }
+        .mini-card.black { color: #1e293b; }
+        .dark .mini-card {
+            background: #334155;
+            border-color: #475569;
+        }
+        .dark .mini-card.highlight {
+            background: #854d0e;
+            border-color: #f59e0b;
+        }
+        .dark .mini-card.red { color: #f87171; }
+        .dark .mini-card.black { color: #e2e8f0; }
+
+        /* Mobile Card Touch Targets */
+        @media (max-width: 768px) {
+            .card-example {
+                min-height: 60px;
+                min-width: 60px;
+                padding: 12px;
+            }
+            .trump-item {
+                min-height: 48px;
+                padding: 8px 12px;
+            }
+        }
+
+        /* Status Badges */
+        .status-success {
+            @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300;
+        }
+        .status-fail {
+            @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300;
+        }
+        .status-neutral {
+            @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300;
+        }
+
+        /* Suit Styling */
+        .suit-red { color: #ef4444; }
+        .suit-black { color: #1e293b; }
+        .dark .suit-black { color: #e2e8f0; }
     </style>
 </head>
 <body class="min-h-screen bg-slate-100 dark:bg-[#0B1120] text-slate-900 dark:text-slate-100 transition-colors duration-500">
@@ -443,6 +688,18 @@
                         <span class="hidden sm:inline">速查表</span>
                     </button>
 
+                    <!-- Mode Toggle -->
+                    <div id="modeToggle" class="mode-toggle bg-slate-200 dark:bg-slate-700" title="切换难度模式">
+                        <span class="mode-toggle-option active" data-mode="full">
+                            <span class="hidden sm:inline">🧠 完整</span>
+                            <span class="sm:hidden">🧠</span>
+                        </span>
+                        <span class="mode-toggle-option" data-mode="beginner">
+                            <span class="hidden sm:inline">🔰 新手</span>
+                            <span class="sm:hidden">🔰</span>
+                        </span>
+                    </div>
+
                     <!-- Theme Toggle -->
                     <button id="themeToggle" 
                             class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors group"
@@ -459,6 +716,12 @@
         </div>
     </nav>
 
+    <!-- Progress Bar -->
+    <div class="progress-bar-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <div class="progress-text" id="progressText">0%</div>
+
     <!-- Mobile Menu Overlay -->
     <div id="mobileMenu" class="fixed inset-0 z-40 hidden lg:hidden" aria-hidden="true">
         <!-- Backdrop -->
@@ -469,13 +732,15 @@
             <div class="p-6">
                 <h3 class="font-display font-bold mb-4 text-lg text-slate-900 dark:text-white">目录</h3>
                 <nav class="space-y-1 text-sm">
-                    <a href="#intro" class="mobile-link block py-2 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">简介</a>
-                    <a href="#zhuang" class="mobile-link block py-2 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">坐庄</a>
-                    <a href="#upgrade" class="mobile-link block py-2 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">升级</a>
-                    <a href="#pre-game" class="mobile-link block py-2 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">出牌前</a>
-                    <a href="#flowcharts" class="mobile-link block py-2 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">流程图</a>
-                    <a href="#gameplay" class="mobile-link block py-2 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">出牌阶段</a>
-                    <a href="#scoring" class="mobile-link block py-2 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">结算与抠底</a>
+                    <a href="#quickstart" class="mobile-link block py-2 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors font-bold">🚀 快速入门</a>
+                    <a href="#intro" class="mobile-link toc-link block py-2 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-section="intro"><span class="text-indigo-400 dark:text-indigo-500 mr-1">1.</span> 简介</a>
+                    <a href="#zhuang" class="mobile-link toc-link block py-2 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-section="zhuang"><span class="text-indigo-400 dark:text-indigo-500 mr-1">2.</span> 坐庄</a>
+                    <a href="#upgrade" class="mobile-link toc-link block py-2 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-section="upgrade"><span class="text-indigo-400 dark:text-indigo-500 mr-1">3.</span> 升级</a>
+                    <a href="#pre-game" class="mobile-link toc-link block py-2 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-section="pre-game"><span class="text-indigo-400 dark:text-indigo-500 mr-1">4.</span> 出牌前</a>
+                    <a href="#flowcharts" class="mobile-link toc-link block py-2 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-section="flowcharts"><span class="text-indigo-400 dark:text-indigo-500 mr-1">5.</span> 流程图</a>
+                    <a href="#gameplay" class="mobile-link toc-link block py-2 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-section="gameplay"><span class="text-indigo-400 dark:text-indigo-500 mr-1">6.</span> 出牌阶段</a>
+                    <a href="#scoring" class="mobile-link toc-link block py-2 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-section="scoring"><span class="text-indigo-400 dark:text-indigo-500 mr-1">7.</span> 结算与抠底</a>
+                    <a href="#glossary" class="mobile-link toc-link block py-2 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-section="glossary"><span class="text-indigo-400 dark:text-indigo-500 mr-1">📖</span> 术语表</a>
                 </nav>
             </div>
         </div>
@@ -488,13 +753,15 @@
             <div class="sticky top-24 glass-morphism rounded-2xl p-6 max-h-[calc(100vh-8rem)] overflow-y-auto">
                 <h3 class="font-display font-bold mb-4 text-lg text-slate-900 dark:text-white">目录</h3>
                 <nav class="space-y-1 text-sm">
-                    <a href="#intro" class="block py-1.5 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">简介</a>
-                    <a href="#zhuang" class="block py-1.5 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">坐庄</a>
-                    <a href="#upgrade" class="block py-1.5 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">升级</a>
-                    <a href="#pre-game" class="block py-1.5 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">出牌前</a>
-                    <a href="#flowcharts" class="block py-1.5 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">流程图</a>
-                    <a href="#gameplay" class="block py-1.5 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">出牌阶段</a>
-                    <a href="#scoring" class="block py-1.5 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">结算与抠底</a>
+                    <a href="#quickstart" class="toc-link block py-1.5 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors font-bold">🚀 快速入门</a>
+                    <a href="#intro" class="toc-link block py-1.5 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-section="intro"><span class="text-indigo-400 dark:text-indigo-500 mr-1">1.</span> 简介</a>
+                    <a href="#zhuang" class="toc-link block py-1.5 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-section="zhuang"><span class="text-indigo-400 dark:text-indigo-500 mr-1">2.</span> 坐庄</a>
+                    <a href="#upgrade" class="toc-link block py-1.5 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-section="upgrade"><span class="text-indigo-400 dark:text-indigo-500 mr-1">3.</span> 升级</a>
+                    <a href="#pre-game" class="toc-link block py-1.5 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-section="pre-game"><span class="text-indigo-400 dark:text-indigo-500 mr-1">4.</span> 出牌前</a>
+                    <a href="#flowcharts" class="toc-link block py-1.5 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-section="flowcharts"><span class="text-indigo-400 dark:text-indigo-500 mr-1">5.</span> 流程图</a>
+                    <a href="#gameplay" class="toc-link block py-1.5 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-section="gameplay"><span class="text-indigo-400 dark:text-indigo-500 mr-1">6.</span> 出牌阶段</a>
+                    <a href="#scoring" class="toc-link block py-1.5 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-section="scoring"><span class="text-indigo-400 dark:text-indigo-500 mr-1">7.</span> 结算与抠底</a>
+                    <a href="#glossary" class="toc-link block py-1.5 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-section="glossary"><span class="text-indigo-400 dark:text-indigo-500 mr-1">📖</span> 术语表</a>
                 </nav>
             </div>
         </aside>
@@ -511,8 +778,83 @@
                 </div>
             </div>
 
+            <!-- Quick Start Section -->
+            <div id="quickstart" class="glass-morphism rounded-3xl p-8 md:p-12 bg-gradient-to-br from-indigo-500/10 via-transparent to-fuchsia-500/10 border-2 border-indigo-200 dark:border-indigo-800">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="text-4xl">🚀</span>
+                    <div>
+                        <h2 class="text-2xl md:text-3xl font-display font-black text-slate-900 dark:text-white !m-0">30秒快速入门</h2>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 !m-0">TL;DR - 读完这里就能开始玩</p>
+                    </div>
+                </div>
+                
+                <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                    <!-- Card 1: Players -->
+                    <div class="bg-white/60 dark:bg-slate-800/60 rounded-2xl p-4 border border-white/50 dark:border-slate-700">
+                        <div class="text-3xl mb-2">👥</div>
+                        <h3 class="font-bold text-slate-900 dark:text-white text-lg mb-1">4人组队</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">对面是队友，左右是对手</p>
+                    </div>
+                    
+                    <!-- Card 2: Goal -->
+                    <div class="bg-white/60 dark:bg-slate-800/60 rounded-2xl p-4 border border-white/50 dark:border-slate-700">
+                        <div class="text-3xl mb-2">🎯</div>
+                        <h3 class="font-bold text-slate-900 dark:text-white text-lg mb-1">抓80分换庄</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">台下抓够80分可以上台</p>
+                    </div>
+                    
+                    <!-- Card 3: Upgrade -->
+                    <div class="bg-white/60 dark:bg-slate-800/60 rounded-2xl p-4 border border-white/50 dark:border-slate-700">
+                        <div class="text-3xl mb-2">📈</div>
+                        <h3 class="font-bold text-slate-900 dark:text-white text-lg mb-1">升级过A获胜</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">从2打到A，先过A者胜</p>
+                    </div>
+                    
+                    <!-- Card 4: Points -->
+                    <div class="bg-white/60 dark:bg-slate-800/60 rounded-2xl p-4 border border-white/50 dark:border-slate-700">
+                        <div class="text-3xl mb-2">💰</div>
+                        <h3 class="font-bold text-slate-900 dark:text-white text-lg mb-1">分数牌</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">
+                            <span class="font-mono font-bold">5</span>=5分 
+                            <span class="font-mono font-bold">10</span>=10分 
+                            <span class="font-mono font-bold">K</span>=10分
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Key Formulas -->
+                <div class="mt-6 p-4 bg-indigo-100/50 dark:bg-indigo-900/30 rounded-xl">
+                    <h4 class="font-bold text-indigo-700 dark:text-indigo-300 mb-3 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                        核心公式
+                    </h4>
+                    <div class="grid gap-2 md:grid-cols-2 text-sm">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded font-mono text-xs">台下 &lt; 80分</span>
+                            <span class="text-slate-500">→</span>
+                            <span class="text-indigo-600 dark:text-indigo-400 font-bold">庄家保庄</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded font-mono text-xs">台下 ≥ 80分</span>
+                            <span class="text-slate-500">→</span>
+                            <span class="text-red-500 font-bold">台下上台</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded font-mono text-xs">每40分</span>
+                            <span class="text-slate-500">→</span>
+                            <span class="text-green-600 dark:text-green-400 font-bold">升1级</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded font-mono text-xs">两副牌总分</span>
+                            <span class="text-slate-500">→</span>
+                            <span class="text-amber-600 dark:text-amber-400 font-bold">200分</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div id="intro" class="glass-morphism rounded-3xl p-8 md:p-12 prose">
-                <h2 class="!mt-0">简介</h2>
+                <h2 class="!mt-0"><span class="text-indigo-400 dark:text-indigo-500 mr-2">1.</span>简介 <span class="badge badge-beginner">🔰 基础</span></h2>
                 <p><strong>80分</strong>（又称升级、双升、拖拉机）是一款4人扑克牌游戏，使用两副牌（共108张，含大小王）。</p>
                 
                 <h3>基本信息</h3>
@@ -541,7 +883,7 @@
             </div>
 
             <div id="zhuang" class="glass-morphism rounded-3xl p-8 md:p-12 prose">
-                <h2 class="!mt-0">坐庄</h2>
+                <h2 class="!mt-0"><span class="text-indigo-400 dark:text-indigo-500 mr-2">2.</span>坐庄 <span class="badge badge-beginner">🔰 基础</span></h2>
                 
                 <h3>核心概念</h3>
                 <ul>
@@ -549,6 +891,112 @@
                     <li><strong>台下</strong>: 进攻方，目标是抓分上台</li>
                     <li><strong>关键分数线</strong>: <span class="text-xl font-bold text-indigo-600 dark:text-indigo-400">80分</span></li>
                 </ul>
+
+                <!-- Interactive Seating Diagram -->
+                <h3>座位图</h3>
+                <div class="not-prose my-6">
+                    <div class="relative w-full max-w-md mx-auto aspect-square">
+                        <!-- Table background -->
+                        <div class="absolute inset-8 rounded-full bg-gradient-to-br from-green-600 to-green-700 dark:from-green-800 dark:to-green-900 shadow-xl border-4 border-green-800 dark:border-green-950"></div>
+                        <div class="absolute inset-12 rounded-full bg-green-500/30 dark:bg-green-600/20 border border-green-400/50 dark:border-green-500/30"></div>
+                        
+                        <!-- Counter-clockwise arrow in center -->
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="text-center">
+                                <svg class="w-16 h-16 mx-auto text-green-300/60 dark:text-green-400/40 animate-spin-slow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <!-- Arc going counterclockwise from top -->
+                                    <path d="M12 3a9 9 0 1 0 9 9" stroke-linecap="round"/>
+                                    <!-- Arrowhead pointing down-left (following the curve) -->
+                                    <path d="M12 3l-2.5-2M12 3l-2.5 2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <span class="text-xs text-green-200/70 dark:text-green-400/50 font-medium">逆时针</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Top Player - 对家 (Partner) -->
+                        <div class="absolute top-0 left-1/2 -translate-x-1/2 text-center group cursor-pointer" id="seat-partner">
+                            <div class="w-16 h-16 rounded-full bg-indigo-500 dark:bg-indigo-600 flex items-center justify-center text-3xl shadow-lg border-4 border-white dark:border-slate-700 group-hover:scale-110 transition-transform">
+                                👤
+                            </div>
+                            <div class="mt-2 px-3 py-1 rounded-full bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 text-sm font-bold">
+                                对家
+                            </div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">队友 · Partner</div>
+                        </div>
+                        
+                        <!-- Right Player - 下家 -->
+                        <div class="absolute right-0 top-1/2 -translate-y-1/2 text-center group cursor-pointer" id="seat-next">
+                            <div class="w-16 h-16 rounded-full bg-red-500 dark:bg-red-600 flex items-center justify-center text-3xl shadow-lg border-4 border-white dark:border-slate-700 group-hover:scale-110 transition-transform">
+                                👤
+                            </div>
+                            <div class="mt-2 px-3 py-1 rounded-full bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-300 text-sm font-bold">
+                                下家
+                            </div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">对手 · Right</div>
+                        </div>
+                        
+                        <!-- Bottom Player - 庄家 (You/Dealer) -->
+                        <div class="absolute bottom-0 left-1/2 -translate-x-1/2 text-center group cursor-pointer" id="seat-dealer">
+                            <div class="w-20 h-20 rounded-full bg-amber-500 dark:bg-amber-600 flex items-center justify-center text-4xl shadow-lg border-4 border-white dark:border-slate-700 ring-4 ring-amber-300 dark:ring-amber-700 group-hover:scale-110 transition-transform">
+                                🎴
+                            </div>
+                            <div class="mt-2 px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-300 text-sm font-bold">
+                                庄家 (你)
+                            </div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">台上 · Dealer</div>
+                        </div>
+                        
+                        <!-- Left Player - 上家 -->
+                        <div class="absolute left-0 top-1/2 -translate-y-1/2 text-center group cursor-pointer" id="seat-prev">
+                            <div class="w-16 h-16 rounded-full bg-red-500 dark:bg-red-600 flex items-center justify-center text-3xl shadow-lg border-4 border-white dark:border-slate-700 group-hover:scale-110 transition-transform">
+                                👤
+                            </div>
+                            <div class="mt-2 px-3 py-1 rounded-full bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-300 text-sm font-bold">
+                                上家
+                            </div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">对手 · Left</div>
+                        </div>
+
+                        <!-- Flow arrows -->
+                        <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 100">
+                            <!-- Arrow from dealer to right (下家) -->
+                            <path d="M 55 78 Q 72 72 78 55" fill="none" stroke="currentColor" stroke-width="0.8" class="text-slate-400 dark:text-slate-500" stroke-dasharray="2,2"/>
+                            <polygon points="78,55 76,59 80,58" fill="currentColor" class="text-slate-400 dark:text-slate-500"/>
+                            
+                            <!-- Arrow from right to top (对家) -->
+                            <path d="M 78 45 Q 72 28 55 22" fill="none" stroke="currentColor" stroke-width="0.8" class="text-slate-400 dark:text-slate-500" stroke-dasharray="2,2"/>
+                            <polygon points="55,22 59,24 58,20" fill="currentColor" class="text-slate-400 dark:text-slate-500"/>
+                            
+                            <!-- Arrow from top to left (上家) -->
+                            <path d="M 45 22 Q 28 28 22 45" fill="none" stroke="currentColor" stroke-width="0.8" class="text-slate-400 dark:text-slate-500" stroke-dasharray="2,2"/>
+                            <polygon points="22,45 24,41 20,42" fill="currentColor" class="text-slate-400 dark:text-slate-500"/>
+                            
+                            <!-- Arrow from left to dealer -->
+                            <path d="M 22 55 Q 28 72 45 78" fill="none" stroke="currentColor" stroke-width="0.8" class="text-slate-400 dark:text-slate-500" stroke-dasharray="2,2"/>
+                            <polygon points="45,78 41,76 42,80" fill="currentColor" class="text-slate-400 dark:text-slate-500"/>
+                        </svg>
+                    </div>
+                    
+                    <!-- Legend -->
+                    <div class="flex flex-wrap justify-center gap-4 mt-6 text-sm">
+                        <div class="flex items-center gap-2">
+                            <span class="w-4 h-4 rounded-full bg-amber-500"></span>
+                            <span class="text-slate-600 dark:text-slate-300"><strong>台上</strong> (庄家队)</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-4 h-4 rounded-full bg-indigo-500"></span>
+                            <span class="text-slate-600 dark:text-slate-300"><strong>台上</strong> (队友)</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-4 h-4 rounded-full bg-red-500"></span>
+                            <span class="text-slate-600 dark:text-slate-300"><strong>台下</strong> (对手)</span>
+                        </div>
+                    </div>
+                    
+                    <p class="text-center text-xs text-slate-500 dark:text-slate-400 mt-4">
+                        出牌顺序：庄家 → 下家 → 对家 → 上家 (逆时针)
+                    </p>
+                </div>
                 
                 <h3>庄家轮换规则</h3>
                 <div class="overflow-x-auto">
@@ -581,7 +1029,7 @@
             </div>
 
             <div id="upgrade" class="glass-morphism rounded-3xl p-8 md:p-12 prose">
-                <h2 class="!mt-0">升级</h2>
+                <h2 class="!mt-0"><span class="text-indigo-400 dark:text-indigo-500 mr-2">3.</span>升级 <span class="badge badge-beginner">🔰 基础</span></h2>
                 <p>游戏目标是升级打过A。第一局从<strong>2</strong>开始打。</p>
                 
                 <h3>升级顺序</h3>
@@ -613,15 +1061,15 @@
                 <div class="calc-container">
                     <div class="flex justify-between items-center mb-2">
                         <label class="font-bold text-slate-700 dark:text-slate-200">台下抓分:</label>
-                        <span id="scoreDisplay" class="text-2xl font-black text-indigo-600 dark:text-indigo-400 font-mono">0</span>
+                        <span id="scoreDisplay" class="text-3xl font-black text-indigo-600 dark:text-indigo-400 font-mono">0</span>
                     </div>
                     
-                    <input type="range" min="0" max="300" value="0" step="5" class="range-slider" id="scoreInput">
+                    <input type="range" min="0" max="300" value="0" step="5" class="range-slider-gradient" id="scoreInput">
                     
                     <div id="resultDisplay" class="calc-result bg-indigo-100 text-indigo-800 dark:bg-indigo-900/50 dark:text-indigo-200">
                         庄家升 3 级 (大光)
                     </div>
-                    <p class="text-xs text-center mt-2 text-slate-500">拖动滑块查看结果</p>
+                    <p class="text-xs text-center mt-3 text-slate-500">拖动滑块查看结果</p>
                 </div>
 
                 <h3>升级对照表</h3>
@@ -676,7 +1124,7 @@
             </div>
 
             <div id="pre-game" class="glass-morphism rounded-3xl p-8 md:p-12 prose">
-                <h2 class="!mt-0">出牌前</h2>
+                <h2 class="!mt-0"><span class="text-indigo-400 dark:text-indigo-500 mr-2">4.</span>出牌前 <span class="badge badge-intermediate">⚡ 进阶</span></h2>
                 
                 <h3>发牌流程</h3>
                 <ol>
@@ -786,13 +1234,25 @@
                     <li><strong>反的权力顺序</strong>: 反的权力也是按顺序进行的，具体如下：第一个反的时机，也就是在每人拿完 25 张牌而庄家拿底之前，庄家先有反的权力，然后是庄家的下家，再是庄家的对家，最后是庄家的上家，也就是按照逆时针的顺序。等庄家埋完底之后，第二个反的时机，也同样遵循从庄家开始逆时针的顺序。</li>
                 </ul>
 
-                <h3>造反</h3>
+                <!-- Advanced Section: 造反 -->
+                <div class="advanced-section">
+                    <h3>造反 <span class="badge badge-advanced">🧠 高手</span></h3>
                 <p>为了平衡双方牌的实力，台下的玩家在两种情况下可以“造反”：手上的分数少于等于 15 分，或者在有主花色情况下主牌少于等于 3 张。只有台下的玩家才有权力造反，而且造反的玩家要没有埋过底牌。注意：主牌数量是在所有人都不反了以后来确定的，所以不要急着“造反”。此外，造反并非强制，属于自愿行为。</p>
-                <p>具备了“造反”的条件之后，玩家可以把自己手上的牌全都亮出来给其他 3 位玩家检验，如果确实满足“造反”的条件，则视为造反成功。造反成功之后，当局的抓牌视为无效，大家重新抓牌，但是换成台上另外一名玩家来做庄家。造反的玩家此局还是在“台下”。此外：为了游戏的流畅性，规定不能连着两局都“造反”。</p>
-            </div>
+                <p>具备了“造反”的条件之后，玩家可以把自己手上的牌全都亮出来给其他 3 位玩家检验，如果确实满足“造反”的条件，则视为造反成功。造反成功之后，当局的抓牌视为无效，大家重新抓牌，但是换成台上另外一名玩家来做庄家。造反的玩家此局还是在“台下”。此外：为了游戏的流畅性，规定不能连着两局都"造反"。</p>
+                </div><!-- end advanced-section 造反 -->
+                
+                <!-- Collapsed Notice for Beginner Mode: 造反 -->
+                <div class="advanced-collapsed-notice bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-xl p-4 my-4 items-center gap-3 cursor-pointer hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-colors" onclick="document.querySelector('[data-mode=full]').click()">
+                    <span class="text-2xl">🧠</span>
+                    <div>
+                        <span class="font-bold text-purple-700 dark:text-purple-300">高手规则已隐藏：造反</span>
+                        <p class="text-sm text-purple-600 dark:text-purple-400 mt-1">切换到"完整模式"查看进阶规则</p>
+                    </div>
+                </div>
+            </div><!-- end pre-game -->
 
             <div id="flowcharts" class="glass-morphism rounded-3xl p-8 md:p-12 prose">
-                <h2 class="!mt-0">流程图</h2>
+                <h2 class="!mt-0"><span class="text-indigo-400 dark:text-indigo-500 mr-2">5.</span>流程图 <span class="badge badge-beginner">🔰 基础</span></h2>
                 
                 <h3>1. 第一局流程</h3>
                 <div class="space-y-8 not-prose my-8">
@@ -905,15 +1365,121 @@
             </div>
 
             <div id="gameplay" class="glass-morphism rounded-3xl p-8 md:p-12 prose">
-                <h2 class="!mt-0">出牌阶段</h2>
+                <h2 class="!mt-0"><span class="text-indigo-400 dark:text-indigo-500 mr-2">6.</span>出牌阶段 <span class="badge badge-intermediate">⚡ 进阶</span></h2>
                 <p>永远都是庄家先出牌。此时每人手上有 25 张牌。</p>
 
                 <h3>牌的类别</h3>
-                <p>80 分中有个很重要的概念，就是牌的类别。出牌前的阶段确立了“主花色”，或是打“无主”。</p>
+                <p>80 分中有个很重要的概念，就是牌的类别。出牌前的阶段确立了"主花色"，或是打"无主"。</p>
                 
-                <p>先介绍不打无主，有主花色的情况。此时可以把牌分成 4 个类别：主牌和 3 个非主花色牌类（统称为副牌）。主牌包括：2 张大王，2 张小王，8 张庄家在打的数字的牌，24 张主花色牌（其实每门花色有 26 张牌，但这里需要除去 2 张庄家在打的数字的牌），一共是 36 张。3 个非主花色牌类，也即副牌：每类是 24 张牌，因为每门非主花色中有 2 张是庄家在打的数字的牌，这 2 张被分到了主牌中。对于新手，这点经常容易搞错。</p>
+                <!-- Visual Card Classification Diagram -->
+                <div class="not-prose my-8">
+                    <div class="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-slate-800 dark:to-slate-800 rounded-2xl p-6 border border-indigo-100 dark:border-slate-700">
+                        <h4 class="text-center font-bold text-lg text-slate-800 dark:text-white mb-6">牌的分类图解 <span class="text-sm font-normal text-slate-500">(以打 7 为例)</span></h4>
+                        
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <!-- 有主情况 -->
+                            <div class="bg-white dark:bg-slate-900 rounded-xl p-5 shadow-sm">
+                                <div class="flex items-center gap-2 mb-4">
+                                    <span class="px-3 py-1 rounded-full bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 text-sm font-bold">有主</span>
+                                    <span class="text-sm text-slate-500">主花色: <span class="suit-black font-bold">♠</span></span>
+                                </div>
+                                
+                                <!-- 主牌 -->
+                                <div class="mb-4 p-3 rounded-lg bg-amber-50 dark:bg-amber-900/20 border-2 border-amber-300 dark:border-amber-700">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="font-bold text-amber-700 dark:text-amber-300">🃏 主牌</span>
+                                        <span class="text-xs bg-amber-200 dark:bg-amber-800 px-2 py-0.5 rounded-full font-bold">36张</span>
+                                    </div>
+                                    <div class="flex flex-wrap gap-1 text-xs">
+                                        <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded border">大王×2</span>
+                                        <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded border">小王×2</span>
+                                        <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded border"><span class="suit-black">♠</span>7×2</span>
+                                        <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded border"><span class="suit-red">♥</span><span class="suit-black">♣</span><span class="suit-red">♦</span>7×6</span>
+                                        <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded border"><span class="suit-black">♠</span>牌×24</span>
+                                    </div>
+                                </div>
+                                
+                                <!-- 副牌 -->
+                                <div class="grid grid-cols-3 gap-2">
+                                    <div class="p-2 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-center">
+                                        <span class="suit-red text-lg">♥</span>
+                                        <div class="text-xs font-bold text-red-600 dark:text-red-400">24张</div>
+                                    </div>
+                                    <div class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-center">
+                                        <span class="suit-black text-lg">♣</span>
+                                        <div class="text-xs font-bold text-slate-600 dark:text-slate-300">24张</div>
+                                    </div>
+                                    <div class="p-2 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-center">
+                                        <span class="suit-red text-lg">♦</span>
+                                        <div class="text-xs font-bold text-red-600 dark:text-red-400">24张</div>
+                                    </div>
+                                </div>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-2 text-center">副牌：每类少2张级牌(7)</p>
+                            </div>
+                            
+                            <!-- 无主情况 -->
+                            <div class="bg-white dark:bg-slate-900 rounded-xl p-5 shadow-sm">
+                                <div class="flex items-center gap-2 mb-4">
+                                    <span class="px-3 py-1 rounded-full bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 text-sm font-bold">无主</span>
+                                    <span class="text-sm text-slate-500">无主花色</span>
+                                </div>
+                                
+                                <!-- 主牌 -->
+                                <div class="mb-4 p-3 rounded-lg bg-amber-50 dark:bg-amber-900/20 border-2 border-amber-300 dark:border-amber-700">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="font-bold text-amber-700 dark:text-amber-300">🃏 主牌</span>
+                                        <span class="text-xs bg-amber-200 dark:bg-amber-800 px-2 py-0.5 rounded-full font-bold">12张</span>
+                                    </div>
+                                    <div class="flex flex-wrap gap-1 text-xs">
+                                        <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded border">大王×2</span>
+                                        <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded border">小王×2</span>
+                                        <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded border">全部7×8</span>
+                                    </div>
+                                </div>
+                                
+                                <!-- 副牌 -->
+                                <div class="grid grid-cols-4 gap-2">
+                                    <div class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-center">
+                                        <span class="suit-black text-lg">♠</span>
+                                        <div class="text-xs font-bold">24张</div>
+                                    </div>
+                                    <div class="p-2 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-center">
+                                        <span class="suit-red text-lg">♥</span>
+                                        <div class="text-xs font-bold text-red-600 dark:text-red-400">24张</div>
+                                    </div>
+                                    <div class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-center">
+                                        <span class="suit-black text-lg">♣</span>
+                                        <div class="text-xs font-bold">24张</div>
+                                    </div>
+                                    <div class="p-2 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-center">
+                                        <span class="suit-red text-lg">♦</span>
+                                        <div class="text-xs font-bold text-red-600 dark:text-red-400">24张</div>
+                                    </div>
+                                </div>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-2 text-center">副牌：每类少2张级牌(7)</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Key Insight -->
+                        <div class="mt-4 p-3 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg text-center">
+                            <span class="text-sm font-medium text-indigo-700 dark:text-indigo-300">💡 <strong>关键</strong>：所有级牌（本例中的7）都属于主牌，不属于各自花色！</span>
+                        </div>
+                    </div>
+                </div>
 
-                <p>打无主的情况。打无主时就没有了主花色，此时就有 5 个类别的牌：主牌和 4 个非主花色牌类。主牌仅包括：2 张大王，2 张小王，8 张庄家在打的数字的牌，一共 12 张。4 个非主花色牌类，每类还是 24 张。</p>
+                <!-- Common Mistake Callout -->
+                <div class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 p-4 rounded-r-xl my-6 not-prose">
+                    <div class="flex items-start gap-3">
+                        <span class="text-2xl">⚠️</span>
+                        <div>
+                            <h4 class="font-bold text-red-700 dark:text-red-400 mb-2">新手易错</h4>
+                            <ul class="text-sm text-slate-700 dark:text-slate-300 space-y-1">
+                                <li><strong>级牌属于主牌！</strong>打♠7时，<span class="text-red-500">♥</span>7、<span class="text-red-500">♦</span>7、♣7 都是主牌，不是各自花色的副牌。</li>
+                                <li><strong>副牌每类只有24张</strong>，因为每门花色的2张级牌都被分到了主牌中。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
 
                 <h3>牌的大小与顺序</h3>
                 <ul>
@@ -985,6 +1551,21 @@
                         <li><strong>易错点</strong>: 2 张大王、2 张小王、2 张同一花色的 7 (主级牌)，这些<strong>都是主对</strong>。</li>
                         <li><strong>强制性</strong>: 如果你手上只有这些特殊的主对 (如一对小王)，也<strong>必须</strong>跟出，不能保留。</li>
                     </ul>
+                </div>
+
+                <!-- Common Mistake Callout -->
+                <div class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 p-4 rounded-r-xl my-6 not-prose">
+                    <div class="flex items-start gap-3">
+                        <span class="text-2xl">⚠️</span>
+                        <div>
+                            <h4 class="font-bold text-red-700 dark:text-red-400 mb-2">新手易错 - 跟牌</h4>
+                            <ul class="text-sm text-slate-700 dark:text-slate-300 space-y-2">
+                                <li><strong>跟拖拉机时必须先出对子！</strong>没有拖拉机但有对子，必须先出对子补足。</li>
+                                <li><strong>大王小王也是主对！</strong>别人出主对时，你的一对小王也必须跟出。</li>
+                                <li><strong>两张单牌不能毙对子！</strong>必须用主牌<strong>对子</strong>才能毙副牌对子。</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
 
                 <h4>2. 胜负判定</h4>
@@ -1062,6 +1643,21 @@
                     </div>
                 </div>
 
+
+                <!-- Common Mistake Callout -->
+                <div class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 p-4 rounded-r-xl my-6 not-prose">
+                    <div class="flex items-start gap-3">
+                        <span class="text-2xl">⚠️</span>
+                        <div>
+                            <h4 class="font-bold text-red-700 dark:text-red-400 mb-2">新手易错 - 拖拉机</h4>
+                            <ul class="text-sm text-slate-700 dark:text-slate-300 space-y-2">
+                                <li><strong>级牌会"隔断"拖拉机！</strong>打7时，♠66+♠77 不是拖拉机，因为7被抽走成主牌了。</li>
+                                <li><strong>相同级别不能组拖拉机！</strong>♣77+<span class="text-red-500">♦</span>77 不是拖拉机，因为它们大小相同。</li>
+                                <li><strong>拖拉机必须"连续"！</strong>中间不能跳过任何牌（考虑级牌被抽走的情况）。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
                 <h3>“甩牌”的定义</h3>
                 <p>在同一类别中，可以把单牌，对子和“拖拉机”混合着当成一手牌出出来。</p>
                 
@@ -1104,7 +1700,7 @@
             </div>
 
             <div id="scoring" class="glass-morphism rounded-3xl p-8 md:p-12 prose">
-                <h2 class="!mt-0">结算与抠底</h2>
+                <h2 class="!mt-0"><span class="text-indigo-400 dark:text-indigo-500 mr-2">7.</span>结算与抠底 <span class="badge badge-intermediate">⚡ 进阶</span></h2>
 
                 <h3>分数计算</h3>
                 <p>当所有 25 张牌出完后，游戏结束，进行分数结算。</p>
@@ -1168,7 +1764,8 @@
                 </div>
                 <p class="mt-2 text-sm"><strong>最终得分</strong> = 回合中抓到的分数 + (底牌分数 × 倍数)</p>
 
-                <h3>一钩勾到底 (特殊规则)</h3>
+                <div class="advanced-section">
+                <h3>一钩勾到底 (特殊规则) <span class="badge badge-advanced">🧠 高手</span></h3>
                 <p>这是一个有趣的惩罚规则。在打 <strong>J</strong> 的时候，如果台下一方（闲家）满足以下所有条件，庄家队将被“勾到底”，直接降回从 <strong>2</strong> 开始打。</p>
                 <ul>
                     <li><strong>条件 1</strong>: 台下用 <strong>主J</strong> 抠底成功。
@@ -1178,8 +1775,108 @@
                         </ul>
                     </li>
                     <li><strong>条件 2</strong>: 台下此局拿到的总分（抓分+抠底分）达到 <strong>80 分</strong>或以上。</li>
-                    <li><strong>限制</strong>: 为了不造成太大的挫败感，规定每次游戏每队至多被“勾到底”一次 ☺。</li>
+                    <li><strong>限制</strong>: 为了不造成太大的挫败感，规定每次游戏每队至多被"勾到底"一次 ☺。</li>
                 </ul>
+                </div><!-- end advanced-section 一钩勾到底 -->
+                
+                <!-- Collapsed Notice for Beginner Mode: 一钩勾到底 -->
+                <div class="advanced-collapsed-notice bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-xl p-4 my-4 items-center gap-3 cursor-pointer hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-colors" onclick="document.querySelector('[data-mode=full]').click()">
+                    <span class="text-2xl">🧠</span>
+                    <div>
+                        <span class="font-bold text-purple-700 dark:text-purple-300">高手规则已隐藏：一钩勾到底</span>
+                        <p class="text-sm text-purple-600 dark:text-purple-400 mt-1">切换到"完整模式"查看进阶规则</p>
+                    </div>
+                </div>
+            </div><!-- end settlement -->
+
+            <!-- Glossary Section -->
+            <div id="glossary" class="glass-morphism rounded-3xl p-8 md:p-12">
+                <div class="flex items-center gap-3 mb-8">
+                    <span class="text-3xl">📖</span>
+                    <h2 class="text-2xl md:text-3xl font-display font-bold text-slate-900 dark:text-white !m-0">术语表 (Glossary)</h2>
+                </div>
+                
+                <div class="grid gap-4 md:grid-cols-2">
+                    <!-- Term: 毙 -->
+                    <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-4 border border-slate-200 dark:border-slate-700">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-xl">💀</span>
+                            <h3 class="font-bold text-lg text-slate-900 dark:text-white">毙</h3>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">用主牌压过副牌。当你没有被出的花色时，可以用主牌"毙"掉别人的副牌来赢得该回合。</p>
+                        <div class="mt-2 text-xs bg-slate-100 dark:bg-slate-700 rounded px-2 py-1 inline-block">英文: Trump / Kill</div>
+                    </div>
+                    
+                    <!-- Term: 甩牌 -->
+                    <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-4 border border-slate-200 dark:border-slate-700">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-xl">🃏</span>
+                            <h3 class="font-bold text-lg text-slate-900 dark:text-white">甩牌</h3>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">一次性出多张同花色的不同牌型（如单张+对子）。仅当你的所有牌都是该花色最大时才能成功。</p>
+                        <div class="mt-2 text-xs bg-slate-100 dark:bg-slate-700 rounded px-2 py-1 inline-block">英文: Dump / Multi-throw</div>
+                    </div>
+                    
+                    <!-- Term: 抠底 -->
+                    <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-4 border border-slate-200 dark:border-slate-700">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-xl">🎴</span>
+                            <h3 class="font-bold text-lg text-slate-900 dark:text-white">抠底</h3>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">在最后一手牌赢得回合，从而获得底牌中的分数。抠底分数会翻倍计算。</p>
+                        <div class="mt-2 text-xs bg-slate-100 dark:bg-slate-700 rounded px-2 py-1 inline-block">英文: Dig the Kitty</div>
+                    </div>
+                    
+                    <!-- Term: 造反 -->
+                    <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-4 border border-slate-200 dark:border-slate-700">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-xl">⚔️</span>
+                            <h3 class="font-bold text-lg text-slate-900 dark:text-white">造反</h3>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">台下玩家手牌太差时可宣布造反，重新发牌。条件：分数≤15分 或 主牌≤3张。</p>
+                        <div class="mt-2 text-xs bg-slate-100 dark:bg-slate-700 rounded px-2 py-1 inline-block">英文: Rebel / Revolt</div>
+                    </div>
+                    
+                    <!-- Term: 拖拉机 -->
+                    <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-4 border border-slate-200 dark:border-slate-700">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-xl">🚜</span>
+                            <h3 class="font-bold text-lg text-slate-900 dark:text-white">拖拉机</h3>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">连续的对子组合。例如：33-44、99-1010-JJ。对子必须连续且同花色。</p>
+                        <div class="mt-2 text-xs bg-slate-100 dark:bg-slate-700 rounded px-2 py-1 inline-block">英文: Tractor</div>
+                    </div>
+                    
+                    <!-- Term: 反牌/亮牌 -->
+                    <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-4 border border-slate-200 dark:border-slate-700">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-xl">🔔</span>
+                            <h3 class="font-bold text-lg text-slate-900 dark:text-white">反牌/亮牌</h3>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">抓牌时展示级牌来确定主花色。先亮者定主，一对可以覆盖单张。</p>
+                        <div class="mt-2 text-xs bg-slate-100 dark:bg-slate-700 rounded px-2 py-1 inline-block">英文: Declare Trump</div>
+                    </div>
+                    
+                    <!-- Term: 级牌 -->
+                    <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-4 border border-slate-200 dark:border-slate-700">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-xl">⭐</span>
+                            <h3 class="font-bold text-lg text-slate-900 dark:text-white">级牌</h3>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">当前正在打的数字的牌。例如打7时，所有7都是级牌，都属于主牌。</p>
+                        <div class="mt-2 text-xs bg-slate-100 dark:bg-slate-700 rounded px-2 py-1 inline-block">英文: Trump Rank / Level Card</div>
+                    </div>
+                    
+                    <!-- Term: 台上/台下 -->
+                    <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-4 border border-slate-200 dark:border-slate-700">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-xl">👑</span>
+                            <h3 class="font-bold text-lg text-slate-900 dark:text-white">台上/台下</h3>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">台上 = 庄家队（防守方）；台下 = 闲家队（进攻方，需要抓分）。</p>
+                        <div class="mt-2 text-xs bg-slate-100 dark:bg-slate-700 rounded px-2 py-1 inline-block">英文: Defending / Attacking Team</div>
+                    </div>
+                </div>
             </div>
 
         </main>
@@ -1436,6 +2133,64 @@
                 resultDisplay.className = `calc-result ${bgClass} ${textClass}`;
             });
         }
+
+        // Progress Bar Logic
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+        
+        function updateProgressBar() {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = Math.min(100, Math.round((scrollTop / docHeight) * 100));
+            
+            if (progressBar) {
+                progressBar.style.width = scrollPercent + '%';
+            }
+            if (progressText) {
+                progressText.textContent = scrollPercent + '%';
+            }
+        }
+        
+        window.addEventListener('scroll', updateProgressBar);
+        updateProgressBar(); // Initial call
+
+        // Mode Toggle Logic (Beginner vs Full)
+        const modeToggle = document.getElementById('modeToggle');
+        const modeOptions = modeToggle?.querySelectorAll('.mode-toggle-option');
+        
+        // Get saved mode or default to 'full'
+        let currentMode = localStorage.getItem('rulesMode') || 'full';
+        
+        function applyMode(mode) {
+            currentMode = mode;
+            localStorage.setItem('rulesMode', mode);
+            
+            // Update toggle UI
+            modeOptions?.forEach(opt => {
+                if (opt.dataset.mode === mode) {
+                    opt.classList.add('active');
+                } else {
+                    opt.classList.remove('active');
+                }
+            });
+            
+            // Apply mode to document
+            if (mode === 'beginner') {
+                document.documentElement.classList.add('beginner-mode');
+            } else {
+                document.documentElement.classList.remove('beginner-mode');
+            }
+        }
+        
+        // Initialize mode
+        applyMode(currentMode);
+        
+        // Handle toggle clicks
+        modeOptions?.forEach(opt => {
+            opt.addEventListener('click', () => {
+                applyMode(opt.dataset.mode);
+            });
+        });
 
         // Scroll Spy Logic
         document.addEventListener('DOMContentLoaded', () => {
