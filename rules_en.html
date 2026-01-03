@@ -1,0 +1,2208 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>80points - Game Rules</title>
+    <link rel="icon" type="image/svg+xml" href="public/favicon.svg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="public/js/theme.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            mermaid.initialize({ 
+                startOnLoad: true,
+                theme: document.documentElement.classList.contains('dark') ? 'dark' : 'default',
+                securityLevel: 'loose',
+                themeVariables: {
+                    fontSize: '18px',
+                    fontFamily: 'Inter, sans-serif'
+                }
+            });
+
+            // Track current theme state
+            let currentIsDark = document.documentElement.classList.contains('dark');
+
+            // Update mermaid theme when dark mode toggles
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.attributeName === "class") {
+                        const newIsDark = document.documentElement.classList.contains('dark');
+                        // Only reload if the theme actually changed
+                        if (newIsDark !== currentIsDark) {
+                            location.reload(); 
+                        }
+                    }
+                });
+            });
+            
+            observer.observe(document.documentElement, {
+                attributes: true
+            });
+
+            // Mobile Menu Logic
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const mobileMenuBackdrop = document.getElementById('mobileMenuBackdrop');
+            const mobileMenuDrawer = document.getElementById('mobileMenuDrawer');
+            const mobileLinks = document.querySelectorAll('.mobile-link');
+
+            function toggleMenu() {
+                const isHidden = mobileMenu.classList.contains('hidden');
+                if (isHidden) {
+                    mobileMenu.classList.remove('hidden');
+                    // Small delay to allow display:block to apply before transition
+                    setTimeout(() => {
+                        mobileMenuBackdrop.classList.remove('opacity-0');
+                        mobileMenuDrawer.classList.remove('-translate-x-full');
+                    }, 10);
+                } else {
+                    mobileMenuBackdrop.classList.add('opacity-0');
+                    mobileMenuDrawer.classList.add('-translate-x-full');
+                    setTimeout(() => {
+                        mobileMenu.classList.add('hidden');
+                    }, 300);
+                }
+            }
+
+            if (mobileMenuBtn) {
+                mobileMenuBtn.addEventListener('click', toggleMenu);
+                mobileMenuBackdrop.addEventListener('click', toggleMenu);
+                
+                // Close menu when clicking a link
+                mobileLinks.forEach(link => {
+                    link.addEventListener('click', toggleMenu);
+                });
+            }
+        });
+    </script>
+    <style type="text/tailwindcss">
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@500;700;800;900&display=swap');
+        
+        .glass-morphism {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        }
+        
+        .dark .glass-morphism {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .suit-bg {
+            position: absolute;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.6;
+        }
+        
+        .dark .suit-bg {
+            opacity: 0.4;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        /* Difficulty Badges */
+        .badge {
+            @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold;
+        }
+        .badge-beginner {
+            @apply bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300;
+        }
+        .badge-intermediate {
+            @apply bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300;
+        }
+        .badge-advanced {
+            @apply bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300;
+        }
+
+        /* Collapsible Advanced Sections */
+        .advanced-section {
+            transition: all 0.3s ease-out;
+            overflow: hidden;
+        }
+        .beginner-mode .advanced-section {
+            max-height: 0;
+            opacity: 0;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        .beginner-mode .advanced-section.force-show {
+            max-height: none;
+            opacity: 1;
+        }
+        
+        /* Collapsed indicator */
+        .advanced-collapsed-notice {
+            display: none;
+        }
+        .beginner-mode .advanced-collapsed-notice {
+            display: flex;
+        }
+        .beginner-mode .advanced-section + .advanced-collapsed-notice {
+            display: flex;
+        }
+
+        /* Mode toggle button styles */
+        .mode-toggle {
+            @apply relative flex items-center p-1 rounded-full transition-colors;
+        }
+        .mode-toggle-option {
+            @apply px-3 py-1 rounded-full text-xs font-bold transition-all cursor-pointer;
+        }
+        .mode-toggle-option.active {
+            @apply bg-white dark:bg-slate-500 shadow-sm;
+        }
+
+        /* Typography for Markdown Content */
+        .prose h1 {
+            @apply text-3xl sm:text-4xl md:text-5xl font-display font-black mb-8 sm:mb-12 text-slate-900 dark:text-white tracking-tight;
+        }
+        .prose h2 {
+            @apply text-2xl sm:text-3xl font-display font-bold mt-10 sm:mt-16 mb-6 sm:mb-8 text-slate-800 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700 pb-3 sm:pb-4;
+        }
+        .prose h3 {
+            @apply text-2xl font-bold mt-10 mb-5 text-indigo-600 dark:text-indigo-400;
+        }
+        .prose h4 {
+            @apply text-xl font-bold mt-8 mb-4 text-slate-700 dark:text-slate-200;
+        }
+        .prose p {
+            @apply mb-4 leading-relaxed text-slate-600 dark:text-slate-300;
+        }
+        .prose ul {
+            @apply list-disc list-inside mb-4 space-y-2 text-slate-600 dark:text-slate-300 ml-4;
+        }
+        .prose ol {
+            @apply list-decimal list-inside mb-4 space-y-2 text-slate-600 dark:text-slate-300 ml-4;
+        }
+        .prose table {
+            @apply w-full mb-8 border-collapse text-sm overflow-hidden rounded-lg shadow-sm;
+        }
+        
+        /* Mobile table wrapper */
+        .table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 0 -1rem;
+            padding: 0 1rem;
+        }
+        
+        @media (min-width: 640px) {
+            .table-wrapper {
+                overflow-x: visible;
+                margin: 0;
+                padding: 0;
+            }
+        }
+        .prose th {
+            @apply border border-slate-200 dark:border-slate-700 p-3 bg-slate-100 dark:bg-slate-800 font-semibold text-left text-slate-700 dark:text-slate-200;
+        }
+        .prose td {
+            @apply border border-slate-200 dark:border-slate-700 p-3 text-slate-600 dark:text-slate-300;
+        }
+        .prose strong {
+            @apply font-bold text-slate-800 dark:text-slate-100;
+        }
+        .prose blockquote {
+            @apply border-l-4 border-indigo-500 pl-4 italic my-6 bg-slate-50 dark:bg-slate-800/50 p-4 rounded-r text-slate-600 dark:text-slate-400;
+        }
+        .prose img {
+            @apply rounded-xl shadow-lg my-8 max-w-full h-auto border border-slate-200 dark:border-slate-700;
+        }
+        
+        /* Staggered Deal Animation */
+        .deal-card {
+            opacity: 0;
+            transform: translateY(40px) scale(0.98);
+            transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), 
+                        transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+            will-change: opacity, transform;
+        }
+        
+        .deal-card.is-visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #334155;
+        }
+
+        /* Interactive Playing Cards */
+        .hand-showcase {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            justify-content: center;
+        }
+        
+        @media (min-width: 640px) {
+            .hand-showcase {
+                gap: 1.5rem;
+                margin: 2rem 0;
+                justify-content: flex-start;
+            }
+        }
+        
+        .hand-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            width: 140px;
+            flex-shrink: 0;
+        }
+        
+        @media (min-width: 640px) {
+            .hand-item {
+                width: 200px;
+            }
+        }
+
+        .hand-cards {
+            display: flex;
+            perspective: 1000px;
+            padding: 8px;
+            height: 80px;
+            align-items: center;
+        }
+        
+        @media (min-width: 640px) {
+            .hand-cards {
+                padding: 10px;
+                height: 100px;
+            }
+        }
+
+        .playing-card {
+            width: 40px;
+            height: 60px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: -2px 2px 6px rgba(0,0,0,0.15);
+            border: 1px solid #e2e8f0;
+            position: relative;
+            margin-right: -20px;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            cursor: default;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 3px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            user-select: none;
+            transform-origin: bottom center;
+        }
+        
+        @media (min-width: 640px) {
+            .playing-card {
+                width: 50px;
+                height: 75px;
+                border-radius: 6px;
+                margin-right: -25px;
+                padding: 4px;
+            }
+        }
+        
+        .dark .playing-card {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+        }
+
+        .playing-card:last-child {
+            margin-right: 0;
+        }
+
+        .playing-card:hover {
+            transform: translateY(-10px) rotate(2deg) scale(1.08);
+            z-index: 20;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            margin-right: -8px;
+        }
+        
+        @media (min-width: 640px) {
+            .playing-card:hover {
+                transform: translateY(-15px) rotate(2deg) scale(1.1);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+                margin-right: -5px;
+            }
+        }
+        
+        .hand-cards:hover .playing-card {
+            margin-right: -12px;
+        }
+        @media (min-width: 640px) {
+            .hand-cards:hover .playing-card {
+                margin-right: -15px;
+            }
+        }
+        .hand-cards:hover .playing-card:hover {
+            margin-right: 0;
+            z-index: 30;
+        }
+
+        .playing-card.red { color: #ef4444; }
+        .playing-card.black { color: #334155; }
+
+        .card-top { font-size: 10px; line-height: 1; }
+        .card-center { font-size: 16px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        .card-bottom { font-size: 10px; line-height: 1; transform: rotate(180deg); align-self: flex-end; }
+        
+        @media (min-width: 640px) {
+            .card-top { font-size: 12px; }
+            .card-center { font-size: 20px; }
+            .card-bottom { font-size: 12px; }
+        }
+        
+        .hand-desc {
+            font-size: 0.75rem;
+            color: #64748b;
+            font-weight: 600;
+            text-align: center;
+        }
+        .dark .hand-desc {
+            color: #94a3b8;
+        }
+
+        /* Upgrade Calculator */
+        .calc-container {
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .dark .calc-container {
+            background: rgba(15, 23, 42, 0.5);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .range-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: #cbd5e1;
+            outline: none;
+            margin: 1.5rem 0;
+        }
+        .dark .range-slider {
+            background: #334155;
+        }
+        
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #6366f1;
+            cursor: pointer;
+            transition: transform 0.1s;
+            box-shadow: 0 2px 6px rgba(99, 102, 241, 0.4);
+        }
+        
+        .range-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .calc-result {
+            font-size: 1.25rem;
+            font-weight: 700;
+            text-align: center;
+            min-height: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.75rem;
+            transition: all 0.3s;
+        }
+
+        /* Trump Hierarchy */
+        .trump-bar {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 1rem;
+            padding: 0.75rem;
+            margin: 1.5rem 0;
+            position: relative;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            gap: 0.25rem;
+        }
+        @media (min-width: 640px) {
+            .trump-bar {
+                justify-content: space-between;
+                padding: 1rem;
+                overflow-x: visible;
+            }
+        }
+        .dark .trump-bar {
+            background: rgba(15, 23, 42, 0.5);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .trump-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 0.35rem;
+            border-radius: 0.5rem;
+            position: relative;
+            flex-shrink: 0;
+        }
+        @media (min-width: 640px) {
+            .trump-item {
+                padding: 0.5rem;
+            }
+        }
+
+        .trump-item:hover {
+            background: rgba(99, 102, 241, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .trump-icon {
+            font-size: 1.5rem;
+            line-height: 1;
+            margin-bottom: 0.15rem;
+            transition: all 0.3s;
+        }
+        @media (min-width: 640px) {
+            .trump-icon {
+                font-size: 2rem;
+                margin-bottom: 0.25rem;
+            }
+        }
+
+        .trump-label {
+            font-size: 0.625rem;
+            font-weight: 600;
+            color: #64748b;
+            white-space: nowrap;
+        }
+        @media (min-width: 640px) {
+            .trump-label {
+                font-size: 0.75rem;
+            }
+        }
+        .dark .trump-label {
+            color: #94a3b8;
+        }
+
+        /* States for interaction */
+        .trump-item.dimmed {
+            opacity: 0.2;
+            filter: grayscale(100%);
+        }
+
+        .trump-item.active {
+            transform: scale(1.1);
+            background: rgba(99, 102, 241, 0.2);
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .trump-item.beater {
+            animation: pulse-glow 1.5s infinite;
+        }
+
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(99, 102, 241, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+        }
+
+        /* Slow spin animation for seating diagram */
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(-360deg); }
+        }
+        .animate-spin-slow {
+            animation: spin-slow 8s linear infinite;
+        }
+
+        .trump-arrow {
+            color: #cbd5e1;
+            font-size: 1.25rem;
+        }
+        .dark .trump-arrow {
+            color: #475569;
+        }
+
+        /* Progress Bar */
+        .progress-bar-container {
+            position: fixed;
+            top: 64px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #e2e8f0;
+            z-index: 40;
+        }
+        .dark .progress-bar-container {
+            background: #1e293b;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #6366f1, #a855f7, #ec4899);
+            width: 0%;
+            transition: width 0.1s ease-out;
+        }
+        .progress-text {
+            position: fixed;
+            top: 68px;
+            right: 8px;
+            font-size: 9px;
+            font-weight: 700;
+            color: #6366f1;
+            z-index: 41;
+            background: rgba(255,255,255,0.9);
+            padding: 2px 6px;
+            border-radius: 9999px;
+        }
+        @media (min-width: 640px) {
+            .progress-text {
+                right: 16px;
+                font-size: 10px;
+                padding: 2px 8px;
+            }
+        }
+        .dark .progress-text {
+            background: rgba(15, 23, 42, 0.9);
+            color: #a5b4fc;
+        }
+
+        /* Glossary Tooltips */
+        .jargon {
+            font-weight: 600;
+            text-decoration: underline;
+            text-decoration-style: dotted;
+            text-underline-offset: 3px;
+            cursor: help;
+            position: relative;
+        }
+        .jargon:hover {
+            text-decoration-color: #6366f1;
+        }
+        .jargon-tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e293b;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 400;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s;
+            z-index: 100;
+            pointer-events: none;
+            margin-bottom: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .jargon-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: #1e293b;
+        }
+        .jargon:hover .jargon-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Gradient Slider */
+        .range-slider-gradient {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 12px;
+            border-radius: 6px;
+            background: linear-gradient(90deg, 
+                #22c55e 0%, 
+                #22c55e 13%, 
+                #84cc16 26%, 
+                #eab308 40%, 
+                #f97316 53%, 
+                #ef4444 66%, 
+                #ef4444 100%);
+            outline: none;
+            margin: 1.5rem 0;
+        }
+        .range-slider-gradient::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+            transition: transform 0.1s, box-shadow 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3), inset 0 0 0 3px #6366f1;
+        }
+        .range-slider-gradient::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4), inset 0 0 0 3px #6366f1;
+        }
+
+        /* Card Hand Display */
+        .mini-card-hand {
+            display: flex;
+            justify-content: center;
+            gap: 2px;
+            margin-top: 1rem;
+        }
+        .mini-card {
+            width: 24px;
+            height: 36px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+            transition: all 0.2s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .mini-card.highlight {
+            background: #fef3c7;
+            border-color: #f59e0b;
+            transform: translateY(-4px);
+        }
+        .mini-card.red { color: #ef4444; }
+        .mini-card.black { color: #1e293b; }
+        .dark .mini-card {
+            background: #334155;
+            border-color: #475569;
+        }
+        .dark .mini-card.highlight {
+            background: #854d0e;
+            border-color: #f59e0b;
+        }
+        .dark .mini-card.red { color: #f87171; }
+        .dark .mini-card.black { color: #e2e8f0; }
+
+        /* Mobile Card Touch Targets */
+        @media (max-width: 768px) {
+            .card-example {
+                min-height: 60px;
+                min-width: 60px;
+                padding: 12px;
+            }
+            .trump-item {
+                min-height: 48px;
+                padding: 8px 12px;
+            }
+        }
+
+        /* Status Badges */
+        .status-success {
+            @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300;
+        }
+        .status-fail {
+            @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300;
+        }
+        .status-neutral {
+            @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300;
+        }
+
+        /* Suit Styling */
+        .suit-red { color: #ef4444; }
+        .suit-black { color: #1e293b; }
+        .dark .suit-black { color: #e2e8f0; }
+    </style>
+</head>
+<body class="min-h-screen bg-slate-100 dark:bg-[#0B1120] text-slate-900 dark:text-slate-100 transition-colors duration-500">
+    
+    <!-- Dynamic Background Container -->
+    <div id="background-container" class="fixed inset-0 overflow-hidden pointer-events-none">
+        <!-- Gradients -->
+        <div class="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-indigo-400/30 dark:bg-indigo-600/20 blur-[120px] animate-float-slow"></div>
+        <div class="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] rounded-full bg-fuchsia-400/30 dark:bg-fuchsia-600/20 blur-[120px] animate-float-medium" style="animation-delay: -2s;"></div>
+        <!-- Suits will be injected here by JS -->
+    </div>
+
+    <!-- Fixed Background (Legacy - Removed) -->
+    <!-- <div class="fixed inset-0 overflow-hidden pointer-events-none -z-10">...</div> -->
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass-morphism border-b border-white/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-4">
+                    <!-- Mobile Menu Button -->
+                    <button id="mobileMenuBtn" class="lg:hidden p-2 rounded-md text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+
+                    <a href="index.html" class="flex items-center gap-3 group">
+                        <img src="public/favicon.svg" class="w-8 h-8 brightness-0 dark:invert group-hover:rotate-12 transition-transform duration-300">
+                        <span class="font-display font-bold text-xl tracking-tight">80 Points</span>
+                    </a>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <a href="index.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                        <span class="hidden sm:inline">Back to Home</span>
+                    </a>
+                    
+                    <!-- Mode Toggle -->
+                    <div id="modeToggle" class="mode-toggle bg-slate-200 dark:bg-slate-700" title="Toggle Difficulty">
+                        <span class="mode-toggle-option active" data-mode="full">
+                            <span class="hidden sm:inline">🧠 Full</span>
+                            <span class="sm:hidden">🧠</span>
+                        </span>
+                        <span class="mode-toggle-option" data-mode="beginner">
+                            <span class="hidden sm:inline">🔰 Beginner</span>
+                            <span class="sm:hidden">🔰</span>
+                        </span>
+                    </div>
+
+                    <!-- Language Toggle -->
+                    <a href="rules.html" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors font-bold text-sm flex items-center justify-center w-9 h-9" aria-label="Switch to Chinese">
+                        中
+                    </a>
+
+                    <!-- Theme Toggle -->
+                    <button id="themeToggle" 
+                            class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors group"
+                            aria-label="Toggle theme">
+                        <svg id="sunIcon" class="w-5 h-5 text-amber-500 hidden dark:block group-hover:rotate-90 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                        <svg id="moonIcon" class="w-5 h-5 text-slate-700 block dark:hidden group-hover:-rotate-12 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <div class="progress-text" id="progressText">0%</div>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobileMenu" class="fixed inset-0 z-40 hidden lg:hidden" aria-hidden="true">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/20 backdrop-blur-sm opacity-0 transition-opacity duration-300" id="mobileMenuBackdrop"></div>
+        
+        <!-- Drawer -->
+        <div class="absolute left-0 top-16 bottom-0 w-64 glass-morphism border-r border-white/20 overflow-y-auto transform transition-transform duration-300 -translate-x-full" id="mobileMenuDrawer">
+            <div class="p-6">
+                <h3 class="font-display font-bold mb-4 text-lg text-slate-900 dark:text-white">Table of Contents</h3>
+                <nav class="space-y-1 text-sm">
+                    <a href="#quickstart" class="mobile-link block py-2 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors font-bold">🚀 Quick Start</a>
+                    <a href="#intro" class="mobile-link toc-link block py-2 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-section="intro"><span class="text-indigo-400 dark:text-indigo-500 mr-1">1.</span> Introduction</a>
+                    <a href="#zhuang" class="mobile-link toc-link block py-2 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-section="zhuang"><span class="text-indigo-400 dark:text-indigo-500 mr-1">2.</span> Dealer (Zhuang)</a>
+                    <a href="#upgrade" class="mobile-link toc-link block py-2 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-section="upgrade"><span class="text-indigo-400 dark:text-indigo-500 mr-1">3.</span> Upgrade</a>
+                    <a href="#pre-game" class="mobile-link toc-link block py-2 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-section="pre-game"><span class="text-indigo-400 dark:text-indigo-500 mr-1">4.</span> Pre-game</a>
+                    <a href="#flowcharts" class="mobile-link toc-link block py-2 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-section="flowcharts"><span class="text-indigo-400 dark:text-indigo-500 mr-1">5.</span> Flowcharts</a>
+                    <a href="#gameplay" class="mobile-link toc-link block py-2 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-section="gameplay"><span class="text-indigo-400 dark:text-indigo-500 mr-1">6.</span> Gameplay</a>
+                    <a href="#scoring" class="mobile-link toc-link block py-2 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-section="scoring"><span class="text-indigo-400 dark:text-indigo-500 mr-1">7.</span> Scoring</a>
+                    <a href="#glossary" class="mobile-link toc-link block py-2 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-section="glossary"><span class="text-indigo-400 dark:text-indigo-500 mr-1">📖</span> Glossary</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12 flex flex-col lg:flex-row gap-8">
+        
+        <!-- Sidebar (Table of Contents) -->
+        <aside class="hidden lg:block lg:w-64 flex-shrink-0">
+            <div class="sticky top-24 glass-morphism rounded-2xl p-6 max-h-[calc(100vh-8rem)] overflow-y-auto">
+                <h3 class="font-display font-bold mb-4 text-lg text-slate-900 dark:text-white">Table of Contents</h3>
+                <nav class="space-y-1 text-sm">
+                    <a href="#quickstart" class="toc-link block py-1.5 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors font-bold">🚀 Quick Start</a>
+                    <a href="#intro" class="toc-link block py-1.5 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-section="intro"><span class="text-indigo-400 dark:text-indigo-500 mr-1">1.</span> Introduction</a>
+                    <a href="#zhuang" class="toc-link block py-1.5 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-section="zhuang"><span class="text-indigo-400 dark:text-indigo-500 mr-1">2.</span> Dealer (Zhuang)</a>
+                    <a href="#upgrade" class="toc-link block py-1.5 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-section="upgrade"><span class="text-indigo-400 dark:text-indigo-500 mr-1">3.</span> Upgrade</a>
+                    <a href="#pre-game" class="toc-link block py-1.5 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-section="pre-game"><span class="text-indigo-400 dark:text-indigo-500 mr-1">4.</span> Pre-game</a>
+                    <a href="#flowcharts" class="toc-link block py-1.5 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-section="flowcharts"><span class="text-indigo-400 dark:text-indigo-500 mr-1">5.</span> Flowcharts</a>
+                    <a href="#gameplay" class="toc-link block py-1.5 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-section="gameplay"><span class="text-indigo-400 dark:text-indigo-500 mr-1">6.</span> Gameplay</a>
+                    <a href="#scoring" class="toc-link block py-1.5 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-section="scoring"><span class="text-indigo-400 dark:text-indigo-500 mr-1">7.</span> Scoring</a>
+                    <a href="#glossary" class="toc-link block py-1.5 px-3 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors" data-section="glossary"><span class="text-indigo-400 dark:text-indigo-500 mr-1">📖</span> Glossary</a>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 min-w-0 space-y-6 sm:space-y-8">
+            
+            <!-- AI Translation Warning -->
+            <div class="bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-700 rounded-lg p-4 flex items-center gap-3">
+                <span class="text-xl">⚠️</span>
+                <p class="text-sm text-amber-800 dark:text-amber-200">
+                    <strong>Note:</strong> This English version is translated by AI. Please refer to the <a href="rules.html" class="underline hover:text-amber-900 dark:hover:text-amber-100">Chinese version</a> for the most accurate rules.
+                </p>
+            </div>
+
+            <!-- Header -->
+            <div class="glass-morphism rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-12 prose">
+                <h1 class="!mb-4 text-3xl sm:text-4xl md:text-5xl">80points - English V3.0</h1>
+                <div class="flex flex-wrap gap-2 sm:gap-4 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+                    <span><strong>Author:</strong> FLP</span>
+                    <span><strong>Date:</strong> Jan 2026</span>
+                </div>
+            </div>
+
+            <!-- Quick Start Section -->
+            <div id="quickstart" class="glass-morphism rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-12 bg-gradient-to-br from-indigo-500/10 via-transparent to-fuchsia-500/10 border-2 border-indigo-200 dark:border-indigo-800">
+                <div class="flex items-center gap-3 mb-4 sm:mb-6">
+                    <span class="text-3xl sm:text-4xl">🚀</span>
+                    <div>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-display font-black text-slate-900 dark:text-white !m-0">30s Quick Start</h2>
+                        <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 !m-0">TL;DR - Read this to start playing</p>
+                    </div>
+                </div>
+                
+                <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                    <!-- Card 1: Players -->
+                    <div class="bg-white/60 dark:bg-slate-800/60 rounded-2xl p-4 border border-white/50 dark:border-slate-700">
+                        <div class="text-3xl mb-2">👥</div>
+                        <h3 class="font-bold text-slate-900 dark:text-white text-lg mb-1">4 Players Team Up</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">Opposite is teammate, left/right are opponents</p>
+                    </div>
+                    
+                    <!-- Card 2: Goal -->
+                    <div class="bg-white/60 dark:bg-slate-800/60 rounded-2xl p-4 border border-white/50 dark:border-slate-700">
+                        <div class="text-3xl mb-2">🎯</div>
+                        <h3 class="font-bold text-slate-900 dark:text-white text-lg mb-1">Catch 80 Points to Swap Dealer</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">Defenders catch 80+ points to become Dealers</p>
+                    </div>
+                    
+                    <!-- Card 3: Upgrade -->
+                    <div class="bg-white/60 dark:bg-slate-800/60 rounded-2xl p-4 border border-white/50 dark:border-slate-700">
+                        <div class="text-3xl mb-2">📈</div>
+                        <h3 class="font-bold text-slate-900 dark:text-white text-lg mb-1">Upgrade past Ace to Win</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">Upgrade from 2 to A, first past A wins</p>
+                    </div>
+                    
+                    <!-- Card 4: Points -->
+                    <div class="bg-white/60 dark:bg-slate-800/60 rounded-2xl p-4 border border-white/50 dark:border-slate-700">
+                        <div class="text-3xl mb-2">💰</div>
+                        <h3 class="font-bold text-slate-900 dark:text-white text-lg mb-1">Point Cards</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">
+                            <span class="font-mono font-bold">5</span>=5 pts 
+                            <span class="font-mono font-bold">10</span>=10 pts 
+                            <span class="font-mono font-bold">K</span>=10 pts
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Key Formulas -->
+                <div class="mt-6 p-4 bg-indigo-100/50 dark:bg-indigo-900/30 rounded-xl">
+                    <h4 class="font-bold text-indigo-700 dark:text-indigo-300 mb-3 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                        Key Formulas
+                    </h4>
+                    <div class="grid gap-2 md:grid-cols-2 text-sm">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded font-mono text-xs">Defenders &lt; 80 pts</span>
+                            <span class="text-slate-500">→</span>
+                            <span class="text-indigo-600 dark:text-indigo-400 font-bold">Dealer Keeps Deal</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded font-mono text-xs">Defenders ≥ 80 pts</span>
+                            <span class="text-slate-500">→</span>
+                            <span class="text-red-500 font-bold">Defenders Become Dealer</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded font-mono text-xs">Every 40 pts</span>
+                            <span class="text-slate-500">→</span>
+                            <span class="text-green-600 dark:text-green-400 font-bold">Level Up 1</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded font-mono text-xs">Total Points (2 Decks)</span>
+                            <span class="text-slate-500">→</span>
+                            <span class="text-amber-600 dark:text-amber-400 font-bold">200 pts</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="intro" class="glass-morphism rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-12 prose">
+                <h2 class="!mt-0"><span class="text-indigo-400 dark:text-indigo-500 mr-2">1.</span>Introduction <span class="badge badge-beginner">🔰 Beginner</span></h2>
+                <p><strong>80points</strong> (also known as Upgrade, Double Rise, Tractor) is a 4-player card game using 2 decks (108 cards, including Jokers).</p>
+                
+                <h3>Basic Info</h3>
+                <ul>
+                    <li><strong>Players</strong>: 4, 2 teams of 2, opposite players are teammates</li>
+                    <li><strong>Deck</strong>: 2 decks (2x54 cards), including Jokers</li>
+                    <li><strong>Goal</strong>: Score points to level up, first team to pass Ace wins</li>
+                </ul>
+                
+                <h3>Point Cards</h3>
+                <div class="grid grid-cols-3 gap-4 text-center not-prose my-4">
+                    <div class="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700">
+                        <div class="text-3xl font-bold text-slate-700 dark:text-slate-200">5</div>
+                        <div class="text-sm text-slate-500 mt-1">5 pts ×8 cards</div>
+                    </div>
+                    <div class="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700">
+                        <div class="text-3xl font-bold text-slate-700 dark:text-slate-200">10</div>
+                        <div class="text-sm text-slate-500 mt-1">10 pts ×8 cards</div>
+                    </div>
+                    <div class="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700">
+                        <div class="text-3xl font-bold text-slate-700 dark:text-slate-200">K</div>
+                        <div class="text-sm text-slate-500 mt-1">10 pts ×8 cards</div>
+                    </div>
+                </div>
+                <p class="text-center text-sm text-slate-500">Total Points (2 Decks): <strong>200 pts</strong></p>
+            </div>
+
+            <div id="zhuang" class="glass-morphism rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-12 prose">
+                <h2 class="!mt-0"><span class="text-indigo-400 dark:text-indigo-500 mr-2">2.</span>Dealer (Zhuang) <span class="badge badge-beginner">🔰 Beginner</span></h2>
+                
+                <h3>Core Concepts</h3>
+                <ul>
+                    <li><strong>Dealers (Tai Shang)</strong>: The team dealing, one player is the "Dealer"</li>
+                    <li><strong>Defenders (Tai Xia)</strong>: The attacking team, goal is to catch points to become Dealers</li>
+                    <li><strong>Key Score Line</strong>: <span class="text-xl font-bold text-indigo-600 dark:text-indigo-400">80 pts</span></li>
+                </ul>
+
+                <!-- Interactive Seating Diagram -->
+                <h3>Seating Diagram</h3>
+                <div class="not-prose my-8">
+                    <div class="relative w-full max-w-sm mx-auto aspect-square p-8">
+                        <!-- Table Surface -->
+                        <div class="absolute inset-12 rounded-full bg-slate-50 dark:bg-slate-800/50 border-2 border-slate-200 dark:border-slate-700"></div>
+                        
+                        <!-- Center Info -->
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="text-center opacity-60">
+                                <svg class="w-10 h-10 mx-auto text-slate-400 dark:text-slate-500 mb-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M12 21A9 9 0 1 0 3 12" stroke-linecap="round"/>
+                                    <path d="M1 9l2 3l2-3" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <span class="text-xs font-medium text-slate-500 dark:text-slate-400">Counter-clockwise</span>
+                            </div>
+                        </div>
+
+                        <!-- Top Player (Partner) -->
+                        <div class="absolute top-0 left-1/2 -translate-x-1/2 flex flex-col items-center">
+                            <div class="w-14 h-14 rounded-full bg-indigo-50 dark:bg-indigo-900/20 border-2 border-indigo-500 dark:border-indigo-400 flex items-center justify-center text-xl shadow-sm">
+                                👤
+                            </div>
+                            <span class="mt-2 text-sm font-bold text-indigo-600 dark:text-indigo-400">Partner</span>
+                        </div>
+
+                        <!-- Right Player (Opponent) -->
+                        <div class="absolute right-0 top-1/2 -translate-y-1/2 flex flex-col items-center">
+                            <div class="w-14 h-14 rounded-full bg-red-50 dark:bg-red-900/10 border-2 border-red-400 dark:border-red-500/50 flex items-center justify-center text-xl shadow-sm">
+                                👤
+                            </div>
+                            <span class="mt-2 text-sm font-bold text-red-600 dark:text-red-400">Right Opponent</span>
+                        </div>
+
+                        <!-- Bottom Player (You/Dealer) -->
+                        <div class="absolute bottom-0 left-1/2 -translate-x-1/2 flex flex-col items-center">
+                            <div class="w-16 h-16 rounded-full bg-amber-50 dark:bg-amber-900/20 border-2 border-amber-500 dark:border-amber-400 flex items-center justify-center text-2xl shadow-sm ring-4 ring-amber-50 dark:ring-amber-900/10">
+                                🎴
+                            </div>
+                            <span class="mt-2 text-sm font-bold text-amber-600 dark:text-amber-400">Dealer (You)</span>
+                        </div>
+
+                        <!-- Left Player (Opponent) -->
+                        <div class="absolute left-0 top-1/2 -translate-y-1/2 flex flex-col items-center">
+                            <div class="w-14 h-14 rounded-full bg-red-50 dark:bg-red-900/10 border-2 border-red-400 dark:border-red-500/50 flex items-center justify-center text-xl shadow-sm">
+                                👤
+                            </div>
+                            <span class="mt-2 text-sm font-bold text-red-600 dark:text-red-400">Left Opponent</span>
+                        </div>
+                    </div>
+                    
+                    <p class="text-center text-xs text-slate-500 dark:text-slate-400 mt-4">
+                        Play Order: Dealer → Right → Partner → Left (Counter-clockwise)
+                    </p>
+                </div>
+                
+                <h3>Dealer Rotation Rules</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr>
+                                <th>Defenders Score</th>
+                                <th>Result</th>
+                                <th>Next Dealer</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>&lt; 80 pts</td>
+                                <td>Dealers Keep Deal</td>
+                                <td>Dealer's <strong>Partner</strong></td>
+                            </tr>
+                            <tr>
+                                <td>≥ 80 pts</td>
+                                <td>Defenders Become Dealer</td>
+                                <td>Current Dealer's <strong>Right Opponent</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="bg-indigo-50 dark:bg-indigo-900/30 p-4 rounded-xl border-l-4 border-indigo-500 my-4">
+                    <p class="text-sm text-slate-700 dark:text-slate-300 !mb-0"><strong>First Game</strong>: Teams are equal, determine Dealer by "Showing Card" (see <a href="#pre-game">Pre-game</a>).</p>
+                </div>
+            </div>
+
+            <div id="upgrade" class="glass-morphism rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-12 prose">
+                <h2 class="!mt-0"><span class="text-indigo-400 dark:text-indigo-500 mr-2">3.</span>Upgrade <span class="badge badge-beginner">🔰 Beginner</span></h2>
+                <p>The goal is to upgrade past Ace. First game starts at <strong>2</strong>.</p>
+                
+                <h3>Upgrade Order</h3>
+                <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 my-4 not-prose">
+                    <span class="px-2 sm:px-3 py-0.5 sm:py-1 bg-indigo-100 dark:bg-indigo-900/50 rounded-full text-xs sm:text-sm font-bold">2</span>
+                    <span class="text-slate-400 text-xs sm:text-base">→</span>
+                    <span class="px-2 sm:px-3 py-0.5 sm:py-1 bg-slate-100 dark:bg-slate-800 rounded-full text-xs sm:text-sm">3</span>
+                    <span class="text-slate-400 text-xs sm:text-base">→</span>
+                    <span class="px-2 sm:px-3 py-0.5 sm:py-1 bg-slate-100 dark:bg-slate-800 rounded-full text-xs sm:text-sm">4</span>
+                    <span class="text-slate-400 text-xs sm:text-base">→</span>
+                    <span class="text-slate-400 text-xs sm:text-base">...</span>
+                    <span class="text-slate-400 text-xs sm:text-base">→</span>
+                    <span class="px-2 sm:px-3 py-0.5 sm:py-1 bg-amber-100 dark:bg-amber-900/50 rounded-full text-xs sm:text-sm font-bold">10*</span>
+                    <span class="text-slate-400 text-xs sm:text-base">→</span>
+                    <span class="px-2 sm:px-3 py-0.5 sm:py-1 bg-slate-100 dark:bg-slate-800 rounded-full text-xs sm:text-sm">J</span>
+                    <span class="text-slate-400 text-xs sm:text-base">→</span>
+                    <span class="px-2 sm:px-3 py-0.5 sm:py-1 bg-slate-100 dark:bg-slate-800 rounded-full text-xs sm:text-sm">Q</span>
+                    <span class="text-slate-400 text-xs sm:text-base">→</span>
+                    <span class="px-2 sm:px-3 py-0.5 sm:py-1 bg-amber-100 dark:bg-amber-900/50 rounded-full text-xs sm:text-sm font-bold">K*</span>
+                    <span class="text-slate-400 text-xs sm:text-base">→</span>
+                    <span class="px-2 sm:px-3 py-0.5 sm:py-1 bg-green-100 dark:bg-green-900/50 rounded-full text-xs sm:text-sm font-bold text-green-700 dark:text-green-300">A 🏆</span>
+                </div>
+                <p class="text-sm text-slate-500">* Optional Rule: 10 and K are "Must Play" levels, cannot be skipped.</p>
+                
+                <h3>Skipping Levels</h3>
+                <p>Default: Skip 1 level every <strong>40 pts</strong> (can be adjusted to 20 or 10).</p>
+
+                <h3>Upgrade Calculator</h3>
+                <div class="calc-container">
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="font-bold text-slate-700 dark:text-slate-200">Defenders Score:</label>
+                        <span id="scoreDisplay" class="text-3xl font-black text-indigo-600 dark:text-indigo-400 font-mono">0</span>
+                    </div>
+                    
+                    <input type="range" min="0" max="300" value="0" step="5" class="range-slider-gradient" id="scoreInput">
+                    
+                    <div id="resultDisplay" class="calc-result bg-indigo-100 text-indigo-800 dark:bg-indigo-900/50 dark:text-indigo-200">
+                        Dealer +3 Levels (Da Guang)
+                    </div>
+                    <p class="text-xs text-center mt-3 text-slate-500">Drag slider to see result</p>
+                </div>
+
+                <h3>Upgrade Table</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Defenders Score</th>
+                            <th>Dealer Level Up</th>
+                            <th>Defenders Level Up</th>
+                            <th>Note</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>0</td>
+                            <td class="text-indigo-600 dark:text-indigo-400 font-bold">+3</td>
+                            <td>0</td>
+                            <td>Da Guang (Big Win)</td>
+                        </tr>
+                        <tr>
+                            <td>5~35</td>
+                            <td class="text-indigo-600 dark:text-indigo-400 font-bold">+2</td>
+                            <td>0</td>
+                            <td>Xiao Guang (Small Win)</td>
+                        </tr>
+                        <tr>
+                            <td>40~75</td>
+                            <td class="text-indigo-600 dark:text-indigo-400 font-bold">+1</td>
+                            <td>0</td>
+                            <td>Pass Deal</td>
+                        </tr>
+                        <tr>
+                            <td>80~115</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>Swap Deal (Defenders become Dealers)</td>
+                        </tr>
+                        <tr>
+                            <td>120~155</td>
+                            <td>0</td>
+                            <td class="text-red-500 font-bold">+1</td>
+                            <td>Defenders Level Up</td>
+                        </tr>
+                        <tr>
+                            <td>160~195</td>
+                            <td>0</td>
+                            <td class="text-red-500 font-bold">+2</td>
+                            <td>+1 Level every 40 pts</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="pre-game" class="glass-morphism rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-12 prose">
+                <h2 class="!mt-0"><span class="text-indigo-400 dark:text-indigo-500 mr-2">4.</span>Pre-game <span class="badge badge-intermediate">⚡ Intermediate</span></h2>
+                
+                <h3>Dealing Process</h3>
+                <ol>
+                    <li><strong>Determine Order</strong> (1st Game Only): Youngest player flips a card, determine first drawer by suit (Spade/Heart/Club/Diamond) counter-clockwise.</li>
+                    <li><strong>Draw Cards</strong>: Draw 1 card each counter-clockwise until 25 cards each, leaving 8 cards in the kitty.</li>
+                    <li><strong>Bury Kitty</strong>: Dealer takes the 8 kitty cards (total 33), selects 8 to bury face down.</li>
+                </ol>
+                
+                <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700 my-4">
+                    <p class="text-sm !mb-0"><strong>Subsequent Games</strong>: Dealer draws first, other rules same.</p>
+                </div>
+
+                <h3>Showing Card & Trump Suit</h3>
+                <p>During drawing, players can "Show Card" to determine the Trump Suit.</p>
+                
+                <div class="grid gap-4 md:grid-cols-2 my-4 not-prose">
+                    <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                        <h4 class="font-bold text-slate-900 dark:text-white mb-2">Show Card</h4>
+                        <ul class="text-sm space-y-1 text-slate-600 dark:text-slate-300 list-disc list-inside">
+                            <li>Show <strong>1 card</strong> of current level (e.g. Show ♠7 when playing 7)</li>
+                            <li>That suit becomes <strong>Trump Suit</strong></li>
+                            <li>First to show wins, others cannot show</li>
+                        </ul>
+                    </div>
+                    <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                        <h4 class="font-bold text-slate-900 dark:text-white mb-2">Reinforce</h4>
+                        <ul class="text-sm space-y-1 text-slate-600 dark:text-slate-300 list-disc list-inside">
+                            <li>Show <strong>2nd card</strong> of same suit level card</li>
+                            <li>Increase difficulty to be "Countered"</li>
+                            <li>Can show 2 cards at once (Show + Reinforce)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="bg-indigo-50 dark:bg-indigo-900/30 p-4 rounded-xl border-l-4 border-indigo-500 my-4">
+                    <p class="text-sm !mb-0"><strong>First Game Special</strong>: Shower also gets <strong>Dealer right</strong>, becomes temporary Dealer.</p>
+                </div>
+
+                <h3>Flip Kitty</h3>
+                <p>If no one shows card after drawing, ask in order, if still no one, flip kitty:</p>
+                <ul>
+                    <li>Flip kitty cards one by one, first level card determines Trump Suit</li>
+                    <li>If no level cards in 8, first card's suit is Trump</li>
+                    <li>If Joker flipped, play <strong>No Trump</strong></li>
+                    <li><strong>First Game Flip</strong>: First non-Joker card's suit determines Dealer (Spade/Heart/Club/Diamond counter-clockwise)</li>
+                </ul>
+                <p class="text-sm text-amber-600 dark:text-amber-400"><strong>Note</strong>: Cannot "Counter" after flipping kitty.</p>
+
+                <h3>Counter (Fan)</h3>
+                <p>"Counter" is a mechanism to change Trump Suit or steal Dealer using stronger cards.</p>
+                
+                <h4>Counter Conditions</h4>
+                <p>Must show <strong>2 identical</strong> cards of:</p>
+                <ul>
+                    <li>Same suit level pair (e.g. ♥7+♥7 when playing 7) → Change to that suit</li>
+                    <li>Small Joker Pair (🤡🤡) → Play No Trump</li>
+                    <li>Big Joker Pair (👑👑) → Play No Trump</li>
+                </ul>
+
+                <!-- Interactive Trump Hierarchy -->
+                <h4>Counter Priority (Low to High)</h4>
+                <div class="trump-bar" id="trumpHierarchy">
+                    <div class="trump-item" data-rank="1">
+                        <span class="trump-icon text-red-500">♦</span>
+                        <span class="trump-label">Diamond</span>
+                    </div>
+                    <div class="trump-arrow">➜</div>
+                    <div class="trump-item" data-rank="2">
+                        <span class="trump-icon text-slate-700 dark:text-slate-200">♣</span>
+                        <span class="trump-label">Club</span>
+                    </div>
+                    <div class="trump-arrow">➜</div>
+                    <div class="trump-item" data-rank="3">
+                        <span class="trump-icon text-red-500">♥</span>
+                        <span class="trump-label">Heart</span>
+                    </div>
+                    <div class="trump-arrow">➜</div>
+                    <div class="trump-item" data-rank="4">
+                        <span class="trump-icon text-slate-700 dark:text-slate-200">♠</span>
+                        <span class="trump-label">Spade</span>
+                    </div>
+                    <div class="trump-arrow">➜</div>
+                    <div class="trump-item" data-rank="5">
+                        <span class="trump-icon">🤡</span>
+                        <span class="trump-label">Small Joker</span>
+                    </div>
+                    <div class="trump-arrow">➜</div>
+                    <div class="trump-item" data-rank="6">
+                        <span class="trump-icon">👑</span>
+                        <span class="trump-label">Big Joker</span>
+                    </div>
+                </div>
+                <p class="text-xs text-center text-slate-500 mb-6">Click icon to see who can counter whom</p>
+
+                <ul>
+                    <li><strong>Two Timings</strong>: There are two timings to "Counter", with different effects.
+                        <ol>
+                            <li><strong>After everyone draws 25 cards, before Dealer takes kitty</strong>: In first game, Counter player replaces Shower as Dealer. In other games, it only changes Trump Suit, original Dealer still takes kitty.</li>
+                            <li><strong>After Dealer buries kitty</strong>: Counter changes Trump Suit AND "Steals Kitty". Even in first game, this doesn't change Dealer (Dealer must be established before taking kitty).</li>
+                        </ol>
+                    </li>
+                    <li><strong>Counter Order & Reinforce</strong>: "Counter" can happen multiple times, but must follow order: <span class="text-red-500">♦</span> < ♣ < <span class="text-red-500">♥</span> < ♠ < Small Joker < Big Joker. To counter again, must use higher priority cards.
+                        <br>If Show is not Reinforced, can be countered by any suit or No Trump. If Reinforced, it's like that suit already countered, so must use higher priority to counter.
+                        <br>E.g.: Someone shows ♠ (not reinforced), can be countered by any suit. If someone counters with <span class="text-red-500">♥</span>, next counter must be ♠, Small Joker or Big Joker. If ♠ was reinforced, cannot be countered by <span class="text-red-500">♥</span>, only by Small/Big Joker.
+                        <br>Note: Counter after burying kitty always allows Stealing Kitty.
+                    </li>
+                    <li><strong>Counter Right Order</strong>: Priority goes counter-clockwise starting from Dealer. First timing (before taking kitty): Dealer -> Right -> Partner -> Left. Second timing (after burying): Same order.</li>
+                </ul>
+
+                <!-- Advanced Section: 造反 -->
+                <div class="advanced-section">
+                    <h3>Rebellion (Zao Fan) <span class="badge badge-advanced">🧠 Expert</span></h3>
+                <p>To balance hand strength, Defenders can "Rebel" in two cases: Hand points ≤ 15, or Trump cards ≤ 3 (if Trump Suit exists). Only Defenders can Rebel, and only if they haven't buried kitty. Note: Trump count is determined after all Counters end. Rebellion is voluntary.</p>
+                <p>When conditions met, player reveals hand for verification. If valid, current deal is void, re-deal with a new Dealer from the Dealer team. Rebellious player remains Defender. Rule: Cannot Rebel twice in a row.</p>
+                </div><!-- end advanced-section 造反 -->
+                
+                <!-- Collapsed Notice for Beginner Mode: 造反 -->
+                <div class="advanced-collapsed-notice bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-xl p-4 my-4 items-center gap-3 cursor-pointer hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-colors" onclick="document.querySelector('[data-mode=full]').click()">
+                    <span class="text-2xl">🧠</span>
+                    <div>
+                        <span class="font-bold text-purple-700 dark:text-purple-300">Expert Rule Hidden: Rebellion</span>
+                        <p class="text-sm text-purple-600 dark:text-purple-400 mt-1">Switch to "Full Mode" to see advanced rules</p>
+                    </div>
+                </div>
+            </div><!-- end pre-game -->
+
+            <div id="flowcharts" class="glass-morphism rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-12 prose">
+                <h2 class="!mt-0"><span class="text-indigo-400 dark:text-indigo-500 mr-2">5.</span>Flowcharts <span class="badge badge-beginner">🔰 Beginner</span></h2>
+                
+                <h3>1. First Game Flow</h3>
+                <div class="space-y-8 not-prose my-8">
+                    <!-- Step 1 -->
+                    <div class="relative pl-8 border-l-2 border-indigo-200 dark:border-indigo-800">
+                        <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-indigo-500 ring-4 ring-white dark:ring-slate-900"></div>
+                        <h4 class="!mt-0 text-lg font-bold text-slate-900 dark:text-white">1. Determine Draw Order</h4>
+                        <p class="text-slate-600 dark:text-slate-300 mt-1">Youngest flips card, suit determines first drawer.</p>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="relative pl-8 border-l-2 border-indigo-200 dark:border-indigo-800">
+                        <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-indigo-500 ring-4 ring-white dark:ring-slate-900"></div>
+                        <h4 class="!mt-0 text-lg font-bold text-slate-900 dark:text-white">2. Draw & Determine Dealer</h4>
+                        
+                        <div class="grid gap-4 md:grid-cols-2 mt-4">
+                            <!-- Path A -->
+                            <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                                <span class="text-xs font-bold uppercase tracking-wider text-indigo-500">Case A: Someone Shows</span>
+                                <ul class="mt-2 text-sm space-y-2 text-slate-600 dark:text-slate-300 list-disc list-inside">
+                                    <li>Everyone draws 25 cards.</li>
+                                    <li>Shower becomes temporary Dealer.</li>
+                                    <li><strong>If Countered:</strong> Last counter becomes Dealer.</li>
+                                </ul>
+                            </div>
+                            
+                            <!-- Path B -->
+                            <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                                <span class="text-xs font-bold uppercase tracking-wider text-pink-500">Case B: No One Shows</span>
+                                <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Flip kitty to determine Dealer and Trump.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="relative pl-8 border-l-2 border-indigo-200 dark:border-indigo-800">
+                        <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-indigo-500 ring-4 ring-white dark:ring-slate-900"></div>
+                        <h4 class="!mt-0 text-lg font-bold text-slate-900 dark:text-white">3. Dealer Buries Kitty</h4>
+                        <p class="text-slate-600 dark:text-slate-300 mt-1">Dealer takes 8 kitty cards, organizes hand, buries 8 cards.</p>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="relative pl-8 border-l-2 border-indigo-200 dark:border-indigo-800">
+                        <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-indigo-500 ring-4 ring-white dark:ring-slate-900"></div>
+                        <h4 class="!mt-0 text-lg font-bold text-slate-900 dark:text-white">4. Steal Kitty (Optional)</h4>
+                        <p class="text-slate-600 dark:text-slate-300 mt-1">If someone "Counters" now, they take kitty and re-bury (repeatable).</p>
+                    </div>
+
+                    <!-- Step 5 -->
+                    <div class="relative pl-8 border-l-2 border-transparent">
+                        <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-green-500 ring-4 ring-white dark:ring-slate-900"></div>
+                        <h4 class="!mt-0 text-lg font-bold text-green-600 dark:text-green-400">5. Game Start</h4>
+                        <p class="text-slate-600 dark:text-slate-300 mt-1">Dealer plays first card.</p>
+                    </div>
+                </div>
+
+                <h3>2. Subsequent Game Flow</h3>
+                <div class="space-y-8 not-prose my-8">
+                    <!-- Step 1 -->
+                    <div class="relative pl-8 border-l-2 border-indigo-200 dark:border-indigo-800">
+                        <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-indigo-500 ring-4 ring-white dark:ring-slate-900"></div>
+                        <h4 class="!mt-0 text-lg font-bold text-slate-900 dark:text-white">1. Start Drawing</h4>
+                        <p class="text-slate-600 dark:text-slate-300 mt-1">Dealer starts drawing.</p>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="relative pl-8 border-l-2 border-indigo-200 dark:border-indigo-800">
+                        <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-indigo-500 ring-4 ring-white dark:ring-slate-900"></div>
+                        <h4 class="!mt-0 text-lg font-bold text-slate-900 dark:text-white">2. Determine Trump</h4>
+                        
+                        <div class="grid gap-4 md:grid-cols-2 mt-4">
+                            <!-- Path A -->
+                            <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                                <span class="text-xs font-bold uppercase tracking-wider text-indigo-500">Case A: Someone Shows</span>
+                                <ul class="mt-2 text-sm space-y-2 text-slate-600 dark:text-slate-300 list-disc list-inside">
+                                    <li>Everyone draws 25 cards.</li>
+                                    <li><strong>If Countered:</strong> Change Trump Suit.</li>
+                                </ul>
+                            </div>
+                            
+                            <!-- Path B -->
+                            <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                                <span class="text-xs font-bold uppercase tracking-wider text-pink-500">Case B: No One Shows</span>
+                                <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Flip kitty to determine Trump Suit.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="relative pl-8 border-l-2 border-indigo-200 dark:border-indigo-800">
+                        <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-indigo-500 ring-4 ring-white dark:ring-slate-900"></div>
+                        <h4 class="!mt-0 text-lg font-bold text-slate-900 dark:text-white">3. Dealer Buries Kitty</h4>
+                        <p class="text-slate-600 dark:text-slate-300 mt-1">Dealer takes 8 kitty cards, organizes hand, buries 8 cards.</p>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="relative pl-8 border-l-2 border-indigo-200 dark:border-indigo-800">
+                        <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-indigo-500 ring-4 ring-white dark:ring-slate-900"></div>
+                        <h4 class="!mt-0 text-lg font-bold text-slate-900 dark:text-white">4. Steal Kitty (Optional)</h4>
+                        <p class="text-slate-600 dark:text-slate-300 mt-1">If someone "Counters" now, they take kitty and re-bury (repeatable).</p>
+                    </div>
+
+                    <!-- Step 5 -->
+                    <div class="relative pl-8 border-l-2 border-transparent">
+                        <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-green-500 ring-4 ring-white dark:ring-slate-900"></div>
+                        <h4 class="!mt-0 text-lg font-bold text-green-600 dark:text-green-400">5. Game Start</h4>
+                        <p class="text-slate-600 dark:text-slate-300 mt-1">Dealer plays first card.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="gameplay" class="glass-morphism rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-12 prose">
+                <h2 class="!mt-0"><span class="text-indigo-400 dark:text-indigo-500 mr-2">6.</span>Gameplay <span class="badge badge-intermediate">⚡ Intermediate</span></h2>
+                <p>Dealer always plays first. Everyone has 25 cards.</p>
+
+                <h3>Card Types</h3>
+                <p>A key concept in 80points is card types. Pre-game determines "Trump Suit" or "No Trump".</p>
+                
+                <!-- Visual Card Classification Diagram -->
+                <div class="not-prose my-8">
+                    <div class="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-slate-800 dark:to-slate-800 rounded-2xl p-6 border border-indigo-100 dark:border-slate-700">
+                        <h4 class="text-center font-bold text-lg text-slate-800 dark:text-white mb-6">Card Classification Diagram <span class="text-sm font-normal text-slate-500">(Example: Playing 7)</span></h4>
+                        
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <!-- 有主情况 -->
+                            <div class="bg-white dark:bg-slate-900 rounded-xl p-5 shadow-sm">
+                                <div class="flex items-center gap-2 mb-4">
+                                    <span class="px-3 py-1 rounded-full bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 text-sm font-bold">Trump Suit Case</span>
+                                    <span class="text-sm text-slate-500">Trump Suit: <span class="suit-black font-bold">♠</span></span>
+                                </div>
+                                
+                                <!-- 主牌 -->
+                                <div class="mb-4 p-3 rounded-lg bg-amber-50 dark:bg-amber-900/20 border-2 border-amber-300 dark:border-amber-700">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="font-bold text-amber-700 dark:text-amber-300">🃏 Trump Cards</span>
+                                        <span class="text-xs bg-amber-200 dark:bg-amber-800 px-2 py-0.5 rounded-full font-bold">36 cards</span>
+                                    </div>
+                                    <div class="flex flex-wrap gap-1 text-xs">
+                                        <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded border">Big Joker×2</span>
+                                        <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded border">Small Joker×2</span>
+                                        <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded border"><span class="suit-black">♠</span>7×2</span>
+                                        <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded border"><span class="suit-red">♥</span><span class="suit-black">♣</span><span class="suit-red">♦</span>7×6</span>
+                                        <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded border"><span class="suit-black">♠</span>Cards×24</span>
+                                    </div>
+                                </div>
+                                
+                                <!-- 副牌 -->
+                                <div class="grid grid-cols-3 gap-2">
+                                    <div class="p-2 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-center">
+                                        <span class="suit-red text-lg">♥</span>
+                                        <div class="text-xs font-bold text-red-600 dark:text-red-400">24 cards</div>
+                                    </div>
+                                    <div class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-center">
+                                        <span class="suit-black text-lg">♣</span>
+                                        <div class="text-xs font-bold text-slate-600 dark:text-slate-300">24 cards</div>
+                                    </div>
+                                    <div class="p-2 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-center">
+                                        <span class="suit-red text-lg">♦</span>
+                                        <div class="text-xs font-bold text-red-600 dark:text-red-400">24 cards</div>
+                                    </div>
+                                </div>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-2 text-center">Side Cards: Each suit minus 2 level cards (7)</p>
+                            </div>
+                            
+                            <!-- 无主情况 -->
+                            <div class="bg-white dark:bg-slate-900 rounded-xl p-5 shadow-sm">
+                                <div class="flex items-center gap-2 mb-4">
+                                    <span class="px-3 py-1 rounded-full bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 text-sm font-bold">No Trump Case</span>
+                                    <span class="text-sm text-slate-500">No Trump Suit</span>
+                                </div>
+                                
+                                <!-- 主牌 -->
+                                <div class="mb-4 p-3 rounded-lg bg-amber-50 dark:bg-amber-900/20 border-2 border-amber-300 dark:border-amber-700">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="font-bold text-amber-700 dark:text-amber-300">🃏 Trump Cards</span>
+                                        <span class="text-xs bg-amber-200 dark:bg-amber-800 px-2 py-0.5 rounded-full font-bold">12 cards</span>
+                                    </div>
+                                    <div class="flex flex-wrap gap-1 text-xs">
+                                        <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded border">Big Joker×2</span>
+                                        <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded border">Small Joker×2</span>
+                                        <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded border">All 7s×8</span>
+                                    </div>
+                                </div>
+                                
+                                <!-- 副牌 -->
+                                <div class="grid grid-cols-4 gap-2">
+                                    <div class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-center">
+                                        <span class="suit-black text-lg">♠</span>
+                                        <div class="text-xs font-bold">24 cards</div>
+                                    </div>
+                                    <div class="p-2 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-center">
+                                        <span class="suit-red text-lg">♥</span>
+                                        <div class="text-xs font-bold text-red-600 dark:text-red-400">24 cards</div>
+                                    </div>
+                                    <div class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-center">
+                                        <span class="suit-black text-lg">♣</span>
+                                        <div class="text-xs font-bold">24张</div>
+                                    </div>
+                                    <div class="p-2 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-center">
+                                        <span class="suit-red text-lg">♦</span>
+                                        <div class="text-xs font-bold text-red-600 dark:text-red-400">24张</div>
+                                    </div>
+                                </div>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-2 text-center">副牌：每类少2张级牌(7)</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Key Insight -->
+                        <div class="mt-4 p-3 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg text-center">
+                            <span class="text-sm font-medium text-indigo-700 dark:text-indigo-300">💡 <strong>Key Insight</strong>: All Level Cards (7s in this example) belong to the Trump Suit, NOT their original suits!</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Common Mistake Callout -->
+                <div class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 p-4 rounded-r-xl my-6 not-prose">
+                    <div class="flex items-start gap-3">
+                        <span class="text-2xl">⚠️</span>
+                        <div>
+                            <h4 class="font-bold text-red-700 dark:text-red-400 mb-2">Common Mistake</h4>
+                            <ul class="text-sm text-slate-700 dark:text-slate-300 space-y-1">
+                                <li><strong>Level Cards are Trump Cards!</strong> When playing ♠7, <span class="text-red-500">♥</span>7, <span class="text-red-500">♦</span>7, and ♣7 are all Trump Cards, not side cards of their original suits.</li>
+                                <li><strong>Side suits only have 24 cards each</strong>, because the 2 Level Cards of each suit have been moved to the Trump Suit.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Card Ranks & Order</h3>
+                <ul>
+                    <li><strong>Single Card Rank (Trump Suit)</strong>: Red Joker > Black Joker > Main Level Card (Trump Suit Level Card) > Side Level Card (Non-Trump Suit Level Card) > A > K > Q > J > 10 > 9 > 8 > 7 > 6 > 5 > 4 > 3 > 2.</li>
+                    <li><strong>Single Card Rank (No Trump)</strong>: Red Joker > Black Joker > Level Card > A > K ... > 2.</li>
+                    <li><strong>Suit Rank</strong>: Trump Suit > Side Suits. Side suits are equal in rank and cannot beat each other.</li>
+                </ul>
+
+                <h3>Playing Rules</h3>
+                <p>80 Points is played in rounds. In the first round, the Dealer plays a hand first, then the other 3 players play a hand in counter-clockwise order. The hands are compared, and the player with the largest hand wins the round and plays first in the next round. This continues until all 25 cards are played.</p>
+
+                <div class="bg-amber-50 dark:bg-amber-900/20 border-l-4 border-amber-500 p-6 my-6 rounded-r-xl shadow-sm">
+                    <h4 class="!mt-0 text-amber-800 dark:text-amber-200 font-bold text-lg flex items-center gap-2">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Core Rules: Leading & Following
+                    </h4>
+                    <p class="text-slate-800 dark:text-slate-200 font-medium mt-2">
+                        The first player of each round must play cards of the <strong>same category</strong>, which can be:<br>
+                        <span class="inline-flex items-center gap-1 mt-1">
+                            <span class="px-2 py-0.5 rounded bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold">Single</span>
+                            <span class="px-2 py-0.5 rounded bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold">Pair</span>
+                            <span class="px-2 py-0.5 rounded bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold">Tractor</span>
+                            <span class="px-2 py-0.5 rounded bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold">Multi-throw (Dump)</span>
+                        </span>
+                    </p>
+                    <div class="mt-4 space-y-2 text-sm text-slate-700 dark:text-slate-300">
+                        <p>The other 3 players must follow with the <strong>same quantity, same pattern, and same category</strong>:</p>
+                        <ul class="list-disc list-inside ml-2 space-y-1">
+                            <li>If you don't have the same pattern in that category, you must play other cards of that category.</li>
+                            <li>If you don't have enough cards of that category, you must play all you have, then fill the rest with other categories.</li>
+                        </ul>
+                        <p class="bg-amber-100 dark:bg-amber-900/40 p-2 rounded text-amber-900 dark:text-amber-100 text-xs font-bold mt-2">
+                            Note: "Tractor" is a combination of pairs. If the first player plays a "Tractor" and you don't have a Tractor but have Pairs in that category, you must play the Pairs.
+                        </p>
+                    </div>
+                </div>
+                
+                <p>If a Defender (Attacking Team) wins a round, any point cards (5, 10, K) played in that round are placed face up on top of the 8 kitty cards. These points are "captured" by the Defenders. If the Dealer's team wins, the points "escape" and are not scored.</p>
+                
+                <p>Except for captured point cards, played cards are kept in front of each player. Players can check their own played cards and captured points at any time, but can only check other players' cards from the current and previous round. The player who buried the kitty can check it at any time.</p>
+
+                <h3>Following & Winning</h3>
+                <p>Dealer plays first, then follow in counter-clockwise order.</p>
+                
+                <h4>1. Following Principles (Critical)</h4>
+                <p>You must "<strong>Follow Suit First, Then Follow Pattern</strong>".</p>
+                <ul>
+                    <li><strong>Must Follow Suit</strong>: If leader plays a suit, you must follow with that suit. If you don't have that suit, you can play other suits (slough) or use Trump to "Kill" (Trump).</li>
+                    <li><strong>Must Follow Pair</strong>: If leader plays a pair, you must play a pair of that suit if you have one. If you don't have a pair but have singles of that suit, you must play two singles.</li>
+                    <li><strong>Must Follow Tractor</strong>: If leader plays a tractor, you must play a tractor of that suit if you have one. If not, but you have pairs, you must play pairs.</li>
+                </ul>
+                
+                <div class="bg-indigo-50 dark:bg-indigo-900/30 p-4 rounded-xl border-l-4 border-indigo-500 my-4 not-prose">
+                    <h4 class="text-indigo-700 dark:text-indigo-300 font-bold mb-2">Following Example (Leader plays ♠ Pair, ♠ is Side Suit)</h4>
+                    <ul class="space-y-1 text-sm text-slate-600 dark:text-slate-300">
+                        <li><strong>Case A</strong>: You have ♠ Pair → <strong>Must play ♠ Pair</strong>.</li>
+                        <li><strong>Case B</strong>: You don't have ♠ Pair, but have ♠ Singles → <strong>Must play ♠ Singles</strong> (to make up count).</li>
+                        <li><strong>Case C</strong>: You have no ♠ cards → <strong>Can play any cards</strong> (Slough or Trump).</li>
+                    </ul>
+                </div>
+
+                <div class="bg-indigo-50 dark:bg-indigo-900/30 p-4 rounded-xl border-l-4 border-indigo-500 my-4 not-prose">
+                    <h4 class="text-indigo-700 dark:text-indigo-300 font-bold mb-2">Following Example 2 (Trump Pair - Playing ♠ 7)</h4>
+                    <p class="text-sm text-slate-600 dark:text-slate-300 mb-2">
+                        Leader plays a pair of ♠ 9 (Trump Pair).
+                    </p>
+                    <ul class="space-y-1 text-sm text-slate-600 dark:text-slate-300">
+                        <li><strong>Rule</strong>: Next 3 players must play Trump Pair if they have one.</li>
+                        <li><strong>Common Mistake</strong>: 2 Red Jokers, 2 Black Jokers, 2 Level Cards (7s) are <strong>ALL Trump Pairs</strong>.</li>
+                        <li><strong>Mandatory</strong>: If you only have these special Trump Pairs (e.g. pair of Black Jokers), you <strong>MUST</strong> play them. You cannot save them.</li>
+                    </ul>
+                </div>
+
+                <!-- Common Mistake Callout -->
+                <div class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 p-4 rounded-r-xl my-6 not-prose">
+                    <div class="flex items-start gap-3">
+                        <span class="text-2xl">⚠️</span>
+                        <div>
+                            <h4 class="font-bold text-red-700 dark:text-red-400 mb-2">Common Mistake - Following</h4>
+                            <ul class="text-sm text-slate-700 dark:text-slate-300 space-y-2">
+                                <li><strong>Must play Pairs when following Tractor!</strong> If you don't have a Tractor but have Pairs, you must play Pairs first.</li>
+                                <li><strong>Jokers are Trump Pairs!</strong> When someone plays a Trump Pair, your pair of Jokers must be played if that's your only Trump Pair.</li>
+                                <li><strong>Two Singles cannot Kill a Pair!</strong> You must use a <strong>Trump Pair</strong> to kill a Side Suit Pair. Two Trump Singles cannot kill (considered sloughing, smaller).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <h4>2. Winning Determination</h4>
+                <ul>
+                    <li><strong>Highest Wins</strong>: After a round, the player with the highest cards wins and leads the next round.</li>
+                    <li><strong>Trump / Kill</strong>: 
+                        <ul>
+                            <li>If leader plays Side Suit and you are void, you can use Trump to "Kill".</li>
+                            <li><strong>Single Kills Single</strong>: Any Trump Single > Any Side Suit Single.</li>
+                            <li><strong>Pair Kills Pair</strong>: Must use <strong>Trump Pair</strong> to kill Side Suit Pair. Two Trump Singles cannot kill.</li>
+                            <li><strong>Tractor Kills Tractor</strong>: Must use <strong>Trump Tractor</strong> to kill Side Suit Tractor.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Over-Trump</strong>: If multiple players Trump, compare the size of the Trump cards.</li>
+                </ul>
+
+                <h4>Beating the Leader (Special Case)</h4>
+                <p>If a player has a pair of <span class="text-red-500">♥</span>, they must play it. If it's larger than the leader's pair (e.g., <span class="text-red-500">♥</span>8 pair), they win naturally. Another way is to play a Trump Pair. Any Trump Pair beats a Side Suit Pair (like <span class="text-red-500">♥</span>8 pair), but only if the player is <strong>void</strong> of <span class="text-red-500">♥</span> (has no <span class="text-red-500">♥</span> cards). Note: <span class="text-red-500">♥</span>7 is a Trump card, not a <span class="text-red-500">♥</span> card.</p>
+
+                <h3>Definition of "Tractor"</h3>
+                <p>Pairs of <strong>adjacent rank</strong> in the same category. Two consecutive pairs are called a "Tractor", three are "Titanic", and four are sometimes called "Aircraft Carrier".</p>
+                <p><strong>Note</strong>: Adjacent rank means adjacent in the <strong>rank order</strong>, with no other cards in between.</p>
+                <p><strong>Example (Playing ♠ 7):</strong></p>
+                
+                <div class="hand-showcase">
+                    <!-- Heart 3344 -->
+                    <div class="hand-item">
+                        <div class="hand-cards hand-container" data-cards='[{"s":"♥","v":"3"},{"s":"♥","v":"3"},{"s":"♥","v":"4"},{"s":"♥","v":"4"}]'></div>
+                        <span class="hand-desc">Normal Tractor</span>
+                    </div>
+
+                    <!-- Diamond 6688 (7 is main) -->
+                    <div class="hand-item">
+                        <div class="hand-cards hand-container" data-cards='[{"s":"♦","v":"6"},{"s":"♦","v":"6"},{"s":"♦","v":"8"},{"s":"♦","v":"8"}]'></div>
+                        <span class="hand-desc">Skip Level Card (7 is Trump)</span>
+                    </div>
+
+                    <!-- Spade A A Heart 7 7 (Vice 7 + Main A) -->
+                    <div class="hand-item">
+                        <div class="hand-cards hand-container" data-cards='[{"s":"♠","v":"A"},{"s":"♠","v":"A"},{"s":"♥","v":"7"},{"s":"♥","v":"7"}]'></div>
+                        <span class="hand-desc">Trump A + Side 7</span>
+                    </div>
+
+                    <!-- Heart 7 7 Spade 7 7 (Vice 7 + Main 7) -->
+                    <div class="hand-item">
+                        <div class="hand-cards hand-container" data-cards='[{"s":"♥","v":"7"},{"s":"♥","v":"7"},{"s":"♠","v":"7"},{"s":"♠","v":"7"}]'></div>
+                        <span class="hand-desc">Side 7 + Main 7</span>
+                    </div>
+                    
+                    <!-- Spade 7 7 Small Joker Small Joker -->
+                    <div class="hand-item">
+                        <div class="hand-cards hand-container" data-cards='[{"s":"♠","v":"7"},{"s":"♠","v":"7"},{"s":"","v":"S","t":"joker-sm"},{"s":"","v":"S","t":"joker-sm"}]'></div>
+                        <span class="hand-desc">Main 7 + Small Joker</span>
+                    </div>
+
+                    <!-- Four Jokers -->
+                    <div class="hand-item">
+                        <div class="hand-cards hand-container" data-cards='[{"s":"","v":"S","t":"joker-sm"},{"s":"","v":"S","t":"joker-sm"},{"s":"","v":"B","t":"joker-bg"},{"s":"","v":"B","t":"joker-bg"}]'></div>
+                        <span class="hand-desc">Four Jokers</span>
+                    </div>
+                </div>
+
+                <p><strong>Counter-examples:</strong></p>
+                <div class="hand-showcase">
+                     <!-- Spade 6677 (Not tractor because 7 is main) -->
+                    <div class="hand-item">
+                        <div class="hand-cards hand-container" data-cards='[{"s":"♠","v":"6"},{"s":"♠","v":"6"},{"s":"♠","v":"7"},{"s":"♠","v":"7"}]'></div>
+                        <span class="hand-desc text-red-500">❌ Not a Tractor (7 is Trump)</span>
+                    </div>
+                    
+                    <!-- Club 77 Diamond 77 (Same rank) -->
+                    <div class="hand-item">
+                        <div class="hand-cards hand-container" data-cards='[{"s":"♣","v":"7"},{"s":"♣","v":"7"},{"s":"♦","v":"7"},{"s":"♦","v":"7"}]'></div>
+                        <span class="hand-desc text-red-500">❌ Not a Tractor (Same Rank)</span>
+                    </div>
+                </div>
+
+
+                <!-- Common Mistake Callout -->
+                <div class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 p-4 rounded-r-xl my-6 not-prose">
+                    <div class="flex items-start gap-3">
+                        <span class="text-2xl">⚠️</span>
+                        <div>
+                            <h4 class="font-bold text-red-700 dark:text-red-400 mb-2">Common Mistake - Tractor</h4>
+                            <ul class="text-sm text-slate-700 dark:text-slate-300 space-y-2">
+                                <li><strong>Level Cards "break" the sequence!</strong> When playing 7, ♠66+♠77 is NOT a tractor because 7 is moved to Trump Suit.</li>
+                                <li><strong>Same rank cannot form a Tractor!</strong> ♣77+<span class="text-red-500">♦</span>77 is NOT a tractor because they are equal in rank.</li>
+                                <li><strong>Tractor must be "Consecutive"!</strong> No cards can be skipped (consider Level Cards being moved).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <h3>Definition of "Multi-throw" (Dump)</h3>
+                <p>You can play a mix of Singles, Pairs, and Tractors of the same category as one hand.</p>
+                
+                <h4>1. Conditions</h4>
+                <p>The condition is that your <strong>smallest Single</strong>, <strong>smallest Pair</strong>, and <strong>smallest Tractor</strong> in the combination must be larger than any corresponding cards held by the other 3 players in that category.</p>
+                <p class="text-sm text-slate-500"><em>Note: Even if others have a card of the same rank, you can still dump, because the leader's card is considered larger than the follower's card of the same rank.</em></p>
+
+                <h4>2. Failure & Penalty</h4>
+                <p>If the conditions are not met, the dump fails. Penalties:</p>
+                <ul>
+                    <li><strong>Penalty Points</strong>: 10 points per card dumped.
+                        <ul class="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                            <li>If Dealer's team fails with n cards, Defenders get n × 10 points.</li>
+                            <li>If Defenders fail with n cards, n × 10 points are deducted from their score. If score becomes negative, it counts as 0 (Dealer upgrades max 3 levels).</li>
+                        </ul>
+                    </li>
+                    <li><strong>Forced Play Smallest</strong>: You must play the <strong>smallest card</strong> (or component) that caused the failure, and take back the rest.
+                        <ul class="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                            <li>If multiple components failed (e.g., both a Single and a Pair failed), play the <strong>smallest of the smallest components</strong>.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4>3. Multi-throw Example</h4>
+                <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700 my-4">
+                    <p class="font-bold mb-2">Assumption: Playing ♠7</p>
+                    <p>Leader dumps 5 cards: <span class="text-red-500">♥88 J Q K</span></p>
+                    <ul class="list-disc list-inside space-y-1 text-sm">
+                        <li><strong>Success</strong>: Others have no <span class="text-red-500">♥</span> Pair > 8, AND no <span class="text-red-500">♥</span> Single > J.</li>
+                        <li><strong>Fail (Case A)</strong>: Someone has Pair > 8 → <strong>Forced to play <span class="text-red-500">♥8</span> Pair</strong>.</li>
+                        <li><strong>Fail (Case B)</strong>: Someone has Single > J → <strong>Forced to play <span class="text-red-500">♥J</span></strong>.</li>
+                        <li><strong>Fail (Case C)</strong>: Someone has both bigger Pair and bigger Single → <strong>Forced to play <span class="text-red-500">♥J</span></strong> (Single rank < Pair rank).</li>
+                    </ul>
+                    <p class="mt-2 text-sm text-red-500 font-bold">Penalty: 5 cards x 10 pts = 50 pts</p>
+                </div>
+
+                <h4>4. Trump a Multi-throw</h4>
+                <p>To beat a multi-throw, you must play the <strong>same pattern and quantity of Trump cards</strong>.</p>
+                <p>In the example above, to "Kill" <span class="text-red-500">♥88 J Q K</span>, you must play a <strong>Trump Pair</strong> plus <strong>3 other Trump cards</strong>.</p>
+            </div>
+
+            <div id="scoring" class="glass-morphism rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-12 prose">
+                <h2 class="!mt-0"><span class="text-indigo-400 dark:text-indigo-500 mr-2">7.</span>Scoring & Bottom Digging <span class="badge badge-intermediate">⚡ Intermediate</span></h2>
+
+                <h3>Score Calculation</h3>
+                <p>When all 25 cards are played, the game ends and scores are calculated.</p>
+                <ul>
+                    <li><strong>Defender Score</strong>: Sum of all point cards (5, 10, K) captured by Defenders (Attacking Team).</li>
+                    <li><strong>Kitty Points</strong>: If Defenders win the last round (Dig the Kitty), points in the kitty are multiplied and added to Defender Score. Otherwise, kitty points are void (kept by Dealer, no score).</li>
+                    <li><strong>Total Score</strong>: Add "Captured Points" + "Kitty Points", then check <a href="#upgrade">Upgrade Table</a> for result.</li>
+                </ul>
+
+                <h3>Bottom Digging Rules</h3>
+                <p>The last round is critical. If the Defenders win the last round, it is called "Digging the Kitty".</p>
+                <ul>
+                    <li><strong>Success</strong>: Defenders get all points in the 8 kitty cards, multiplied.</li>
+                    <li><strong>Escape</strong>: If Dealer's team wins the last round, kitty points "escape" (Dealer keeps them, no score for Defenders).</li>
+                </ul>
+
+                <h4>Multiplier Calculation</h4>
+                <p>The multiplier is determined by the <strong>largest component</strong> played by the <strong>leader of the last round</strong>.</p>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left mt-2">
+                        <thead class="bg-slate-100 dark:bg-slate-800">
+                            <tr>
+                                <th class="p-2 rounded-l">Pattern</th>
+                                <th class="p-2">Multiplier</th>
+                                <th class="p-2 rounded-r">Example</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+                            <tr>
+                                <td class="p-2">Single</td>
+                                <td class="p-2 font-bold text-indigo-600">x 2</td>
+                                <td class="p-2 text-slate-500">Play A, Kitty x2</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">Pair</td>
+                                <td class="p-2 font-bold text-indigo-600">x 4</td>
+                                <td class="p-2 text-slate-500">Play AA, Kitty x4</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">Tractor (2 Pairs)</td>
+                                <td class="p-2 font-bold text-indigo-600">x 8</td>
+                                <td class="p-2 text-slate-500">Play KKAA, Kitty x8</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">Titanic (3 Pairs)</td>
+                                <td class="p-2 font-bold text-indigo-600">x 16</td>
+                                <td class="p-2 text-slate-500">Play QQKKAA, Kitty x16</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">Aircraft Carrier (4 Pairs)</td>
+                                <td class="p-2 font-bold text-indigo-600">x 32</td>
+                                <td class="p-2 text-slate-500">Play JJQQKKAA, Kitty x32</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">...</td>
+                                <td class="p-2 font-bold text-indigo-600">x 2^(n+1)</td>
+                                <td class="p-2 text-slate-500">Double for each extra pair</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="mt-2 text-sm"><strong>Final Score</strong> = Captured Points + (Kitty Points × Multiplier)</p>
+
+                <div class="advanced-section">
+                <h3>Hook to the Bottom (Special Rule) <span class="badge badge-advanced">🧠 Expert</span></h3>
+                <p>A fun penalty rule. When playing <strong>J</strong>, if Defenders meet all conditions, Dealer's team is "Hooked to the Bottom" and restarts from <strong>2</strong>.</p>
+                <ul>
+                    <li><strong>Condition 1</strong>: Defenders Dig the Kitty with <strong>Trump J</strong>.
+                        <ul class="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                            <li><strong>Detail</strong>: The winning hand must contain <strong>Trump J</strong> and be the largest. (Single, Pair, or Tractor containing Trump J).</li>
+                            <li><strong>Counter-example</strong>: If you play Trump J but partner wins with bigger card (e.g. Joker), it counts as Joker digging, <strong>NOT</strong> triggering the Hook.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Condition 2</strong>: Defenders' Total Score (Captured + Kitty) reaches <strong>80 points</strong> or more.</li>
+                    <li><strong>Limit</strong>: To avoid frustration, each team can be "Hooked" at most once per session ☺.</li>
+                </ul>
+                </div><!-- end advanced-section 一钩勾到底 -->
+                
+                <!-- Collapsed Notice for Beginner Mode: 一钩勾到底 -->
+                <div class="advanced-collapsed-notice bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-xl p-4 my-4 items-center gap-3 cursor-pointer hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-colors" onclick="document.querySelector('[data-mode=full]').click()">
+                    <span class="text-2xl">🧠</span>
+                    <div>
+                        <span class="font-bold text-purple-700 dark:text-purple-300">Expert Rule Hidden: Hook to the Bottom</span>
+                        <p class="text-sm text-purple-600 dark:text-purple-400 mt-1">Switch to "Full Mode" to see advanced rules</p>
+                    </div>
+                </div>
+            </div><!-- end settlement -->
+
+            <!-- Glossary Section -->
+            <div id="glossary" class="glass-morphism rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-12">
+                <div class="flex items-center gap-3 mb-8">
+                    <span class="text-3xl">📖</span>
+                    <h2 class="text-2xl md:text-3xl font-display font-bold text-slate-900 dark:text-white !m-0">Glossary</h2>
+                </div>
+                
+                <div class="grid gap-4 md:grid-cols-2">
+                    <!-- Term: 毙 -->
+                    <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-4 border border-slate-200 dark:border-slate-700">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-xl">💀</span>
+                            <h3 class="font-bold text-lg text-slate-900 dark:text-white">Trump / Kill</h3>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">Using Trump cards to beat Side Suit cards. When you are void of the led suit, you can use Trump to "Kill" and win the round.</p>
+                        <div class="mt-2 text-xs bg-slate-100 dark:bg-slate-700 rounded px-2 py-1 inline-block">Chinese: 毙 (Bi)</div>
+                    </div>
+                    
+                    <!-- Term: 甩牌 -->
+                    <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-4 border border-slate-200 dark:border-slate-700">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-xl">🃏</span>
+                            <h3 class="font-bold text-lg text-slate-900 dark:text-white">Multi-throw (Dump)</h3>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">Playing multiple patterns of the same suit at once (e.g. Single + Pair). Only succeeds if all your cards are the largest in that suit.</p>
+                        <div class="mt-2 text-xs bg-slate-100 dark:bg-slate-700 rounded px-2 py-1 inline-block">Chinese: 甩牌 (Shuai Pai)</div>
+                    </div>
+                    
+                    <!-- Term: 抠底 -->
+                    <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-4 border border-slate-200 dark:border-slate-700">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-xl">🎴</span>
+                            <h3 class="font-bold text-lg text-slate-900 dark:text-white">Dig the Kitty</h3>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">Winning the last round to capture points in the kitty. Kitty points are multiplied.</p>
+                        <div class="mt-2 text-xs bg-slate-100 dark:bg-slate-700 rounded px-2 py-1 inline-block">Chinese: 抠底 (Kou Di)</div>
+                    </div>
+                    
+                    <!-- Term: 造反 -->
+                    <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-4 border border-slate-200 dark:border-slate-700">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-xl">⚔️</span>
+                            <h3 class="font-bold text-lg text-slate-900 dark:text-white">Rebellion</h3>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">Defenders can call for a re-deal if their hand is too weak. Condition: Points ≤ 15 OR Trump Cards ≤ 3.</p>
+                        <div class="mt-2 text-xs bg-slate-100 dark:bg-slate-700 rounded px-2 py-1 inline-block">Chinese: 造反 (Zao Fan)</div>
+                    </div>
+                    
+                    <!-- Term: 拖拉机 -->
+                    <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-4 border border-slate-200 dark:border-slate-700">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-xl">🚜</span>
+                            <h3 class="font-bold text-lg text-slate-900 dark:text-white">Tractor</h3>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">Consecutive pairs. E.g., 33-44, 99-1010-JJ. Pairs must be consecutive in rank and same suit.</p>
+                        <div class="mt-2 text-xs bg-slate-100 dark:bg-slate-700 rounded px-2 py-1 inline-block">Chinese: 拖拉机 (Tuo La Ji)</div>
+                    </div>
+                    
+                    <!-- Term: 亮牌 -->
+                    <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-4 border border-slate-200 dark:border-slate-700">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-xl">🔔</span>
+                            <h3 class="font-bold text-lg text-slate-900 dark:text-white">Show / Declare</h3>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">Showing a Level Card during drawing to determine Trump Suit. First to show sets the suit; a Pair can override a Single.</p>
+                        <div class="mt-2 text-xs bg-slate-100 dark:bg-slate-700 rounded px-2 py-1 inline-block">Chinese: 亮牌 (Liang Pai)</div>
+                    </div>
+                    
+                    <!-- Term: 级牌 -->
+                    <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-4 border border-slate-200 dark:border-slate-700">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-xl">⭐</span>
+                            <h3 class="font-bold text-lg text-slate-900 dark:text-white">Level Card</h3>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">The rank currently being played. E.g., when playing 7, all 7s are Level Cards and belong to the Trump Suit.</p>
+                        <div class="mt-2 text-xs bg-slate-100 dark:bg-slate-700 rounded px-2 py-1 inline-block">Chinese: 级牌 (Ji Pai)</div>
+                    </div>
+                    
+                    <!-- Term: 台上/台下 -->
+                    <div class="bg-white/60 dark:bg-slate-800/60 rounded-xl p-4 border border-slate-200 dark:border-slate-700">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-xl">👑</span>
+                            <h3 class="font-bold text-lg text-slate-900 dark:text-white">Dealer Team / Defenders</h3>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">Dealer Team (Defending); Defenders (Attacking, need to capture points).</p>
+                        <div class="mt-2 text-xs bg-slate-100 dark:bg-slate-700 rounded px-2 py-1 inline-block">Chinese: 台上/台下 (Tai Shang / Tai Xia)</div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        // Floating Suits Background Generator
+        const suits = ['♠', '♥', '♣', '♦'];
+        const bgContainer = document.getElementById('background-container');
+        const suitCount = 20;
+
+        if (bgContainer) {
+            for (let i = 0; i < suitCount; i++) {
+                const el = document.createElement('div');
+                el.innerText = suits[Math.floor(Math.random() * suits.length)];
+                el.className = 'suit-bg text-slate-400 dark:text-slate-600 font-serif select-none';
+                
+                // Random properties
+                const size = Math.random() * 100 + 20; // 20px to 120px
+                const left = Math.random() * 100;
+                const top = Math.random() * 100;
+                const duration = Math.random() * 10 + 10; // 10s to 20s
+                const delay = Math.random() * -20;
+                
+                el.style.fontSize = `${size}px`;
+                el.style.left = `${left}%`;
+                el.style.top = `${top}%`;
+                el.style.animation = `float ${duration}s ease-in-out infinite`;
+                el.style.animationDelay = `${delay}s`;
+                
+                if (['♥', '♦'].includes(el.innerText)) {
+                    el.classList.add('text-red-400', 'dark:text-red-800');
+                    el.classList.remove('text-slate-400', 'dark:text-slate-600');
+                }
+
+                bgContainer.appendChild(el);
+            }
+        }
+
+        // Card Rendering Logic
+        function renderCard(suit, value, type) {
+            const isRed = suit === '♥' || suit === '♦' || type === 'joker-bg';
+            const colorClass = isRed ? 'red' : 'black';
+            
+            let centerContent = suit;
+            let displayValue = value;
+            
+            if (type === 'joker-sm') {
+                centerContent = '🤡';
+                displayValue = 'jr';
+            } else if (type === 'joker-bg') {
+                centerContent = '👑';
+                displayValue = 'JR';
+            }
+
+            return `
+                <div class="playing-card ${colorClass}">
+                    <div class="card-top">${displayValue}</div>
+                    <div class="card-center">${centerContent}</div>
+                    <div class="card-bottom">${displayValue}</div>
+                </div>
+            `;
+        }
+
+        function initHands() {
+            document.querySelectorAll('.hand-container').forEach(container => {
+                if (container.dataset.rendered) return;
+                
+                const cardsData = JSON.parse(container.dataset.cards);
+                let html = '';
+                cardsData.forEach(card => {
+                    html += renderCard(card.s, card.v, card.t);
+                });
+                container.innerHTML = html;
+                container.dataset.rendered = 'true';
+            });
+        }
+        
+        document.addEventListener('DOMContentLoaded', initHands);
+
+        // Staggered Entrance Animation
+        const entranceObserver = new IntersectionObserver((entries) => {
+            let delay = 0;
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('is-visible');
+                    }, delay);
+                    delay += 150; // 150ms stagger delay
+                    entranceObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '50px' });
+
+        document.querySelectorAll('main .glass-morphism').forEach(el => {
+            el.classList.add('deal-card');
+            entranceObserver.observe(el);
+        });
+
+        // Trump Hierarchy Logic
+        const trumpItems = document.querySelectorAll('.trump-item');
+        
+        trumpItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const rank = parseInt(item.dataset.rank);
+                
+                // Reset all
+                trumpItems.forEach(el => {
+                    el.classList.remove('active', 'dimmed', 'beater');
+                });
+
+                // Set active
+                item.classList.add('active');
+
+                // Highlight beaters and dim losers
+                trumpItems.forEach(el => {
+                    const r = parseInt(el.dataset.rank);
+                    if (r > rank) {
+                        el.classList.add('beater');
+                    } else if (r < rank) {
+                        el.classList.add('dimmed');
+                    }
+                });
+            });
+        });
+
+        // Upgrade Calculator Logic
+        const scoreInput = document.getElementById('scoreInput');
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        const resultDisplay = document.getElementById('resultDisplay');
+
+        if (scoreInput) {
+            scoreInput.addEventListener('input', (e) => {
+                const score = parseInt(e.target.value);
+                scoreDisplay.textContent = score;
+                
+                let result = "";
+                let bgClass = "";
+                let textClass = "";
+
+                if (score === 0) {
+                    result = "Dealer Up 3 Levels (Grand Slam)";
+                    bgClass = "bg-indigo-100 dark:bg-indigo-900/50";
+                    textClass = "text-indigo-800 dark:text-indigo-200";
+                } else if (score < 40) {
+                    result = "Dealer Up 2 Levels (Small Slam)";
+                    bgClass = "bg-blue-100 dark:bg-blue-900/50";
+                    textClass = "text-blue-800 dark:text-blue-200";
+                } else if (score < 80) {
+                    result = "Dealer Up 1 Level";
+                    bgClass = "bg-sky-100 dark:bg-sky-900/50";
+                    textClass = "text-sky-800 dark:text-sky-200";
+                } else if (score < 120) {
+                    result = "Defenders Become Dealer";
+                    bgClass = "bg-slate-200 dark:bg-slate-700";
+                    textClass = "text-slate-800 dark:text-slate-200";
+                } else {
+                    // Defenders upgrade
+                    // 120 -> 1 level
+                    // 160 -> 2 levels
+                    // Formula: 1 + floor((score - 120) / 40)
+                    const levels = 1 + Math.floor((score - 120) / 40);
+                    result = `Defenders Up ${levels} Levels`;
+                    bgClass = "bg-red-100 dark:bg-red-900/50";
+                    textClass = "text-red-800 dark:text-red-200";
+                }
+
+                resultDisplay.textContent = result;
+                resultDisplay.className = `calc-result ${bgClass} ${textClass}`;
+            });
+        }
+
+        // Progress Bar Logic
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+        
+        function updateProgressBar() {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = Math.min(100, Math.round((scrollTop / docHeight) * 100));
+            
+            if (progressBar) {
+                progressBar.style.width = scrollPercent + '%';
+            }
+            if (progressText) {
+                progressText.textContent = scrollPercent + '%';
+            }
+        }
+        
+        window.addEventListener('scroll', updateProgressBar);
+        updateProgressBar(); // Initial call
+
+        // Mode Toggle Logic (Beginner vs Full)
+        const modeToggle = document.getElementById('modeToggle');
+        const modeOptions = modeToggle?.querySelectorAll('.mode-toggle-option');
+        
+        // Get saved mode or default to 'full'
+        let currentMode = localStorage.getItem('rulesMode') || 'full';
+        
+        function applyMode(mode) {
+            currentMode = mode;
+            localStorage.setItem('rulesMode', mode);
+            
+            // Update toggle UI
+            modeOptions?.forEach(opt => {
+                if (opt.dataset.mode === mode) {
+                    opt.classList.add('active');
+                } else {
+                    opt.classList.remove('active');
+                }
+            });
+            
+            // Apply mode to document
+            if (mode === 'beginner') {
+                document.documentElement.classList.add('beginner-mode');
+            } else {
+                document.documentElement.classList.remove('beginner-mode');
+            }
+        }
+        
+        // Initialize mode
+        applyMode(currentMode);
+        
+        // Handle toggle clicks
+        modeOptions?.forEach(opt => {
+            opt.addEventListener('click', () => {
+                applyMode(opt.dataset.mode);
+            });
+        });
+
+        // Scroll Spy Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '-20% 0px -60% 0px', // Activate when section is near top
+                threshold: 0
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        updateActiveLink(id);
+                    }
+                });
+            }, observerOptions);
+
+            // Track all sections that have an ID
+            document.querySelectorAll('div[id]').forEach((section) => {
+                observer.observe(section);
+            });
+
+            function updateActiveLink(id) {
+                // Remove active class from all links
+                document.querySelectorAll('aside nav a').forEach(link => {
+                    link.classList.remove('bg-indigo-100', 'dark:bg-indigo-900/50', 'text-indigo-700', 'dark:text-indigo-300', 'font-bold', 'scale-105', 'shadow-sm');
+                    link.classList.add('text-slate-600', 'dark:text-slate-300');
+                });
+
+                // Add active class to current link
+                const activeLink = document.querySelector(`aside nav a[href="#${id}"]`);
+                if (activeLink) {
+                    activeLink.classList.remove('text-slate-600', 'dark:text-slate-300');
+                    activeLink.classList.add('bg-indigo-100', 'dark:bg-indigo-900/50', 'text-indigo-700', 'dark:text-indigo-300', 'font-bold', 'scale-105', 'shadow-sm', 'transition-all', 'duration-300');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
