@@ -65,6 +65,44 @@
                 backdrop-filter: blur(12px);
                 -webkit-backdrop-filter: blur(12px);
             }
+
+            /* Reduce heavy background blur on mobile for smoother scrolling */
+            .blur-\[120px\] {
+                filter: blur(80px) !important;
+            }
+
+            /* Tone down floating suit background on mobile */
+            .suit-bg {
+                opacity: 0.35;
+            }
+            .dark .suit-bg {
+                opacity: 0.25;
+            }
+
+            /* Make suit labels visible on touch devices (no hover) */
+            .group\/deck .group\/item span[data-i18n] {
+                position: static !important;
+                opacity: 1 !important;
+                transform: none !important;
+                display: block;
+                margin-top: 0.25rem;
+            }
+        }
+
+        /* Respect reduced-motion preferences (important for mobile comfort) */
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+            .animate-deal,
+            .animate-float-slow,
+            .animate-float-medium,
+            .animate-float-fast,
+            .card-3d,
+            .suit-bg {
+                animation: none !important;
+                transition: none !important;
+            }
         }
 
         /* Custom Scrollbar */
@@ -181,12 +219,17 @@
                         
                         <h2 class="text-2xl font-bold mb-4 font-display" data-i18n="rulesTitle">Game Rules</h2>
                         <p class="text-slate-600 dark:text-slate-300 mb-8 leading-relaxed">
-                            <span data-i18n="rulesDesc">Master the strategy. Download the official guide and start playing today.</span>
-                            <br>
-                            <span class="text-xs font-mono text-indigo-500 dark:text-indigo-400 mt-2 block bg-indigo-50 dark:bg-indigo-900/30 w-fit px-2 py-1 rounded" data-i18n="versionNote">
-                                V2.0 • Chinese Only
-                            </span>
+                            <span data-i18n="rulesDesc">Master the strategy. Read our house rules (tested and loved by friends) and start playing today.</span>
                         </p>
+
+                        <div class="flex flex-wrap gap-2 mb-8">
+                            <span class="text-xs font-mono text-indigo-600 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-900/30 w-fit px-2 py-1 rounded" data-i18n="onlineNote">
+                                Online: V3.0 • EN + 中文
+                            </span>
+                            <span class="text-xs font-mono text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700/40 w-fit px-2 py-1 rounded" data-i18n="pdfNote">
+                                PDF: V2.0 • Chinese only
+                            </span>
+                        </div>
 
                         <div class="flex flex-col gap-3">
                             <a href="rules.html" id="rulesLink"
@@ -292,8 +335,9 @@
                 mainTitle: "80 points",
                 slogan: "Play for fun",
                 rulesTitle: "Game Rules",
-                rulesDesc: "Master the strategy. Download the official guide and start playing today.",
-                versionNote: "V2.0 • Chinese Only",
+                rulesDesc: "Master the strategy. Read our house rules (tested and loved by friends) and start playing today.",
+                onlineNote: "Online: V3.0 • EN + 中文",
+                pdfNote: "PDF: V2.0 • Chinese only",
                 readOnlineBtn: "Read Online",
                 downloadBtn: "Download PDF",
                 contact: "Need help? Contact us",
@@ -310,13 +354,14 @@
                 mainTitle: "80 分",
                 slogan: "为快乐而玩",
                 rulesTitle: "游戏规则",
-                rulesDesc: "掌握策略。下载官方指南，即刻开始游戏。",
-                versionNote: "V2.0 • 仅中文版",
+                rulesDesc: "掌握策略。阅读我们常玩的“自家规则”（朋友们反复打磨，很好玩），即刻开始游戏。",
+                onlineNote: "在线：V3.0 • 中英双语",
+                pdfNote: "PDF：V2.0 • 仅中文版",
                 readOnlineBtn: "在线阅读",
                 downloadBtn: "下载 PDF",
                 contact: "需要帮助？联系我们",
                 crafted: "© 2026 80p. FLP 制作。",
-                est: "成立于 20213",
+                est: "成立于 2013",
                 spades: "黑桃",
                 hearts: "红心",
                 clubs: "草花",

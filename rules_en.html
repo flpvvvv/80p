@@ -78,6 +78,14 @@
     </script>
     <style type="text/tailwindcss">
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@500;700;800;900&display=swap');
+
+        /* Anchor scrolling offset (fixed top nav + progress bar) */
+        html {
+            scroll-padding-top: 6.5rem;
+        }
+        main > div[id] {
+            scroll-margin-top: 6.5rem;
+        }
         
         .glass-morphism {
             background: rgba(255, 255, 255, 0.65);
@@ -102,6 +110,37 @@
         
         .dark .suit-bg {
             opacity: 0.4;
+        }
+
+        /* Mobile: reduce background intensity for smoother scroll */
+        @media (max-width: 640px) {
+            .blur-\[120px\] {
+                filter: blur(80px) !important;
+            }
+            .suit-bg {
+                opacity: 0.35;
+            }
+            .dark .suit-bg {
+                opacity: 0.25;
+            }
+        }
+
+        /* Reduced motion: avoid heavy animations/transitions */
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+            .deal-card,
+            .animate-spin-slow,
+            .trump-item.beater,
+            .suit-bg,
+            .animate-float-slow,
+            .animate-float-medium,
+            .animate-float-fast,
+            .progress-bar {
+                animation: none !important;
+                transition: none !important;
+            }
         }
 
         @keyframes float {
