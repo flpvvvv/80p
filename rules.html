@@ -796,6 +796,11 @@
                         </span>
                     </div>
 
+                    <!-- Language Toggle -->
+                    <a href="rules_en.html" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors font-bold text-sm flex items-center justify-center w-9 h-9" aria-label="Switch to English">
+                        EN
+                    </a>
+
                     <!-- Theme Toggle -->
                     <button id="themeToggle" 
                             class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors group"
@@ -2146,6 +2151,9 @@
         // Initialize mode
         applyMode(currentMode);
         
+        // Set Language Preference to Chinese
+        localStorage.setItem('language', 'zh');
+
         // Handle toggle clicks
         modeOptions?.forEach(opt => {
             opt.addEventListener('click', () => {

@@ -880,7 +880,7 @@
 
             <!-- Header -->
             <div class="glass-morphism rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-12 prose">
-                <h1 class="!mb-4 text-3xl sm:text-4xl md:text-5xl">80points - English V3.0</h1>
+                <h1 class="!mb-4 text-3xl sm:text-4xl md:text-5xl">80 Points - English V3.0</h1>
                 <div class="flex flex-wrap gap-2 sm:gap-4 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
                     <span><strong>Author:</strong> FLP</span>
                     <span><strong>Date:</strong> Jan 2026</span>
@@ -1239,8 +1239,8 @@
                 <p>Must show <strong>2 identical</strong> cards of:</p>
                 <ul>
                     <li>Same suit level pair (e.g. ♥7+♥7 when playing 7) → Change to that suit</li>
-                    <li>Small Joker Pair (🤡🤡) → Play No Trump</li>
-                    <li>Big Joker Pair (👑👑) → Play No Trump</li>
+                    <li>Black Joker Pair (🤡🤡) → Play No Trump</li>
+                    <li>Red Joker Pair (👑👑) → Play No Trump</li>
                 </ul>
 
                 <!-- Interactive Trump Hierarchy -->
@@ -1268,12 +1268,12 @@
                     <div class="trump-arrow">➜</div>
                     <div class="trump-item" data-rank="5">
                         <span class="trump-icon">🤡</span>
-                        <span class="trump-label">Small Joker</span>
+                        <span class="trump-label">Black Joker</span>
                     </div>
                     <div class="trump-arrow">➜</div>
                     <div class="trump-item" data-rank="6">
                         <span class="trump-icon">👑</span>
-                        <span class="trump-label">Big Joker</span>
+                        <span class="trump-label">Red Joker</span>
                     </div>
                 </div>
                 <p class="text-xs text-center text-slate-500 mb-6">Click icon to see who can counter whom</p>
@@ -1285,9 +1285,9 @@
                             <li><strong>After Dealer buries kitty</strong>: Counter changes Trump Suit AND "Steals Kitty". Even in first game, this doesn't change Dealer (Dealer must be established before taking kitty).</li>
                         </ol>
                     </li>
-                    <li><strong>Counter Order & Reinforce</strong>: "Counter" can happen multiple times, but must follow order: <span class="text-red-500">♦</span> < ♣ < <span class="text-red-500">♥</span> < ♠ < Small Joker < Big Joker. To counter again, must use higher priority cards.
+                    <li><strong>Counter Order & Reinforce</strong>: "Counter" can happen multiple times, but must follow order: <span class="text-red-500">♦</span> < ♣ < <span class="text-red-500">♥</span> < ♠ < Black Joker < Red Joker. To counter again, must use higher priority cards.
                         <br>If Show is not Reinforced, can be countered by any suit or No Trump. If Reinforced, it's like that suit already countered, so must use higher priority to counter.
-                        <br>E.g.: Someone shows ♠ (not reinforced), can be countered by any suit. If someone counters with <span class="text-red-500">♥</span>, next counter must be ♠, Small Joker or Big Joker. If ♠ was reinforced, cannot be countered by <span class="text-red-500">♥</span>, only by Small/Big Joker.
+                        <br>E.g.: Someone shows ♠ (not reinforced), can be countered by any suit. If someone counters with <span class="text-red-500">♥</span>, next counter must be ♠, Black Joker or Red Joker. If ♠ was reinforced, cannot be countered by <span class="text-red-500">♥</span>, only by Black/Red Joker.
                         <br>Note: Counter after burying kitty always allows Stealing Kitty.
                     </li>
                     <li><strong>Counter Right Order</strong>: Priority goes counter-clockwise starting from Dealer. First timing (before taking kitty): Dealer -> Right -> Partner -> Left. Second timing (after burying): Same order.</li>
@@ -1450,8 +1450,8 @@
                                         <span class="text-xs bg-amber-200 dark:bg-amber-800 px-2 py-0.5 rounded-full font-bold">36 cards</span>
                                     </div>
                                     <div class="flex flex-wrap gap-1 text-xs">
-                                        <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded border">Big Joker×2</span>
-                                        <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded border">Small Joker×2</span>
+                                        <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded border">Red Joker×2</span>
+                                        <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded border">Black Joker×2</span>
                                         <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded border"><span class="suit-black">♠</span>7×2</span>
                                         <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded border"><span class="suit-red">♥</span><span class="suit-black">♣</span><span class="suit-red">♦</span>7×6</span>
                                         <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded border"><span class="suit-black">♠</span>Cards×24</span>
@@ -1490,8 +1490,8 @@
                                         <span class="text-xs bg-amber-200 dark:bg-amber-800 px-2 py-0.5 rounded-full font-bold">12 cards</span>
                                     </div>
                                     <div class="flex flex-wrap gap-1 text-xs">
-                                        <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded border">Big Joker×2</span>
-                                        <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded border">Small Joker×2</span>
+                                        <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded border">Red Joker×2</span>
+                                        <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded border">Black Joker×2</span>
                                         <span class="px-2 py-1 bg-white dark:bg-slate-800 rounded border">All 7s×8</span>
                                     </div>
                                 </div>
@@ -1677,7 +1677,7 @@
                     <!-- Spade 7 7 Small Joker Small Joker -->
                     <div class="hand-item">
                         <div class="hand-cards hand-container" data-cards='[{"s":"♠","v":"7"},{"s":"♠","v":"7"},{"s":"","v":"S","t":"joker-sm"},{"s":"","v":"S","t":"joker-sm"}]'></div>
-                        <span class="hand-desc">Main 7 + Small Joker</span>
+                        <span class="hand-desc">Main 7 + Black Joker</span>
                     </div>
 
                     <!-- Four Jokers -->
@@ -2159,6 +2159,9 @@
         // Initialize mode
         applyMode(currentMode);
         
+        // Set Language Preference to English
+        localStorage.setItem('language', 'en');
+
         // Handle toggle clicks
         modeOptions?.forEach(opt => {
             opt.addEventListener('click', () => {

@@ -189,7 +189,7 @@
                         </p>
 
                         <div class="flex flex-col gap-3">
-                            <a href="rules.html" 
+                            <a href="rules.html" id="rulesLink"
                                class="relative w-full group/btn overflow-hidden rounded-xl bg-indigo-600 dark:bg-indigo-500 text-white font-bold text-lg py-4 px-8 flex items-center justify-center gap-3 shadow-lg hover:shadow-indigo-500/25 transition-all duration-300">
                                 <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-500 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300"></div>
                                 <span class="relative z-10" data-i18n="readOnlineBtn">Read Online</span>
@@ -364,6 +364,12 @@
             // Update Toggle Button Text
             langText.textContent = lang === 'en' ? '中' : 'EN';
             
+            // Update Rules Link
+            const rulesLink = document.getElementById('rulesLink');
+            if (rulesLink) {
+                rulesLink.href = lang === 'en' ? 'rules_en.html' : 'rules.html';
+            }
+
             // Save preference
             localStorage.setItem('language', lang);
             
