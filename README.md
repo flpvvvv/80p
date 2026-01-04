@@ -35,6 +35,19 @@ Open `http://localhost:3000`.
 
 Deploy as static files (Vercel supported via `vercel.json`).
 
+## Vercel Web Analytics
+
+This project is plain HTML, so it loads the Web Analytics tracking script directly.
+
+1. In the Vercel Dashboard, open your Project → **Analytics** → **Enable**.
+   - This creates routes under `/_vercel/insights/*` on the next deployment.
+2. Deploy (a new deployment is required after enabling Analytics).
+3. Verify it’s working:
+   - Open the deployed site in the browser.
+   - In DevTools → Network, you should see a request to `/_vercel/insights/view`.
+
+Note: when running locally (e.g. `python3 -m http.server`), `/_vercel/insights/*` is not available, so you won’t see analytics requests until the site is deployed on Vercel.
+
 ## License
 
 See `LICENSE`.
