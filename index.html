@@ -7,6 +7,9 @@
     <meta name="description" content="80points - Play for fun. Download rules and contact us.">
     <title>80points - Play for fun</title>
     <link rel="icon" type="image/svg+xml" href="public/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="public/js/theme.js"></script>
     <!-- Vercel Web Analytics (available after enabling Analytics in Vercel) -->
@@ -128,7 +131,7 @@
         }
     </style>
 </head>
-<body class="min-h-screen bg-slate-100 dark:bg-[#0B1120] text-slate-900 dark:text-slate-100 transition-colors duration-500 overflow-x-hidden selection:bg-indigo-500 selection:text-white">
+<body class="min-h-screen bg-slate-100 dark:bg-[#0B1120] text-slate-900 dark:text-slate-100 transition-colors duration-500 overflow-x-hidden selection:bg-indigo-500 selection:text-white" style="touch-action: manipulation; -webkit-tap-highlight-color: transparent;">
 
     <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-indigo-600 focus:text-white focus:px-4 focus:py-2 focus:rounded-md">
         Skip to content
@@ -157,10 +160,10 @@
             class="p-2 sm:p-3 rounded-full glass-morphism hover:scale-110 transition-transform duration-300 group relative overflow-hidden"
                 aria-label="Toggle theme">
             <div class="absolute inset-0 bg-gradient-to-tr from-indigo-500 to-fuchsia-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-            <svg id="sunIcon" class="w-5 h-5 sm:w-6 sm:h-6 text-amber-500 hidden dark:block group-hover:rotate-90 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg id="sunIcon" class="w-5 h-5 sm:w-6 sm:h-6 text-amber-500 hidden dark:block group-hover:rotate-90 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
             </svg>
-            <svg id="moonIcon" class="w-5 h-5 sm:w-6 sm:h-6 text-slate-700 block dark:hidden group-hover:-rotate-12 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg id="moonIcon" class="w-5 h-5 sm:w-6 sm:h-6 text-slate-700 block dark:hidden group-hover:-rotate-12 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
             </svg>
         </button>
@@ -315,6 +318,7 @@
                 const el = document.createElement('div');
                 el.innerText = suits[Math.floor(Math.random() * suits.length)];
                 el.className = 'suit-bg text-slate-400 dark:text-slate-600 font-serif select-none';
+                el.setAttribute('aria-hidden', 'true');
                 
                 // Random properties - smaller on mobile
                 const size = isMobile ? (Math.random() * 60 + 15) : (Math.random() * 100 + 20);
@@ -354,6 +358,7 @@
                 contact: "Need help? Contact us",
                 crafted: "© 2026 80p. Crafted by FLP.",
                 est: "EST. 2013",
+                loading: "Loading…",
                 spades: "Spades",
                 hearts: "Hearts",
                 clubs: "Clubs",

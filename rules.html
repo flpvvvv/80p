@@ -4,8 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#f1f5f9">
+    <meta name="description" content="80分（升级/双升/拖拉机）完整游戏规则。4人扑克牌游戏，使用两副牌，目标是通过抢分升级，先打过A的一队获胜。">
     <title>80分 - 游戏规则</title>
     <link rel="icon" type="image/svg+xml" href="public/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
     <script src="public/js/theme.js"></script>
@@ -210,9 +215,11 @@
         /* Typography for Markdown Content */
         .prose h1 {
             @apply text-3xl sm:text-4xl md:text-5xl font-display font-black mb-8 sm:mb-12 text-slate-900 dark:text-white tracking-tight;
+            text-wrap: balance;
         }
         .prose h2 {
             @apply text-2xl sm:text-3xl font-display font-bold mt-10 sm:mt-16 mb-6 sm:mb-8 text-slate-800 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700 pb-3 sm:pb-4;
+            text-wrap: balance;
         }
         .prose h3 {
             @apply text-2xl font-bold mt-10 mb-5 text-indigo-600 dark:text-indigo-400;
@@ -446,6 +453,7 @@
         
         .range-slider {
             -webkit-appearance: none;
+            appearance: none;
             width: 100%;
             height: 8px;
             border-radius: 4px;
@@ -803,7 +811,7 @@
         .dark .suit-black { color: #e2e8f0; }
     </style>
 </head>
-<body class="min-h-screen bg-slate-100 dark:bg-[#0B1120] text-slate-900 dark:text-slate-100 transition-colors duration-500">
+<body class="min-h-screen bg-slate-100 dark:bg-[#0B1120] text-slate-900 dark:text-slate-100 transition-colors duration-500" style="touch-action: manipulation; -webkit-tap-highlight-color: transparent;">
 
     <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-indigo-600 focus:text-white focus:px-4 focus:py-2 focus:rounded-md">
         跳到主要内容
@@ -840,20 +848,22 @@
 
                 <div class="flex items-center gap-4">
                     <a href="index.html" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
                         <span class="hidden sm:inline">返回首页</span>
                     </a>
                     
                     <!-- Mode Toggle -->
-                    <div id="modeToggle" class="mode-toggle bg-slate-200 dark:bg-slate-700" title="切换难度模式">
-                        <span class="mode-toggle-option active" data-mode="full">
+                    <div id="modeToggle" class="mode-toggle bg-slate-200 dark:bg-slate-700" role="group" aria-label="选择规则难度">
+                        <button type="button" class="mode-toggle-option active" data-mode="full" aria-pressed="true">
                             <span class="hidden sm:inline">🧠 完整</span>
-                            <span class="sm:hidden">🧠</span>
-                        </span>
-                        <span class="mode-toggle-option" data-mode="beginner">
+                            <span class="sm:hidden" aria-hidden="true">🧠</span>
+                            <span class="sr-only sm:hidden">完整模式</span>
+                        </button>
+                        <button type="button" class="mode-toggle-option" data-mode="beginner" aria-pressed="false">
                             <span class="hidden sm:inline">🔰 新手</span>
-                            <span class="sm:hidden">🔰</span>
-                        </span>
+                            <span class="sm:hidden" aria-hidden="true">🔰</span>
+                            <span class="sr-only sm:hidden">新手模式</span>
+                        </button>
                     </div>
 
                     <!-- Language Toggle -->
@@ -865,10 +875,10 @@
                     <button id="themeToggle" 
                             class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors group"
                             aria-label="Toggle theme">
-                        <svg id="sunIcon" class="w-5 h-5 text-amber-500 hidden dark:block group-hover:rotate-90 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg id="sunIcon" class="w-5 h-5 text-amber-500 hidden dark:block group-hover:rotate-90 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
                         </svg>
-                        <svg id="moonIcon" class="w-5 h-5 text-slate-700 block dark:hidden group-hover:-rotate-12 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg id="moonIcon" class="w-5 h-5 text-slate-700 block dark:hidden group-hover:-rotate-12 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
                         </svg>
                     </button>
@@ -1175,7 +1185,7 @@
                         <span id="scoreDisplay" class="text-3xl font-black text-indigo-600 dark:text-indigo-400 font-mono">0</span>
                     </div>
                     
-                    <input type="range" min="0" max="300" value="0" step="5" class="range-slider-gradient" id="scoreInput" aria-describedby="resultDisplay">
+                    <input type="range" min="0" max="300" value="0" step="5" class="range-slider-gradient" id="scoreInput" aria-label="台下抓分滑块" aria-describedby="resultDisplay" aria-valuemin="0" aria-valuemax="300" aria-valuenow="0">
                     
                     <div id="resultDisplay" class="calc-result bg-indigo-100 text-indigo-800 dark:bg-indigo-900/50 dark:text-indigo-200">
                         庄家升 3 级 (大光)
@@ -1353,13 +1363,13 @@
                 </div><!-- end advanced-section 造反 -->
                 
                 <!-- Collapsed Notice for Beginner Mode: 造反 -->
-                <div class="advanced-collapsed-notice bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-xl p-4 my-4 items-center gap-3 cursor-pointer hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-colors" onclick="document.querySelector('[data-mode=full]').click()">
-                    <span class="text-2xl">🧠</span>
+                <button type="button" class="advanced-collapsed-notice bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-xl p-4 my-4 items-center gap-3 cursor-pointer hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-colors text-left w-full focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2" onclick="document.querySelector('[data-mode=full]').click()">
+                    <span class="text-2xl" aria-hidden="true">🧠</span>
                     <div>
                         <span class="font-bold text-purple-700 dark:text-purple-300">高手规则已隐藏：造反</span>
                         <p class="text-sm text-purple-600 dark:text-purple-400 mt-1">切换到"完整模式"查看进阶规则</p>
                     </div>
-                </div>
+                </button>
             </div><!-- end pre-game -->
 
             <div id="flowcharts" class="glass-morphism rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-12 prose">
@@ -1891,13 +1901,13 @@
                 </div><!-- end advanced-section 一钩勾到底 -->
                 
                 <!-- Collapsed Notice for Beginner Mode: 一钩勾到底 -->
-                <div class="advanced-collapsed-notice bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-xl p-4 my-4 items-center gap-3 cursor-pointer hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-colors" onclick="document.querySelector('[data-mode=full]').click()">
-                    <span class="text-2xl">🧠</span>
+                <button type="button" class="advanced-collapsed-notice bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-xl p-4 my-4 items-center gap-3 cursor-pointer hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-colors text-left w-full focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2" onclick="document.querySelector('[data-mode=full]').click()">
+                    <span class="text-2xl" aria-hidden="true">🧠</span>
                     <div>
                         <span class="font-bold text-purple-700 dark:text-purple-300">高手规则已隐藏：一钩勾到底</span>
                         <p class="text-sm text-purple-600 dark:text-purple-400 mt-1">切换到"完整模式"查看进阶规则</p>
                     </div>
-                </div>
+                </button>
             </div><!-- end settlement -->
 
             <!-- Glossary Section -->
@@ -2004,6 +2014,7 @@
                 const el = document.createElement('div');
                 el.innerText = suits[Math.floor(Math.random() * suits.length)];
                 el.className = 'suit-bg text-slate-400 dark:text-slate-600 font-serif select-none';
+                el.setAttribute('aria-hidden', 'true');
                 
                 // Random properties
                 const size = Math.random() * 100 + 20; // 20px to 120px
@@ -2195,8 +2206,10 @@
             modeOptions?.forEach(opt => {
                 if (opt.dataset.mode === mode) {
                     opt.classList.add('active');
+                    opt.setAttribute('aria-pressed', 'true');
                 } else {
                     opt.classList.remove('active');
+                    opt.setAttribute('aria-pressed', 'false');
                 }
             });
             
