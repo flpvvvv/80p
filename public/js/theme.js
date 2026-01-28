@@ -42,6 +42,17 @@ tailwind.config = {
 // Theme Management
 (function() {
     const html = document.documentElement;
+    const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+    const themeColors = {
+        light: '#f1f5f9',
+        dark: '#0b1120'
+    };
+
+    const syncThemeColor = () => {
+        if (!themeColorMeta) return;
+        const isDark = html.classList.contains('dark');
+        themeColorMeta.setAttribute('content', isDark ? themeColors.dark : themeColors.light);
+    };
     
     // Check for saved theme or system preference
     const savedTheme = localStorage.getItem('theme') || 
@@ -54,6 +65,8 @@ tailwind.config = {
         html.classList.remove('dark');
     }
 
+    syncThemeColor();
+
     // Setup event listeners when DOM is ready
     document.addEventListener('DOMContentLoaded', () => {
         const themeToggle = document.getElementById('themeToggle');
@@ -61,6 +74,7 @@ tailwind.config = {
             themeToggle.addEventListener('click', () => {
                 html.classList.toggle('dark');
                 localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+                syncThemeColor();
             });
         }
     });

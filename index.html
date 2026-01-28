@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f1f5f9">
     <meta name="description" content="80points - Play for fun. Download rules and contact us.">
     <title>80points - Play for fun</title>
     <link rel="icon" type="image/svg+xml" href="public/favicon.svg">
@@ -12,6 +13,10 @@
     <script defer src="/_vercel/insights/script.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@500;700;800;900&display=swap');
+
+        html {
+            color-scheme: light dark;
+        }
         
         .perspective-1000 {
             perspective: 1000px;
@@ -125,6 +130,10 @@
 </head>
 <body class="min-h-screen bg-slate-100 dark:bg-[#0B1120] text-slate-900 dark:text-slate-100 transition-colors duration-500 overflow-x-hidden selection:bg-indigo-500 selection:text-white">
 
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-indigo-600 focus:text-white focus:px-4 focus:py-2 focus:rounded-md">
+        Skip to content
+    </a>
+
     <!-- Dynamic Background Container -->
     <div id="background-container" class="fixed inset-0 overflow-hidden pointer-events-none">
         <!-- Gradients -->
@@ -137,7 +146,7 @@
     <div class="fixed top-4 right-4 sm:top-6 sm:right-6 z-50 flex gap-2 sm:gap-3">
         <!-- Language Toggle -->
         <button id="langToggle" 
-                class="w-10 h-10 sm:w-12 sm:h-12 rounded-full glass-morphism hover:scale-110 transition-all duration-300 group relative overflow-hidden flex items-center justify-center"
+            class="w-10 h-10 sm:w-12 sm:h-12 rounded-full glass-morphism hover:scale-110 transition-transform duration-300 group relative overflow-hidden flex items-center justify-center"
                 aria-label="Toggle language">
             <div class="absolute inset-0 bg-gradient-to-tr from-indigo-500 to-fuchsia-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
             <span id="langText" class="font-bold text-sm text-slate-700 dark:text-slate-200">中</span>
@@ -145,7 +154,7 @@
 
         <!-- Theme Toggle -->
         <button id="themeToggle" 
-                class="p-2 sm:p-3 rounded-full glass-morphism hover:scale-110 transition-all duration-300 group relative overflow-hidden"
+            class="p-2 sm:p-3 rounded-full glass-morphism hover:scale-110 transition-transform duration-300 group relative overflow-hidden"
                 aria-label="Toggle theme">
             <div class="absolute inset-0 bg-gradient-to-tr from-indigo-500 to-fuchsia-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
             <svg id="sunIcon" class="w-5 h-5 sm:w-6 sm:h-6 text-amber-500 hidden dark:block group-hover:rotate-90 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -158,7 +167,7 @@
     </div>
 
     <!-- Main Content Wrapper -->
-    <main class="relative z-10 min-h-screen flex items-center justify-center p-4 perspective-1000">
+    <main id="main-content" class="relative z-10 min-h-screen flex items-center justify-center p-4 perspective-1000">
         
         <!-- The "Card" -->
         <div id="mainCard" class="w-full max-w-4xl glass-morphism rounded-2xl sm:rounded-[2.5rem] p-5 sm:p-8 md:p-12 lg:p-16 relative card-3d opacity-0 animate-deal">
@@ -172,7 +181,7 @@
                 <div class="text-center lg:text-left space-y-8">
                     <div class="relative inline-block group cursor-default">
                         <div class="absolute inset-0 bg-indigo-500/30 blur-3xl rounded-full group-hover:bg-indigo-500/50 transition-colors duration-500"></div>
-                        <img src="public/favicon.svg" alt="80points Logo" class="relative w-32 h-32 mx-auto lg:mx-0 brightness-0 dark:invert drop-shadow-2xl transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                        <img src="public/favicon.svg" alt="80points Logo" width="128" height="128" class="relative w-32 h-32 mx-auto lg:mx-0 brightness-0 dark:invert drop-shadow-2xl transform group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
                     </div>
                     
                     <div>
@@ -188,27 +197,27 @@
                     <!-- Interactive Suits Display -->
                     <div class="flex justify-center lg:justify-start gap-6 sm:gap-10 group/deck py-4 select-none">
                         <!-- Spades: The Leader (Lifts & Shadows) -->
-                        <div class="relative group/item flex flex-col items-center cursor-pointer transition-all duration-500 hover:!opacity-100 hover:!blur-0 opacity-70 group-hover/deck:opacity-40 group-hover/deck:blur-[1px]">
-                            <span class="text-4xl text-slate-700 dark:text-slate-200 transform transition-all duration-500 group-hover/item:-translate-y-4 group-hover/item:scale-110 group-hover/item:drop-shadow-2xl">♠</span>
-                            <span class="absolute -bottom-6 opacity-0 group-hover/item:opacity-100 transition-all duration-500 transform translate-y-2 group-hover/item:translate-y-0 text-[10px] font-bold tracking-[0.2em] uppercase text-slate-500 dark:text-slate-400 whitespace-nowrap" data-i18n="spades">Spades</span>
+                        <div class="relative group/item flex flex-col items-center cursor-pointer transition-[transform,opacity,filter] duration-500 hover:!opacity-100 hover:!blur-0 opacity-70 group-hover/deck:opacity-40 group-hover/deck:blur-[1px]">
+                            <span class="text-4xl text-slate-700 dark:text-slate-200 transform transition-transform duration-500 group-hover/item:-translate-y-4 group-hover/item:scale-110 group-hover/item:drop-shadow-2xl">♠</span>
+                            <span class="absolute -bottom-6 opacity-0 group-hover/item:opacity-100 transition-[transform,opacity] duration-500 transform translate-y-2 group-hover/item:translate-y-0 text-[10px] font-bold tracking-[0.2em] uppercase text-slate-500 dark:text-slate-400 whitespace-nowrap" data-i18n="spades">Spades</span>
                         </div>
 
                         <!-- Hearts: The Heart (Beats/Pulses) -->
-                        <div class="relative group/item flex flex-col items-center cursor-pointer transition-all duration-500 hover:!opacity-100 hover:!blur-0 opacity-70 group-hover/deck:opacity-40 group-hover/deck:blur-[1px]">
-                            <span class="text-4xl text-red-500 transform transition-all duration-300 group-hover/item:scale-125 group-hover/item:drop-shadow-[0_0_15px_rgba(239,68,68,0.6)]">♥</span>
-                            <span class="absolute -bottom-6 opacity-0 group-hover/item:opacity-100 transition-all duration-500 transform translate-y-2 group-hover/item:translate-y-0 text-[10px] font-bold tracking-[0.2em] uppercase text-red-500 whitespace-nowrap" data-i18n="hearts">Hearts</span>
+                        <div class="relative group/item flex flex-col items-center cursor-pointer transition-[transform,opacity,filter] duration-500 hover:!opacity-100 hover:!blur-0 opacity-70 group-hover/deck:opacity-40 group-hover/deck:blur-[1px]">
+                            <span class="text-4xl text-red-500 transform transition-transform duration-300 group-hover/item:scale-125 group-hover/item:drop-shadow-[0_0_15px_rgba(239,68,68,0.6)]">♥</span>
+                            <span class="absolute -bottom-6 opacity-0 group-hover/item:opacity-100 transition-[transform,opacity] duration-500 transform translate-y-2 group-hover/item:translate-y-0 text-[10px] font-bold tracking-[0.2em] uppercase text-red-500 whitespace-nowrap" data-i18n="hearts">Hearts</span>
                         </div>
 
                         <!-- Clubs: The Wild (Spins) -->
-                        <div class="relative group/item flex flex-col items-center cursor-pointer transition-all duration-500 hover:!opacity-100 hover:!blur-0 opacity-70 group-hover/deck:opacity-40 group-hover/deck:blur-[1px]">
-                            <span class="text-4xl text-slate-700 dark:text-slate-200 transform transition-all duration-700 group-hover/item:rotate-[360deg] group-hover/item:scale-110">♣</span>
-                            <span class="absolute -bottom-6 opacity-0 group-hover/item:opacity-100 transition-all duration-500 transform translate-y-2 group-hover/item:translate-y-0 text-[10px] font-bold tracking-[0.2em] uppercase text-slate-500 dark:text-slate-400 whitespace-nowrap" data-i18n="clubs">Clubs</span>
+                        <div class="relative group/item flex flex-col items-center cursor-pointer transition-[transform,opacity,filter] duration-500 hover:!opacity-100 hover:!blur-0 opacity-70 group-hover/deck:opacity-40 group-hover/deck:blur-[1px]">
+                            <span class="text-4xl text-slate-700 dark:text-slate-200 transform transition-transform duration-700 group-hover/item:rotate-[360deg] group-hover/item:scale-110">♣</span>
+                            <span class="absolute -bottom-6 opacity-0 group-hover/item:opacity-100 transition-[transform,opacity] duration-500 transform translate-y-2 group-hover/item:translate-y-0 text-[10px] font-bold tracking-[0.2em] uppercase text-slate-500 dark:text-slate-400 whitespace-nowrap" data-i18n="clubs">Clubs</span>
                         </div>
 
                         <!-- Diamonds: The Gem (Tilts) -->
-                        <div class="relative group/item flex flex-col items-center cursor-pointer transition-all duration-500 hover:!opacity-100 hover:!blur-0 opacity-70 group-hover/deck:opacity-40 group-hover/deck:blur-[1px]">
-                            <span class="text-4xl text-red-500 transform transition-all duration-500 group-hover/item:rotate-12 group-hover/item:scale-110 group-hover/item:drop-shadow-[0_0_15px_rgba(239,68,68,0.4)]">♦</span>
-                            <span class="absolute -bottom-6 opacity-0 group-hover/item:opacity-100 transition-all duration-500 transform translate-y-2 group-hover/item:translate-y-0 text-[10px] font-bold tracking-[0.2em] uppercase text-red-500 whitespace-nowrap" data-i18n="diamonds">Diamonds</span>
+                        <div class="relative group/item flex flex-col items-center cursor-pointer transition-[transform,opacity,filter] duration-500 hover:!opacity-100 hover:!blur-0 opacity-70 group-hover/deck:opacity-40 group-hover/deck:blur-[1px]">
+                            <span class="text-4xl text-red-500 transform transition-transform duration-500 group-hover/item:rotate-12 group-hover/item:scale-110 group-hover/item:drop-shadow-[0_0_15px_rgba(239,68,68,0.4)]">♦</span>
+                            <span class="absolute -bottom-6 opacity-0 group-hover/item:opacity-100 transition-[transform,opacity] duration-500 transform translate-y-2 group-hover/item:translate-y-0 text-[10px] font-bold tracking-[0.2em] uppercase text-red-500 whitespace-nowrap" data-i18n="diamonds">Diamonds</span>
                         </div>
                     </div>
                 </div>
@@ -216,7 +225,7 @@
                 <!-- Right Column: Action -->
                 <div class="relative">
                     <!-- Action Card -->
-                    <div class="bg-white/50 dark:bg-slate-800/50 rounded-3xl p-8 border border-white/40 dark:border-white/5 shadow-xl backdrop-blur-sm hover:transform hover:scale-[1.02] transition-all duration-300 group">
+                    <div class="bg-white/50 dark:bg-slate-800/50 rounded-3xl p-8 border border-white/40 dark:border-white/5 shadow-xl backdrop-blur-sm hover:transform hover:scale-[1.02] transition-transform duration-300 group">
                         <div class="absolute -top-6 -right-6 w-20 h-20 bg-yellow-400 rounded-full blur-2xl opacity-20 group-hover:opacity-40 transition-opacity"></div>
                         
                         <h2 class="text-2xl font-bold mb-4 font-display" data-i18n="rulesTitle">Game Rules</h2>
@@ -234,8 +243,8 @@
                         </div>
 
                         <div class="flex flex-col gap-3">
-                            <a href="rules.html" id="rulesLink"
-                               class="relative w-full group/btn overflow-hidden rounded-xl bg-indigo-600 dark:bg-indigo-500 text-white font-bold text-lg py-4 px-8 flex items-center justify-center gap-3 shadow-lg hover:shadow-indigo-500/25 transition-all duration-300">
+                                     <a href="rules.html" id="rulesLink"
+                                         class="relative w-full group/btn overflow-hidden rounded-xl bg-indigo-600 dark:bg-indigo-500 text-white font-bold text-lg py-4 px-8 flex items-center justify-center gap-3 shadow-lg hover:shadow-indigo-500/25 transition-[transform,box-shadow] duration-300">
                                 <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-500 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300"></div>
                                 <span class="relative z-10" data-i18n="readOnlineBtn">Read Online</span>
                                 <svg class="w-5 h-5 relative z-10 group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -243,9 +252,9 @@
                                 </svg>
                             </a>
 
-                            <a href="public/80P_SCN_V2.pdf" 
-                               download="80points_rules.pdf"
-                               class="relative w-full group/btn overflow-hidden rounded-xl bg-white dark:bg-slate-700 text-slate-900 dark:text-white font-bold text-lg py-4 px-8 flex items-center justify-center gap-3 shadow-md hover:shadow-lg transition-all duration-300 border border-slate-200 dark:border-slate-600">
+                                     <a href="public/80P_SCN_V2.pdf" 
+                                         download="80points_rules.pdf"
+                                         class="relative w-full group/btn overflow-hidden rounded-xl bg-white dark:bg-slate-700 text-slate-900 dark:text-white font-bold text-lg py-4 px-8 flex items-center justify-center gap-3 shadow-md hover:shadow-lg transition-[transform,box-shadow] duration-300 border border-slate-200 dark:border-slate-600">
                                 <span class="relative z-10" data-i18n="downloadBtn">Download PDF</span>
                                 <svg class="w-5 h-5 relative z-10 group-hover/btn:translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
